@@ -126,7 +126,7 @@
                                 <div class="form-group">
                                     <label class="title-color">
                                         {{ translate('brand') }}
-                                        <span class="input-required-icon">*</span>
+                                        <!-- <span class="input-required-icon">*</span> -->
                                     </label>
                                     <select class="js-select2-custom form-control" name="brand_id">
                                         <option value="{{ null }}" selected
