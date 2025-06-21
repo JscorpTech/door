@@ -420,7 +420,7 @@ class ProductController extends Controller
             }
         }
 
-        if (getWebConfig(name: 'product_brand') && empty($request['brand_id']) && $request['product_type'] == 'physical') {
+        if (false && empty($request['brand_id']) && $request['product_type'] == 'physical') {
             $validator->after(function ($validator) {
                 $validator->errors()->add('brand_id', translate('brand_is_required'));
             });

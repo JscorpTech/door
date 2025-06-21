@@ -93,7 +93,7 @@ class ProductUpdateRequest extends FormRequest
                     );
                 }
 
-                if (getWebConfig(name: 'product_brand') && empty($this->brand_id) && $this['product_type'] == 'physical') {
+                if (false && empty($this->brand_id) && $this['product_type'] == 'physical') {
                     $validator->errors()->add(
                         'brand_id', translate('brand_is_required') . '!'
                     );
