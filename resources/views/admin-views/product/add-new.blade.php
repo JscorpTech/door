@@ -128,7 +128,7 @@
                                         {{ translate('brand') }}
                                         <span class="input-required-icon">*</span>
                                     </label>
-                                    <select class="js-select2-custom form-control" name="brand_id" required>
+                                    <select class="js-select2-custom form-control" name="brand_id">
                                         <option value="{{ null }}" selected
                                                 disabled>{{ translate('select_Brand') }}</option>
                                         @foreach ($brands as $brand)
