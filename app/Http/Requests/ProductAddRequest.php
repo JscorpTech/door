@@ -79,8 +79,8 @@ class ProductAddRequest extends Request
                         'images', translate('product_images_is_required') . '!'
                     );
                 }
-
-                if (getWebConfig(name: 'product_brand') && empty($this->brand_id) && $this['product_type'] == 'physical') {
+                //NOTE: getWebConfig(name: 'product_brand')
+                if (false && empty($this->brand_id) && $this['product_type'] == 'physical') {
                     $validator->errors()->add(
                         'brand_id', translate('brand_is_required') . '!'
                     );
