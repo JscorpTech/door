@@ -117,7 +117,7 @@
                             <div class="js-form-message form-group mt-5">
                                 <label class="input-label" for="forgotVendorPassword" tabindex="0">
                                     <span class="d-flex justify-content-between align-items-center">
-                                            {{translate('phone')}}
+                                            {{translate('email')}}
                                             <a href="{{route('vendor.auth.login')}}">
                                                 {{translate('back_to_login')}}
                                             </a>

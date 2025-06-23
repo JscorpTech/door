@@ -63,7 +63,7 @@ class ForgotPasswordController extends Controller
             return redirect()->back();
         }
 
-        $customer = $this->customerRepo->getByIdentity(filters: ['phone' => $request['identity']]);
+        $customer = $this->customerRepo->getByIdentity(filters: ['identity' => $request['identity']]);
         if (!$customer) {
             Toastr::error(translate('No_such_user_found'));
             return back();
