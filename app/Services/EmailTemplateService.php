@@ -41,6 +41,7 @@ class EmailTemplateService
             EmailTemplateKey::ORDER_DElIVERED => array('product_information', 'order_information', 'button_content', 'banner_image'),
             EmailTemplateKey::FORGET_PASSWORD => array('product_information', 'order_information', 'button_content', 'banner_image'),
             EmailTemplateKey::ORDER_RECEIVED => array('icon', 'product_information', 'button_content', 'banner_image'),
+            EmailTemplateKey::WHOLESALE => array('icon', 'product_information', 'button_content', 'banner_image'),
             EmailTemplateKey::ADD_FUND_TO_WALLET => array('product_information', 'order_information', 'button_content', 'banner_image'),
             EmailTemplateKey::RESET_PASSWORD_VERIFICATION => array('product_information', 'order_information', 'button_content', 'banner_image'),
 
