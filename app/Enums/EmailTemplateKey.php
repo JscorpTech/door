@@ -18,6 +18,7 @@ enum EmailTemplateKey
     const ORDER_PLACE = 'order-place';
     const ORDER_DElIVERED = 'order-delivered';
     const ORDER_RECEIVED = 'order-received';
+    const WHOLESALE = 'wholesale';
     const FORGET_PASSWORD = 'forgot-password';
     const REGISTRATION_VERIFICATION = 'registration-verification';
     const REGISTRATION_FROM_POS = 'registration-from-pos';
@@ -25,6 +26,7 @@ enum EmailTemplateKey
 
     const ADMIN_EMAIL_LIST = [
         EmailTemplateKey::ORDER_RECEIVED,
+        EmailTemplateKey::WHOLESALE,
     ];
     const VENDOR_EMAIL_LIST = [
         EmailTemplateKey::REGISTRATION,
@@ -34,19 +36,22 @@ enum EmailTemplateKey
         EmailTemplateKey::ACCOUNT_ACTIVATION,
         EmailTemplateKey::FORGET_PASSWORD,
         EmailTemplateKey::ORDER_RECEIVED,
+        EmailTemplateKey::WHOLESALE,
     ];
     const CUSTOMER_EMAIL_LIST = [
         EmailTemplateKey::ORDER_PLACE,
         // EmailTemplateKey::FORGET_PASSWORD,
         EmailTemplateKey::REGISTRATION_VERIFICATION,
         EmailTemplateKey::REGISTRATION_FROM_POS,
-        EmailTemplateKey::ACCOUNT_BLOCK ,
-        EmailTemplateKey::ACCOUNT_UNBLOCK ,
+        EmailTemplateKey::ACCOUNT_BLOCK,
+        EmailTemplateKey::ACCOUNT_UNBLOCK,
         EmailTemplateKey::DIGITAL_PRODUCT_DOWNLOAD,
         EmailTemplateKey::DIGITAL_PRODUCT_OTP,
-        EmailTemplateKey::ADD_FUND_TO_WALLET ,
+        EmailTemplateKey::ADD_FUND_TO_WALLET,
+        EmailTemplateKey::WHOLESALE,
     ];
     const DELIVERY_MAN_EMAIL_LIST = [
-        EmailTemplateKey::RESET_PASSWORD_VERIFICATION ,
+        EmailTemplateKey::RESET_PASSWORD_VERIFICATION,
+        EmailTemplateKey::WHOLESALE,
     ];
 }

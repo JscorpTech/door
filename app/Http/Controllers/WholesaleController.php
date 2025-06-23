@@ -20,7 +20,7 @@ class WholesaleController extends Controller
             'subject' => translate('new_order_received'),
             'title' => translate('new_order_received'),
             'userType' => "vendor",
-            'templateName' => 'order-received',
+            'templateName' => 'wholesale',
             'vendorName' => $seller?->f_name,
             'adminName' => $seller?->name,
         ];
