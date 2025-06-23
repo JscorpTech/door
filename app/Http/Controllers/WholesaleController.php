@@ -14,8 +14,7 @@ class WholesaleController extends Controller
         $validated_data = $request->validate([
             "product_id" => ["required", "exists:products,id"],
         ]);
-        $product = Product::find($validated_data("product_id"));
-        dd($product);
+        $product = Product::find($validated_data["product_id"]);
         $seller = User::find($product->user_id);
         $data = [
             'subject' => translate('new_order_received'),
