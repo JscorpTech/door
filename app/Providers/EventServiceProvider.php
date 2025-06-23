@@ -20,6 +20,7 @@ use App\Events\RefundEvent;
 use App\Events\RequestProductRestockEvent;
 use App\Events\RestockProductNotificationEvent;
 use App\Events\VendorRegistrationEvent;
+use App\Events\WholesaleEvent;
 use App\Events\WithdrawStatusUpdateEvent;
 use App\Listeners\AddFundToWalletListener;
 use App\Listeners\CashCollectListener;
@@ -39,6 +40,7 @@ use App\Listeners\RefundListener;
 use App\Listeners\RequestProductRestockListener;
 use App\Listeners\RestockProductNotificationListener;
 use App\Listeners\VendorRegistrationListener;
+use App\Listeners\WholesaleListener;
 use App\Listeners\WithdrawStatusUpdateListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -61,6 +63,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         EmailVerificationEvent::class => [
             EmailVerificationListener::class,
+        ],
+        WholesaleEvent::class => [
+            WholesaleListener::class,
         ],
         PasswordResetEvent::class => [
             PasswordResetListener::class,
