@@ -5,14 +5,12 @@
     <div class="view-mail-body">
         {!! $body !!}
     </div>
-    @if(isset($data['user']))
-        <p>{{translate('Customer')}}: {{$data['user']['f_name'].' '.$data['user']['l_name'] ?? 'John Doe'}}</p>
-        <p>{{translate('Email')}}: {{$data['user']['email'] ?? 'example@gmail.com'}}</p>
-        <p>{{translate('Phone')}}: {{$data['user']['phone'] ?? '123-456-7890'}}</p>
-    @endif
-    <p>{{translate('products')}}:</p>
+    <p>{{translate('Customer')}}: {{$data['user']['f_name'].' '.$data['user']['l_name'] ?? 'John Doe'}}</p>
+    <p>{{translate('Email')}}: {{$data['user']['email'] ?? 'example@gmail.com'}}</p>
+    <p>{{translate('Phone')}}: {{$data['user']['phone'] ?? '123-456-7890'}}</p>
+    <p>{{translate('product')}}:</p>
     <ul>
-        @foreach($data['products'] ?? [['name'=>'Product 1', 'variant'=>'Variant 1'], ['name'=>'Product 2', 'variant'=>'Variant 2']] as $product)
+        @foreach($data['products'] ?? [['name'=>'Product 1', 'variant'=>'Variant 1']] as $product)
             <li>{{$product['name'].' - '.$product['variant']}}</li>
         @endforeach
     </ul>
