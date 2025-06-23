@@ -55,7 +55,7 @@
                         </h1>
                     </div>
 
-                    @php($verificationBy = getWebConfig('vendor_forgot_password_method'))
+                    @php($verificationBy = "email")
                     @if ($verificationBy == 'email')
                         <ol class="list-unstyled font-size-md text-start">
                             <li>
