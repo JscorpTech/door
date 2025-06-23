@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Events\WholesaleEvent;
 use App\Models\Product;
-use App\Models\User;
 use App\Models\Seller;
 use Illuminate\Http\Request;
 
