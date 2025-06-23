@@ -41,6 +41,9 @@ trait EmailTemplateTrait
     protected function sendingMail($sendMailTo, $userType, $templateName, $data = null,): void
     {
         $template = EmailTemplate::with('translationCurrentLanguage')->where(['user_type' => $userType, 'template_name' => $templateName])->first();
+        if (!$template) {
+            $template = EmailTemplate::with('translationCurrentLanguage')->where(['template_name' => $templateName])->first();
+        }
         if ($template) {
             if (count($template['translationCurrentLanguage'])) {
                 foreach ($template?->translationCurrentLanguage ?? [] as $translate) {
