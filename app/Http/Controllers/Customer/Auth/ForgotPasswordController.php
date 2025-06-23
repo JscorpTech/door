@@ -16,6 +16,7 @@ use App\Utils\SMSModule;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -24,6 +25,7 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 use Modules\Gateways\Traits\SmsGateway;
 use function Laravel\Prompts\password;
 
@@ -120,6 +122,7 @@ class ForgotPasswordController extends Controller
                         'phone_or_email' => $customer['email'],
                         'token' => $token,
                     ]);
+                    dd($customer);
                     event(new PasswordResetEvent(email: $customer['email'], data: $data));
                     Toastr::success(translate('Check_your_email') . ' ' . translate('Password_reset_url_sent'));
                 } catch (\Exception $exception) {

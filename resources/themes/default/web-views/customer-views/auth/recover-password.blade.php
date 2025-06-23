@@ -31,7 +31,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="recover-email">
-                                {{ translate('Phone') }}
+                                {{ translate('Email') }}
                             </label>
                             <input class="form-control clean-phone-input-value" type="text" name="identity" required
                                    placeholder="{{ translate('enter_your_phone_number') }}">
