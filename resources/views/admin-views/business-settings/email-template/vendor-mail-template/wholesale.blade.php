@@ -5,7 +5,10 @@
     <div class="view-mail-body">
         {!! $body !!}
     </div>
-    <div class="main-table-inner mb-4">
+
+    <h1>user id: {{ $data["user"]->id }}</h1>
+    <h1>product id: {{ $data["product"]->id }}</h1>
+    <!-- <div class="main-table-inner mb-4">
         <div class="d-flex justify-content-center pt-3">
             <img width="76" class="mb-4" id="view-mail-logo" src="{{$template->logo_full_url['path'] ?? getStorageImages(path: $companyLogo, type:'backend-logo')}}" alt="">
         </div>
@@ -118,6 +121,6 @@
             </p>
             <p>{{translate('Thanks_&_Regards')}}, <br> {{getWebConfig('company_name')}}</p>
         </div>
-    </div>
+    </div> -->
     @include('admin-views.business-settings.email-template.partials-design.footer-design-without-logo')
 </div>
