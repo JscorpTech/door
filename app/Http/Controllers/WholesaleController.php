@@ -14,18 +14,17 @@ class WholesaleController extends Controller
         $validated_data = $request->validate([
             "product_id" => ["required", "exists:products,id"],
         ]);
-        dd($validated_data);
-        $product = Product::find($request->input("product_id"));
-        $customer = User::find($product->user_id);
+        $product = Product::find($validated_data("product_id"));
+        $seller = User::find($product->user_id);
         $data = [
-            'userType' => 'customer',
-            'templateName' => 'forgot-password',
-            'userName' => $customer['f_name'],
-            'subject' => translate('password_reset'),
-            'title' => translate('password_reset'),
-            'passwordResetURL' => "none",
+            'subject' => translate('new_order_received'),
+            'title' => translate('new_order_received'),
+            'userType' => $seller->seller_is == 'admin' ? 'admin' : 'vendor',
+            'templateName' => 'order-received',
+            'vendorName' => $seller?->f_name,
+            'adminName' => $seller?->name,
         ];
-        event(new WholesaleEvent(email: $customer['email'], data: $data));
+        event(new WholesaleEvent(email: $seller['email'], data: $data));
         return response()->json(["detail" => "ok"]);
     }
 }

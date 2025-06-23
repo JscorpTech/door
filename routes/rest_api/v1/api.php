@@ -227,7 +227,7 @@ Route::group(['namespace' => 'RestAPI\v1', 'prefix' => 'v1', 'middleware' => ['a
             });
 
             Route::group(['prefix' => 'order'], function () {
-                Route::post("wholesale-order", [WholesaleController::class, "post"]);
+                Route::post("wholesale", [WholesaleController::class, "post"]);
                 Route::controller(OrderController::class)->group(function () {
                     Route::get('place', 'place_order');
                     Route::get('offline-payment-method-list', 'offline_payment_method_list');
