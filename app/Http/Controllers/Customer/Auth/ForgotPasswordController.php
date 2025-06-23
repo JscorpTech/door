@@ -75,7 +75,7 @@ class ForgotPasswordController extends Controller
         }
 
         session()->put('forgot_password_identity', $request['identity']);
-        $verificationBy = 'phone';
+        $verificationBy = 'email';
         $otpIntervalTime = getWebConfig(name: 'otp_resend_time') ?? 1;
         $smsErrorMsg = translate('something_went_wrong.').' '.translate('please_try_again_after_sometime');
 
