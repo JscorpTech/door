@@ -10,8 +10,8 @@
     <p>{{translate('Phone')}}: {{$data['user']['phone'] ?? '123-456-7890'}}</p>
     <p>{{translate('product')}}:</p>
     <ul>
-        @foreach($data['products'] ?? [['name' => 'Product 1', 'variant' => 'Variant 1']] as $product)
-            <li>{{($product['name'] ?? 'Default Product').' - '.($product['variant'] ?? 'Default Variant')}}</li>
+        @foreach($data['products'] ?? [['name' => 'Product 1', 'variant' => 'Variant 1', 'id' => 1]] as $product)
+            <li><a href="{{route('admin.products.view.vendor', $product['id'] ?? 1)}}">{{($product['name'] ?? 'Default Product').' - '.($product['variant'] ?? 'Default Variant')}}</a></li>
         @endforeach
     </ul>
     @include('admin-views.business-settings.email-template.partials-design.footer-design-without-logo')
