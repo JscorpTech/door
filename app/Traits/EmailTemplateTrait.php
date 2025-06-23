@@ -14,9 +14,16 @@ trait EmailTemplateTrait
 {
     use FileManagerTrait;
     protected function textVariableFormat(
-        $value, $userName = null, $adminName = null,$vendorName = null ,$shopName = null,$shopId = null,
-        $deliveryManName = null,$orderId = null ,$emailId = null)
-    {
+        $value,
+        $userName = null,
+        $adminName = null,
+        $vendorName = null,
+        $shopName = null,
+        $shopId = null,
+        $deliveryManName = null,
+        $orderId = null,
+        $emailId = null
+    ) {
         $data = $value;
         if ($data) {
             $data = $userName ? str_replace("{userName}", $userName, $data) : $data;
@@ -76,6 +83,8 @@ trait EmailTemplateTrait
             if (isset($data['attachmentPath'])) {
                 unlink($data['attachmentPath']);
             }
+        } else {
+            dd("Template not found", $templateName);
         }
     }
 
