@@ -16,6 +16,7 @@ class WholesaleController extends Controller
         ]);
         $product = Product::find($validated_data["product_id"]);
         $seller = User::find($product->user_id);
+        dd($seller);
         $data = [
             'subject' => translate('new_order_received'),
             'title' => translate('new_order_received'),
