@@ -460,4 +460,9 @@ return [
 	"Этот адрес электронной почты уже занят" => "Этот адрес электронной почты уже занят",
 	"we_will_send_you_a_temporary_link_via_email" => "We will send you a temporary link via email",
 	"specify_the_text_and_URL_for_the_button_that_you_want_to_include_in_your_email" => "Specify the text and URL for the button that you want to include in your email",
+	"withdraw_Request" => "Withdraw Request",
+	"verify_status" => "Verify status",
+	"this_description_will_be_seen_on_Search_Engine_Results_Pages_and_while_sharing_the_products_link_on_social_platforms" => "This description will be seen on Search Engine Results Pages and while sharing the products link on social platforms",
+	"total_sold_amount" => "Total sold amount",
+	"the_email_id" => "The email id",
 ];
