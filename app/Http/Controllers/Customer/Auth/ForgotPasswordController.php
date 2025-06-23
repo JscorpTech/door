@@ -122,7 +122,6 @@ class ForgotPasswordController extends Controller
                         'phone_or_email' => $customer['email'],
                         'token' => $token,
                     ]);
-                    dd($customer);
                     event(new PasswordResetEvent(email: $customer['email'], data: $data));
                     Toastr::success(translate('Check_your_email') . ' ' . translate('Password_reset_url_sent'));
                 } catch (\Exception $exception) {

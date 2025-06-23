@@ -121,6 +121,7 @@ class RegisterController extends Controller
             Toastr::success($response['message']);
         } else if ($emailVerification && !$user['is_email_verified']) {
             $response = $this->customerAuthService->sendCustomerEmailVerificationToken($user, $token);
+            
             if ($response['status'] == 'error') {
                 Toastr::error($response['message']);
                 return back();
