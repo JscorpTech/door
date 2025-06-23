@@ -19,7 +19,7 @@ class WholesaleController extends Controller
         $data = [
             'subject' => translate('new_order_received'),
             'title' => translate('new_order_received'),
-            'userType' => $seller->seller_is == 'admin' ? 'admin' : 'vendor',
+            'userType' => "vendor",
             'templateName' => 'order-received',
             'vendorName' => $seller?->f_name,
             'adminName' => $seller?->name,
