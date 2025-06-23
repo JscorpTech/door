@@ -30,6 +30,7 @@ class WholesaleListener
     private function sendMail(EmailVerificationEvent $event):void{
         $email = $event->email;
         $data = $event->data;
+        dd($data);
         $this->sendingMail(sendMailTo: $email,userType: $data['userType'],templateName: $data['templateName'],data: $data);
     }
 }
