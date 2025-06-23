@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\EmailVerificationEvent;
+use App\Events\WholesaleEvent;
 use App\Traits\EmailTemplateTrait;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -22,15 +23,14 @@ class WholesaleListener
     /**
      * Handle the event.
      */
-    public function handle(EmailVerificationEvent $event): void
+    public function handle(WholesaleEvent $event): void
     {
         $this->sendMail($event);
     }
 
-    private function sendMail(EmailVerificationEvent $event):void{
+    private function sendMail(WholesaleEvent $event):void{
         $email = $event->email;
         $data = $event->data;
-        dd($data);
         $this->sendingMail(sendMailTo: $email,userType: $data['userType'],templateName: $data['templateName'],data: $data);
     }
 }
