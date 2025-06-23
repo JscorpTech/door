@@ -8,6 +8,6 @@
     <p>{{translate('Customer')}}: {{($data['user']['f_name'] ?? 'John').' '.($data['user']['l_name'] ?? 'Doe')}}</p>
     <p>{{translate('Email')}}: {{$data['user']['email'] ?? 'example@gmail.com'}}</p>
     <p>{{translate('Phone')}}: {{$data['user']['phone'] ?? '123-456-7890'}}</p>
-    <p>{{translate('product')}}: <a href="{{route('admin.products.view.vendor', $data['product']->id ?? 1)}}">{{$data['product']->name ?? 'Default Product'}}</a></p>
+    <p>{{translate('product')}}: <a href="https://door.kg/admin/products/view/vendor/{{ $data['product']?->id ?? 1}}">{{$data['product']->name ?? 'Default Product'}}</a></p>
     @include('admin-views.business-settings.email-template.partials-design.footer-design-without-logo')
 </div>
