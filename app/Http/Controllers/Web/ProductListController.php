@@ -109,7 +109,6 @@ class ProductListController extends Controller
         $ratings = self::getProductsRatingOneToFiveAsArray(productQuery: $productListData);
         $products = $productListData->paginate(20)->appends($data);
         $getProductIds = $products->pluck('id')->toArray();
-
         $category = [];
         if ($request['category_ids']) {
             $category = Category::whereIn('id', $request['category_ids'])->get();

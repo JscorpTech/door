@@ -35,13 +35,15 @@
         @endif
 
         @include('theme-views.partials._recommended-product')
+        {{--
         @if($web_config['business_mode'] == 'multi')
             @include('theme-views.partials._more-stores')
         @endif
+        --}}
 
         @include('theme-views.partials._top-rated-products')
 
-        @include('theme-views.partials._best-deal-just-for-you')
+         {{--@include('theme-views.partials._best-deal-just-for-you') --}}
 
         @include('theme-views.partials._home-categories')
         @if (!empty($bannerTypeMainSectionBanner))

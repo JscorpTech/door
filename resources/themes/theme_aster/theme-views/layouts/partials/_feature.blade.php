@@ -13,7 +13,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6">
+                <!-- <div class="col-lg-3 col-sm-6">
                     <div class="media gap-3 mb-3 align-items-center">
                         <div class="feature-icon-wrap">
                             <img src="{{theme_asset('assets/img/icons/f2.png')}}" alt="{{translate('image')}}">
@@ -23,7 +23,7 @@
                             <p class="fs-12">{{'100%'.' '.translate('authentic_products')}}</p>
                         </div>
                     </div>
-                </div>
+                </div> --!>
                 <div class="col-lg-3 col-sm-6">
                     <div class="media gap-3 mb-3 align-items-center">
                         <div class="feature-icon-wrap">
