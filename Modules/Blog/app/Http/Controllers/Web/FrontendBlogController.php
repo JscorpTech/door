@@ -10,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Modules\Blog\app\Models\Blog;
 use Modules\Blog\app\Models\BlogCategory;
-use DOMDocument;
 use Modules\Blog\app\Models\BlogTranslation;
 use Modules\Blog\app\Services\Frontend\FrontendBlogService;
 use Modules\Blog\app\Traits\BlogCategoryTrait;
@@ -18,7 +17,6 @@ use Modules\Blog\app\Traits\BlogTrait;
 
 class FrontendBlogController extends Controller
 {
-
     use BlogTrait;
     use BlogCategoryTrait;
 
@@ -27,8 +25,7 @@ class FrontendBlogController extends Controller
         private readonly Blog                $blog,
         private readonly BlogTranslation     $blogTranslation,
         private readonly BlogCategory        $blogCategory
-    )
-    {
+    ) {
     }
 
     public function index(Request $request): View
@@ -143,7 +140,8 @@ class FrontendBlogController extends Controller
                         ->orWhere('writer', 'like', "%{$search}%")
                         ->orWhereHas('category', function ($query) use ($search) {
                             return $query->where('name', 'like', "%{$search}%");
-                        });;
+                        });
+                    ;
                 });
             })
             ->when($request['writer'], function ($query) use ($request) {
