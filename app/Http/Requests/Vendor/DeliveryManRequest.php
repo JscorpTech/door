@@ -34,7 +34,7 @@ class DeliveryManRequest extends FormRequest
             'identity_image*' => 'required|mimes:jpg,jpeg,png,webp,gif,bmp,tif,tiff',
             'image' => 'required|mimes:jpg,jpeg,png,webp,gif,bmp,tif,tiff',
             'country_code' => 'required',
-            'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.*\s).{8,}$/|same:confirm_password',
+            'password' => 'required|min:4|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.*\s).{8,}$/|same:confirm_password',
         ];
     }
     /**

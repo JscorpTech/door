@@ -34,7 +34,7 @@ class PassportAuthController extends Controller
             'l_name' => 'required',
             'email' => 'required|unique:users',
             'phone' => 'required|unique:users',
-            'password' => 'required|min:8',
+            'password' => 'required|min:4',
         ], [
             'f_name.required' => 'The first name field is required.',
             'l_name.required' => 'The last name field is required.',
@@ -79,7 +79,7 @@ class PassportAuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email_or_phone' => 'required',
-            'password' => 'required|min:6',
+            'password' => 'required|min:4',
             'type' => 'required|in:phone,email'
         ]);
 

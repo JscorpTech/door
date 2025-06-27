@@ -41,7 +41,7 @@ class DeliveryManAddRequest extends FormRequest
             'email' => 'required|unique:delivery_men',
             'country_code' => 'required',
             'image' => 'required|mimes:jpg,jpeg,png,webp,gif,bmp,tif,tiff',
-            'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.*\s).{8,}$/|same:confirm_password',
+            'password' => 'required|min:4|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.*\s).{8,}$/|same:confirm_password',
         ];
     }
 

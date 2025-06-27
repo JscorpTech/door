@@ -25,7 +25,7 @@ class RegisterController extends Controller
             'l_name'        => 'required',
             'shop_name'     => 'required',
             'phone'         => 'required|unique:sellers',
-            'password'      => 'required|min:8',
+            'password'      => 'required|min48',
             'image'         => 'required|mimes: jpg,jpeg,png,gif',
             'logo'          => 'required|mimes: jpg,jpeg,png,gif',
             'banner'        => 'required|mimes: jpg,jpeg,png,gif',

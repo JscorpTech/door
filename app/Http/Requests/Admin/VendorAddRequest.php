@@ -32,7 +32,7 @@ class VendorAddRequest extends FormRequest
             'phone' => 'required|unique:sellers|max:20|min:4',
             'email' => 'required|unique:sellers',
             'image' => 'required|mimes:jpg,jpeg,png,webp,gif,bmp,tif,tiff',
-            'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.*\s).{8,}$/|same:confirm_password',
+            'password' => 'required|min:4|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.*\s).{8,}$/|same:confirm_password',
             'shop_name' => 'required',
             'shop_address' => 'required',
             'logo'              => 'required|mimes: jpg,jpeg,png,webp,gif,bmp,tif,tiff',
