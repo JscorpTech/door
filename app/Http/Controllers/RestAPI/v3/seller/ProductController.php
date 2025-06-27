@@ -296,8 +296,8 @@ class ProductController extends Controller
     public function upload_images(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'image' => 'required',
-            'type' => 'required|in:product,thumbnail,meta',
+            'image' => [],
+            'type' => 'in:product,thumbnail,meta',
         ]);
 
         if ($validator->errors()->count() > 0) {
