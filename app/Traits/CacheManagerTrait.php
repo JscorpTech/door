@@ -24,6 +24,7 @@ use App\Models\Tag;
 use App\Utils\BrandManager;
 use App\Utils\ProductManager;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -59,9 +60,9 @@ trait CacheManagerTrait
     public function cacheColorsList()
     {
         // return Cache::remember(CACHE_FOR_ALL_COLOR_LIST, CACHE_FOR_3_HOURS, function () {
+        App::setlocale("ru");
         $colors = [];
         foreach (Color::all() as $color) {
-            // $color->name = __($color->name, locale: "ru");
             $colors[] = [
                 "name" => __($color->name, locale: "ru"),
             ];
