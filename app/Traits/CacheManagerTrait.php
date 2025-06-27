@@ -58,6 +58,7 @@ trait CacheManagerTrait
 
     public function cacheColorsList()
     {
+        dd("stop");
         return Cache::remember(CACHE_FOR_ALL_COLOR_LIST, CACHE_FOR_3_HOURS, function () {
             $colors = [];
             foreach (Color::all() as $color) {
