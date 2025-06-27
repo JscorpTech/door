@@ -64,6 +64,7 @@ trait CacheManagerTrait
                 $color->name = translate($color->name);
                 $colors[] = $color;
             }
+            dd($colors);
             return $colors;
         });
     }
