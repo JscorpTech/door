@@ -31,12 +31,12 @@ class VendorAddRequest extends FormRequest
             'l_name' => 'required',
             'phone' => 'required|unique:sellers|max:20|min:4',
             'email' => 'required|unique:sellers',
-            'image' => 'required|mimes:jpg,jpeg,png,webp,gif,bmp,tif,tiff',
+            'image' => 'mimes:jpg,jpeg,png,webp,gif,bmp,tif,tiff',
             'password' => 'required|min:4|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.*\s).{8,}$/|same:confirm_password',
             'shop_name' => 'required',
             'shop_address' => 'required',
-            'logo'              => 'required|mimes: jpg,jpeg,png,webp,gif,bmp,tif,tiff',
-            'banner'            => 'required|mimes: jpg,jpeg,png,webp,gif,bmp,tif,tiff',
+            'logo'              => 'mimes: jpg,jpeg,png,webp,gif,bmp,tif,tiff',
+            'banner'            => 'mimes: jpg,jpeg,png,webp,gif,bmp,tif,tiff',
             'bottom_banner'     => 'mimes: jpg,jpeg,png,webp,gif,bmp,tif,tiff',
         ];
     }
