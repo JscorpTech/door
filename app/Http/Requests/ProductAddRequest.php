@@ -46,9 +46,9 @@ class ProductAddRequest extends Request
             'minimum_order_qty' => 'required' . '|' . 'numeric' . '|' . 'min' . ':1',
         ];
 
-        if (!isset($this['existing_thumbnail'])) {
-            $rules['image'] = 'required';
-        }
+        // if (!isset($this['existing_thumbnail'])) {
+        //     $rules['image'] = 'required';
+        // }
 
         return $rules;
     }
@@ -74,11 +74,11 @@ class ProductAddRequest extends Request
     {
         return [
             function (Validator $validator) {
-                if (!$this->has('colors_active') && !$this->file('images') && !$this->has('existing_images')) {
-                    $validator->errors()->add(
-                        'images', translate('product_images_is_required') . '!'
-                    );
-                }
+                // if (!$this->has('colors_active') && !$this->file('images') && !$this->has('existing_images')) {
+                //     $validator->errors()->add(
+                //         'images', translate('product_images_is_required') . '!'
+                //     );
+                // }
                 //NOTE: getWebConfig(name: 'product_brand')
                 if (false && empty($this->brand_id) && $this['product_type'] == 'physical') {
                     $validator->errors()->add(
@@ -110,11 +110,11 @@ class ProductAddRequest extends Request
                         }
 
                     }
-                    if ($productImagesCount != count($this['colors'])) {
-                        $validator->errors()->add(
-                            'images', translate('color_images_is_required') . '!'
-                        );
-                    }
+                    // if ($productImagesCount != count($this['colors'])) {
+                    //     $validator->errors()->add(
+                    //         'images', translate('color_images_is_required') . '!'
+                    //     );
+                    // }
                 }
 
                 if ($this['product_type'] == 'physical' && ($this->has('colors') || ($this->has('choice_attributes') && count($this['choice_attributes']) > 0))) {
