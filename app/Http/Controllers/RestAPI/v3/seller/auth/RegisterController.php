@@ -25,10 +25,10 @@ class RegisterController extends Controller
             'l_name'        => 'required',
             'shop_name'     => 'required',
             'phone'         => 'required|unique:sellers',
-            'password'      => 'required|min48',
-            'image'         => 'required|mimes: jpg,jpeg,png,gif',
-            'logo'          => 'required|mimes: jpg,jpeg,png,gif',
-            'banner'        => 'required|mimes: jpg,jpeg,png,gif',
+            'password'      => 'required|min:4',
+            'image'         => 'mimes: jpg,jpeg,png,gif',
+            'logo'          => 'mimes: jpg,jpeg,png,gif',
+            'banner'        => 'mimes: jpg,jpeg,png,gif',
             'bottom_banner' => 'mimes: jpg,jpeg,png,gif',
         ]);
 
