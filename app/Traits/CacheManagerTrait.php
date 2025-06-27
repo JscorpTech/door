@@ -60,12 +60,10 @@ trait CacheManagerTrait
     public function cacheColorsList()
     {
         // return Cache::remember(CACHE_FOR_ALL_COLOR_LIST, CACHE_FOR_3_HOURS, function () {
-        App::setlocale("ru");
         $colors = [];
         foreach (Color::all() as $color) {
-            $colors[] = [
-                "name" => __($color->name, locale: "ru"),
-            ];
+            $color->name = __("messages." . $color->name, locale: "ru");
+            $colors[] = $color;
         }
         return $colors;
         // });
