@@ -34,16 +34,12 @@ class Helpers
         $user = null;
         if (auth('customer')->check()) {
             $user = auth('customer')->user();
-
         } elseif (is_object($request) && method_exists($request, 'user')) {
             $user = $request->user() ?? $request->user;
-
         } elseif (isset($request['payment_request_from']) && in_array($request['payment_request_from'], ['app']) && !isset($request->user)) {
             $user = $request['is_guest'] ? 'offline' : User::find($request['customer_id']);
-
         } elseif (session()->has('customer_id') && !session('is_guest')) {
             $user = User::find(session('customer_id'));
-
         } elseif (isset($request->user)) {
             $user = $request->user;
         }
@@ -162,15 +158,15 @@ class Helpers
 
         $variation = [];
         $data['category_ids'] = is_array($data['category_ids']) ? $data['category_ids'] : json_decode($data['category_ids']);
-//        $data['images'] = is_array($data['images']) ? $data['images'] : json_decode($data['images']);
+        //        $data['images'] = is_array($data['images']) ? $data['images'] : json_decode($data['images']);
         $data['colors'] = $colors;
-//        $data['color_image'] = $colorImage;
+        //        $data['color_image'] = $colorImage;
         $data['colors_formatted'] = $colorsFormatted;
         $attributes = [];
         if ((is_array($data['attributes']) ? $data['attributes'] : json_decode($data['attributes'])) != null) {
             $attributes_arr = is_array($data['attributes']) ? $data['attributes'] : json_decode($data['attributes']);
             foreach ($attributes_arr as $attribute) {
-                $attributes[] = (integer)$attribute;
+                $attributes[] = (int)$attribute;
             }
         }
         $data['attributes'] = $attributes;
@@ -179,9 +175,9 @@ class Helpers
         foreach ($variation_arr as $var) {
             $variation[] = [
                 'type' => $var['type'],
-                'price' => (double)$var['price'],
+                'price' => (float)$var['price'],
                 'sku' => $var['sku'],
-                'qty' => (integer)$var['qty'],
+                'qty' => (int)$var['qty'],
             ];
         }
         $data['variation'] = $variation;
@@ -229,7 +225,7 @@ class Helpers
         if ((is_array($data['attributes']) ? $data['attributes'] : json_decode($data['attributes'])) != null) {
             $attributes_arr = is_array($data['attributes']) ? $data['attributes'] : json_decode($data['attributes']);
             foreach ($attributes_arr as $attribute) {
-                $attributes[] = (integer)$attribute;
+                $attributes[] = (int)$attribute;
             }
         }
         $data['attributes'] = $attributes;
@@ -238,9 +234,9 @@ class Helpers
         foreach ($variation_arr as $var) {
             $variation[] = [
                 'type' => $var['type'],
-                'price' => (double)$var['price'],
+                'price' => (float)$var['price'],
                 'sku' => $var['sku'],
-                'qty' => (integer)$var['qty'],
+                'qty' => (int)$var['qty'],
             ];
         }
         $data['variation'] = $variation;
@@ -290,14 +286,25 @@ class Helpers
 
     public static function units(): array
     {
-        return ['kg', 'pc', 'gms', 'ltrs'];
+        return ["ед", "компл", "шт", "кг", "гр", "набор", "костюм", "пара"];
     }
 
     public static function getDefaultPaymentGateways(): array
     {
         return [
-            'ssl_commerz', 'paypal', 'stripe', 'razor_pay', 'paystack', 'senang_pay', 'paymob_accept',
-            'flutterwave', 'paytm', 'paytabs', 'liqpay', 'mercadopago', 'bkash'
+            'ssl_commerz',
+            'paypal',
+            'stripe',
+            'razor_pay',
+            'paystack',
+            'senang_pay',
+            'paymob_accept',
+            'flutterwave',
+            'paytm',
+            'paytabs',
+            'liqpay',
+            'mercadopago',
+            'bkash'
         ];
     }
 
@@ -398,8 +405,8 @@ class Helpers
     {
         return ($price / 100) * $tax;
 
-//        $discount = self::get_product_discount(product: $product, price: $price);
-//        return (($price-$discount) / 100) * $tax; //after discount decrease
+        //        $discount = self::get_product_discount(product: $product, price: $price);
+        //        return (($price-$discount) / 100) * $tax; //after discount decrease
     }
 
     public static function get_price_range($product)
@@ -544,7 +551,8 @@ class Helpers
     {
         $key = BusinessSetting::where(['type' => 'push_notification_key'])->first()->value;
         $url = "https://fcm.googleapis.com/fcm/send";
-        $header = array("authorization: key=" . $key . "",
+        $header = array(
+            "authorization: key=" . $key . "",
             "content-type: application/json"
         );
 
@@ -629,7 +637,8 @@ class Helpers
             $objects = scandir($dir);
             foreach ($objects as $object) {
                 if ($object != "." && $object != "..") {
-                    if (filetype($dir . "/" . $object) == "dir") Helpers::remove_dir($dir . "/" . $object); else unlink($dir . "/" . $object);
+                    if (filetype($dir . "/" . $object) == "dir") Helpers::remove_dir($dir . "/" . $object);
+                    else unlink($dir . "/" . $object);
                 }
             }
             reset($objects);
@@ -958,5 +967,3 @@ if (!function_exists('currency_converter')) {
         return Helpers::set_symbol(round($amount * $rate, 2));
     }
 }
-
-
