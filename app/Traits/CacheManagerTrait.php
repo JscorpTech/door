@@ -59,14 +59,14 @@ trait CacheManagerTrait
 
     public function cacheColorsList()
     {
-        // return Cache::remember(CACHE_FOR_ALL_COLOR_LIST, CACHE_FOR_3_HOURS, function () {
-        $colors = [];
-        foreach (Color::all() as $color) {
-            $color->name = __("messages." . $color->name, locale: "ru");
-            $colors[] = $color;
-        }
-        return $colors;
-        // });
+        return Cache::remember(CACHE_FOR_ALL_COLOR_LIST, CACHE_FOR_3_HOURS, function () {
+            $colors = [];
+            foreach (Color::all() as $color) {
+                $color->name = __("messages." . $color->name, locale: "ru");
+                $colors[] = $color;
+            }
+            return $colors;
+        });
     }
 
     public function cacheProductsColorsArray()
