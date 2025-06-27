@@ -78,7 +78,7 @@
                                 </a>
                             @endif
                         </div>
-                        <div class="mt-4 mb-3">
+                        {{-- <div class="mt-4 mb-3">
                             <div class="d-flex gap-2">
                                 <h6 class="text-uppercase mb-2 font-weight-bold footer-heder">{{translate('newsletter')}}</h6>
                                 <i class="bi bi-send-fill mt-n1"></i>
@@ -95,14 +95,14 @@
                                 </label>
                                 <button type="submit" class="btn btn-primary">{{ translate('submit') }}</button>
                             </div>
-                        </form>
+                        </form> --}}
                     </div>
                 </div>
                 <div class="col-lg-8">
                     <div class="row gy-5">
                         <div class="col-sm-4 col-6">
                             <div class="widget widget--nav absolute-white">
-                                <h4 class="widget__title">{{translate('accounts')}}</h4>
+                                {{--<h4 class="widget__title">{{translate('accounts')}}</h4> --}}
                                 <ul class="d-flex flex-column gap-3">
                                     @if($web_config['business_mode'] == 'multi' && $web_config['seller_registration'])
                                         <li>
@@ -118,10 +118,10 @@
                                                     data-bs-target="#loginModal">{{translate('profile')}}</button>
                                         @endif
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a class="text-capitalize"
                                            href="{{route('track-order.index') }}">{{translate('track_order')}}</a>
-                                    </li>
+                                    </li> --!>
                                     <li><a class="text-capitalize"
                                            href="{{route('contacts')}}">{{translate('help_&_support')}}</a></li>
                                 </ul>
@@ -129,7 +129,7 @@
                         </div>
                         <div class="col-sm-4 col-6">
                             <div class="widget widget--nav absolute-white">
-                                <h4 class="widget__title text-capitalize">{{translate('quick_links')}}</h4>
+                                {{--<h4 class="widget__title text-capitalize">{{translate('quick_links')}}</h4> --}}
                                 <ul class="d-flex flex-column gap-3">
                                     @if($web_config['flash_deals'])
                                         <li>
@@ -164,7 +164,7 @@
                         </div>
                         <div class="col-sm-4 col-6">
                             <div class="widget widget--nav absolute-white">
-                                <h4 class="widget__title">{{translate('other')}}</h4>
+                                {{--<h4 class="widget__title">{{translate('other')}}</h4> --}}
                                 <ul class="d-flex flex-column gap-3">
                                     <li><a class="text-capitalize"
                                            href="{{route('about-us')}}">{{translate('about_company')}}</a></li>
@@ -202,7 +202,7 @@
                                         </li>
                                     @endif
 
-                                    <li>
+                                    {{--<li>
                                         @if(auth('customer')->check())
                                             <a class="text-capitalize"
                                                href="{{route('account-tickets')}}">{{translate('support_ticket')}}</a>
@@ -211,7 +211,7 @@
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#loginModal">{{translate('support_ticket')}}</button>
                                         @endif
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </div>
                         </div>
