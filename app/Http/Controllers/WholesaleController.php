@@ -27,6 +27,6 @@ class WholesaleController extends Controller
             'adminName' => $seller?->name,
         ];
         event(new WholesaleEvent(email: $seller['email'], data: $data));
-        return response()->json(["detail" => "ok"]);
+        return response()->json(["detail" => "Запрос отправлен..."]);
     }
 }
