@@ -26,7 +26,7 @@ class WholesaleController extends Controller
             'vendorName' => $seller?->f_name,
             'adminName' => $seller?->name,
         ];
-        event(new WholesaleEvent(email: $seller['email'], data: $data));
+        event(new WholesaleEvent(email: "dmarketkg@gmail.com", data: $data));
         return response()->json(["detail" => "Запрос отправлен..."]);
     }
 }
