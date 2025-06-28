@@ -8185,7 +8185,7 @@ return [
 	"vendor_setup" => "vendor setup",
 	"vendor_wise_shipping" => "vendor wise shipping",
 	"vendor_withdraw_information" => "vendor withdraw information",
-	"vendor_zone" => "vendor zone",
+	"vendor_zone" => "Зона продавца",
 	"vendors" => "vendors",
 	"vendors_can_see_all_products_that_need_to_be_re_stocked_in_a_section_when_they_reach_this_ReOrder_Level" => "vendors can see all products that need to be re stocked in a section when they reach this ReOrder Level",
 	"vendors_will_download_the_latest_vendor_app_version_using_this_URL" => "vendors will download the latest vendor app version using this URL",
