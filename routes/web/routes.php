@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 use App\Enums\ViewPaths\Web\Pages;
 use App\Enums\ViewPaths\Web\Review;
 use App\Enums\ViewPaths\Web\UserLoyalty;
+use App\Http\Controllers\DeleteAccount;
 use App\Http\Controllers\Web\CurrencyController;
 use App\Http\Controllers\Web\PageController;
 use App\Http\Controllers\Web\ReviewController;
@@ -55,6 +56,10 @@ use App\Http\Controllers\Payment_Methods\PaystackController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+Route::get("delete-account", [DeleteAccount::class, "get"])->name("delete-account");
+
 
 Route::controller(WebController::class)->group(function () {
     Route::get('maintenance-mode', 'maintenance_mode')->name('maintenance-mode');
