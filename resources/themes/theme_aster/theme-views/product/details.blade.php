@@ -789,12 +789,12 @@
                                                 </div>
                                             </div>
                                             @if (auth('customer')->id() == '')
-                                                <div class="btn-circle chat-btn size-2-5rem"
+                                                <div style="display:none;" class="btn-circle chat-btn size-2-5rem"
                                                      data-bs-toggle="modal" data-bs-target="#loginModal">
                                                     <i class="bi bi-chat-square-dots"></i>
                                                 </div>
                                             @else
-                                                <div class="btn-circle chat-btn size-2-5rem"
+                                                <div style="display:none;" class="btn-circle chat-btn size-2-5rem"
                                                      data-bs-toggle="modal" data-bs-target="#contact_sellerModal">
                                                     <i class="bi bi-chat-square-dots"></i>
                                                 </div>
@@ -850,12 +850,12 @@
                                         </div>
 
                                         @if (auth('customer')->id() == '')
-                                            <div class="btn-circle chat-btn size-2-5rem"
+                                            <div style="display:none;" class="btn-circle chat-btn size-2-5rem"
                                                  data-bs-toggle="modal" data-bs-target="#loginModal">
                                                 <i class="bi bi-chat-square-dots"></i>
                                             </div>
                                         @else
-                                            <div class="btn-circle chat-btn size-2-5rem"
+                                            <div style="display:none;" class="btn-circle chat-btn size-2-5rem"
                                                  data-bs-toggle="modal" data-bs-target="#contact_sellerModal">
                                                 <i class="bi bi-chat-square-dots"></i>
                                             </div>
