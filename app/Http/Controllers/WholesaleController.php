@@ -20,13 +20,13 @@ class WholesaleController extends Controller
             'subject' => translate('new_order_received'),
             'title' => translate('new_order_received'),
             'userType' => "vendor",
-            "user"=>auth("api")->user(),
-            "product"=>$product,
+            "user" => auth("api")->user(),
+            "product" => $product,
             'templateName' => 'wholesale',
             'vendorName' => $seller?->f_name,
             'adminName' => $seller?->name,
         ];
-        event(new WholesaleEvent(email: "dmarketkg@gmail.com", data: $data));
+        event(new WholesaleEvent(email: "hi.doorkg@gmail.com", data: $data));
         return response()->json(["detail" => "Запрос отправлен..."]);
     }
 }
