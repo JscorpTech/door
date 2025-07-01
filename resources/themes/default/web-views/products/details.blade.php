@@ -820,7 +820,7 @@
                                 <div class="col-12 position-static mt-3">
                                     <div class="chat_with_seller-buttons">
                                         @if (auth('customer')->id())
-                                            <button class="btn w-100 d-block text-center web--bg-primary text-white"
+                                            <button style="display:none;" class="btn w-100 d-block text-center web--bg-primary text-white"
                                                     data-toggle="modal"
                                                     data-target="#chatting_modal" {{ ($inHouseTemporaryClose || ($inHouseVacationStatus && $currentDate >= $inHouseVacationStartDate && $currentDate <= $inHouseVacationEndDate)) ? 'disabled' : '' }}>
                                                 <img class="mb-1" alt=""
@@ -830,7 +830,7 @@
                                                 </span>
                                             </button>
                                         @else
-                                            <a href="{{ route('shopView',[0]) }}" class="btn w-100 d-block text-center web--bg-primary text-white">
+                                            <a style="display:none;" href="{{ route('shopView',[0]) }}" class="btn w-100 d-block text-center web--bg-primary text-white">
                                                 <img class="mb-1" alt=""
                                                      src="{{ theme_asset(path: 'public/assets/front-end/img/chat-16-filled-icon.png')}}">
                                                 <span class="d-none d-sm-inline-block text-capitalize">
