@@ -173,7 +173,6 @@ use App\Http\Controllers\Admin\Settings\StorageConnectionSettingsController;
 use App\Http\Controllers\Admin\Settings\VendorRegistrationSettingController;
 use App\Http\Controllers\Admin\Notification\PushNotificationSettingsController;
 
-
 Route::controller(SharedController::class)->group(function () {
     Route::post('change-language', 'changeLanguage')->name('change-language');
     Route::post('get-session-recaptcha-code', 'getSessionRecaptchaCode')->name('get-session-recaptcha-code');
@@ -287,7 +286,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
             Route::get(Order::EXPORT_EXCEL[URI] . '/{status}', 'exportList')->name('export-excel');
             Route::get(Order::GENERATE_INVOICE[URI] . '/{id}', 'generateInvoice')->name('generate-invoice')->withoutMiddleware(['module:order_management']);
             Route::get(Order::VIEW[URI] . '/{id}', 'getView')->name('details');
-            Route::post(Order::UPDATE_ADDRESS[URI], 'updateAddress')->name('address-update');// update address from order details
+            Route::post(Order::UPDATE_ADDRESS[URI], 'updateAddress')->name('address-update'); // update address from order details
             Route::post(Order::UPDATE_DELIVERY_INFO[URI], 'updateDeliverInfo')->name('update-deliver-info');
             Route::get(Order::ADD_DELIVERY_MAN[URI] . '/{order_id}/{d_man_id}', 'addDeliveryMan')->name('add-delivery-man');
             Route::post(Order::UPDATE_AMOUNT_DATE[URI], 'updateAmountDate')->name('amount-date-update');
@@ -334,7 +333,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
             Route::post(Category::DELETE[URI], 'delete')->name('delete');
             Route::post(Category::STATUS[URI], 'updateStatus')->name('status');
             Route::get(Category::EXPORT[URI], 'getExportList')->name('export');
-
         });
     });
 
@@ -410,7 +408,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
                 Route::get(Customer::LOYALTY_EXPORT[URI], 'exportList')->name('export');
             });
         });
-
     });
 
     Route::group(['prefix' => 'report', 'as' => 'report.', 'middleware' => ['module:report']], function () {
@@ -614,19 +611,19 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
             Route::post(FeatureDeal::STATUS[URI], 'updateStatus')->name('feature-status');
         });
 
-         Route::group(['prefix' => 'clearance-sale', 'as' => 'clearance-sale.'], function () {
-             Route::controller(ClearanceSaleController::class)->group(function () {
-                 Route::get(ClearanceSale::LIST[URI], 'index')->name('index');
-                 Route::post(ClearanceSale::STATUS[URI], 'updateStatus')->name('status-update');
-                 Route::post(ClearanceSale::UPDATE_CONFIG[URI], 'updateClearanceConfig')->name('update-config');
-                 Route::get(ClearanceSale::SEARCH[URI], 'getSearchedProductsView')->name('search-product-for-clearance');
-                 Route::get(ClearanceSale::MULTIPLE_PRODUCT_DETAILS[URI], 'getMultipleProductDetailsView')->name('multiple-clearance-product-details');
-                 Route::post(ClearanceSale::ADD_PRODUCT[URI], 'addClearanceProduct')->name('add-product');
-                 Route::post(ClearanceSale::PRODUCT_STATUS[URI], 'updateProductStatus')->name('product-status-update');
-                 Route::delete(ClearanceSale::CLEARANCE_DELETE[URI] . '/{product_id}', 'deleteClearanceProduct')->name('clearance-delete');
-                 Route::delete(ClearanceSale::CLEARANCE_PRODUCTS_DELETE[URI] , 'deleteClearanceAllProduct')->name('clearance-delete-all-product');
-                 Route::post(ClearanceSale::UPDATE_DISCOUNT[URI], 'updateDiscountAmount')->name('update-discount');
-             });
+        Route::group(['prefix' => 'clearance-sale', 'as' => 'clearance-sale.'], function () {
+            Route::controller(ClearanceSaleController::class)->group(function () {
+                Route::get(ClearanceSale::LIST[URI], 'index')->name('index');
+                Route::post(ClearanceSale::STATUS[URI], 'updateStatus')->name('status-update');
+                Route::post(ClearanceSale::UPDATE_CONFIG[URI], 'updateClearanceConfig')->name('update-config');
+                Route::get(ClearanceSale::SEARCH[URI], 'getSearchedProductsView')->name('search-product-for-clearance');
+                Route::get(ClearanceSale::MULTIPLE_PRODUCT_DETAILS[URI], 'getMultipleProductDetailsView')->name('multiple-clearance-product-details');
+                Route::post(ClearanceSale::ADD_PRODUCT[URI], 'addClearanceProduct')->name('add-product');
+                Route::post(ClearanceSale::PRODUCT_STATUS[URI], 'updateProductStatus')->name('product-status-update');
+                Route::delete(ClearanceSale::CLEARANCE_DELETE[URI] . '/{product_id}', 'deleteClearanceProduct')->name('clearance-delete');
+                Route::delete(ClearanceSale::CLEARANCE_PRODUCTS_DELETE[URI], 'deleteClearanceAllProduct')->name('clearance-delete-all-product');
+                Route::post(ClearanceSale::UPDATE_DISCOUNT[URI], 'updateDiscountAmount')->name('update-discount');
+            });
 
             Route::controller(ClearanceSaleVendorOfferController::class)->group(function () {
                 Route::get(ClearanceSale::VENDOR_OFFERS[URI], 'index')->name('vendor-offers');
@@ -745,7 +742,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
                 Route::delete(EmergencyContact::DELETE[URI], 'delete')->name('destroy');
             });
         });
-
     });
 
     Route::group(['prefix' => 'most-demanded', 'as' => 'most-demanded.', 'middleware' => ['module:promotion_management']], function () {
@@ -786,7 +782,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
                     Route::post(SystemSetup::LOGIN_URL_SETUP[URI], 'updateLoginSetupView');
                 });
             });
-
         });
     });
 
@@ -877,7 +872,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
 
                 Route::get(BusinessSettings::APP_SETTINGS[URI], 'getAppSettingsView')->name('app-settings');
                 Route::post(BusinessSettings::APP_SETTINGS[URI], 'updateAppSettings');
-
             });
 
             Route::controller(EnvironmentSettingsController::class)->group(function () {
@@ -903,7 +897,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
                     Route::post(ThemeSetup::NOTIFY_VENDOR[URI], 'notifyAllTheVendors')->name('notify-all-the-vendors');
                 });
             });
-
         });
 
         Route::group(['prefix' => 'vendor-registration-settings', 'as' => 'vendor-registration-settings.', 'middleware' => ['module:system_settings']], function () {
@@ -1189,6 +1182,4 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['admin']],
             });
         });
     });
-
 });
-

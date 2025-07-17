@@ -82,8 +82,7 @@ class ProductController extends BaseController
         private readonly ReviewRepositoryInterface                  $reviewRepo,
         private readonly BannerRepositoryInterface                  $bannerRepo,
         private readonly ProductService                             $productService,
-    )
-    {
+    ) {
     }
 
     /**
@@ -199,8 +198,16 @@ class ProductController extends BaseController
         $categories = $this->categoryRepo->getListWhere(filters: ['position' => 0], dataLimit: 'all');
         $subCategory = $this->categoryRepo->getFirstWhere(params: ['id' => $request['sub_category_id']]);
         $subSubCategory = $this->categoryRepo->getFirstWhere(params: ['id' => $request['sub_sub_category_id']]);
-        return view(Product::LIST[VIEW], compact('products', 'sellers', 'brands',
-            'categories', 'subCategory', 'subSubCategory', 'filters', 'type'));
+        return view(Product::LIST[VIEW], compact(
+            'products',
+            'sellers',
+            'brands',
+            'categories',
+            'subCategory',
+            'subSubCategory',
+            'filters',
+            'type'
+        ));
     }
 
     public function getUpdateView(string|int $id): View|RedirectResponse
@@ -550,7 +557,7 @@ class ProductController extends BaseController
         $orderBy = [];
         if ($sortOrderQty == 'quantity_asc') {
             $orderBy = ['current_stock' => 'asc'];
-        } else if ($sortOrderQty == 'quantity_desc') {
+        } elseif ($sortOrderQty == 'quantity_desc') {
             $orderBy = ['current_stock' => 'desc'];
         } elseif ($sortOrderQty == 'order_asc') {
             $orderBy = ['order_details_count' => 'asc'];
@@ -775,7 +782,6 @@ class ProductController extends BaseController
         } else {
             return response()->json(['status' => 'multiple_product', 'product_count' => $products->count()]);
         }
-
     }
 
     public function getMultipleProductDetailsView(Request $request): JsonResponse
@@ -835,8 +841,14 @@ class ProductController extends BaseController
         $categories = $this->categoryRepo->getListWhere(filters: ['position' => 0], dataLimit: 'all');
         $subCategory = $this->categoryRepo->getFirstWhere(params: ['id' => $request['sub_category_id']]);
         $totalRestockProducts = $this->restockProductRepo->getListWhere(filters: $filters, dataLimit: 'all')->count();
-        return view(Product::REQUEST_RESTOCK_LIST[VIEW], compact('restockProducts', 'brands',
-            'categories', 'subCategory', 'filters', 'totalRestockProducts'));
+        return view(Product::REQUEST_RESTOCK_LIST[VIEW], compact(
+            'restockProducts',
+            'brands',
+            'categories',
+            'subCategory',
+            'filters',
+            'totalRestockProducts'
+        ));
     }
 
     public function exportRestockList(Request $request): BinaryFileResponse
@@ -880,5 +892,4 @@ class ProductController extends BaseController
         ];
         return Excel::download(new RestockProductListExport($data), 'restock-product-list.xlsx');
     }
-
 }

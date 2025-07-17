@@ -771,4 +771,7 @@ return [
 	"The_phone_has_already_been_taken" => "The phone has already been taken",
 	"vendor_added_successfully" => "Vendor added successfully",
 	"set_the_shipping_cost_for_this_product_here._Shipping_cost_will_only_be_applicable_if_product-wise_shipping_is_enabled." => "Set the shipping cost for this product here. Shipping cost will only be applicable if product-wise shipping is enabled.",
+	"stock" => "Stock",
+	"variation_wise_price" => "Variation wise price",
+	"shop name" => "Shop name",
 ];
