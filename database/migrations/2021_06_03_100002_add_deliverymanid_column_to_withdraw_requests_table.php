@@ -14,7 +14,7 @@ class AddDeliverymanidColumnToWithdrawRequestsTable extends Migration
     public function up()
     {
         Schema::table('withdraw_requests', function (Blueprint $table) {
-            $table->bigInteger('delivery_man_id')->after('seller_id')->nullable();
+            // $table->bigInteger('delivery_man_id')->after('seller_id')->nullable();
         });
     }
 

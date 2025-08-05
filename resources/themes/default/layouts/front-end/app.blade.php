@@ -173,6 +173,45 @@
     </a>
 </div>
 
+<div id="mobileBanner" role="banner" aria-live="polite" aria-label="Ilovani o'rnatish banneri">
+  <div class="content">
+    <div class="left">
+      <img src="https://dmarket.kg/storage/app/public/company/2025-05-19-682b0dd2e0a15.webp" alt="Lalafo logo" class="logo" />
+      <div class="text">Установка приложения Dmarket</div>
+    </div>
+
+    <div class="store-contents">
+      <!-- iOS -->
+      @if($web_config['ios']['status'])
+      <div class="store-link">
+        <a href="{{ $web_config['ios']['link'] }}" role="button" aria-label="iOS ilovasini yuklab olish">
+          <img src="{{theme_asset(path: "public/assets/front-end/png/apple_app.png")}}" alt="App Store" />
+        </a>
+      </div>
+      @endif
+
+      <!-- Android -->
+      @if($web_config['android']['status'])
+      <div class="store-link">
+        <a href="{{ $web_config['android']['link'] }}" role="button" aria-label="Android ilovasini yuklab olish">
+          <img src="{{theme_asset(path: "public/assets/front-end/png/google_app.png")}}" alt="Google Play" />
+        </a>
+      </div>
+      @endif
+    </div>
+
+    <button class="close-btn" aria-label="Bannerni yopish" onclick="closeBanner()">×</button>
+  </div>
+</div>
+
+
+<script>
+ function closeBanner() {
+  document.getElementById('mobileBanner').style.display = 'none';
+}
+
+</script>
+
 <script src="{{ theme_asset(path: 'public/assets/front-end/vendor/jquery/dist/jquery-2.2.4.min.js') }}"></script>
 <script src="{{ theme_asset(path: 'public/assets/front-end/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ theme_asset(path: 'public/assets/front-end/vendor/bs-custom-file-input/dist/bs-custom-file-input.min.js') }}"></script>
@@ -255,6 +294,7 @@
                 </div>
             </div>
         </div>
+        
     `;
     $(document).on('click','#cookie-accept',function() {
         document.cookie = '6valley_cookie_consent=accepted; max-age=' + 60 * 60 * 24 * 30;

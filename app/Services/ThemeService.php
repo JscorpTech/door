@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use ZipArchive;
 
+
 class ThemeService
 {
 
@@ -90,7 +91,7 @@ class ThemeService
         $currentThemeRoutes = include(base_path('resources/themes/' . $currentTheme . '/public/addon/theme_routes.php'));
         $this->setEnvironmentValue('WEB_THEME', $request['theme']);
 
-        $reloadAction = 1;
+        $reloadAction = 2;
         $informationModal = '';
         if (is_file(base_path('resources/themes/' . $request['theme'] . '/public/addon/theme_routes.php'))) {
             $themeRoutes = include(base_path('resources/themes/' . $request['theme'] . '/public/addon/theme_routes.php'));

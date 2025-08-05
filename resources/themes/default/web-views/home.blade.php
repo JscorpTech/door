@@ -205,6 +205,7 @@
                             @php($brandCount++)
                         @endforeach
                     </div>
+                    
                 </div>
             </section>
         @endif
