@@ -774,4 +774,6 @@ return [
 	"stock" => "Stock",
 	"variation_wise_price" => "Variation wise price",
 	"shop name" => "Shop name",
+	"start_a_conversation" => "Start a conversation",
+	"subscribe" => "Subscribe",
 ];
