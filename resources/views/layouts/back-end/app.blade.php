@@ -126,7 +126,44 @@
 <audio id="myAudio">
     <source src="{{ dynamicAsset(path: 'public/assets/back-end/sound/notification.mp3') }}" type="audio/mpeg">
 </audio>
+<div id="mobileBanner" role="banner" aria-live="polite" aria-label="Ilovani o'rnatish banneri">
+  <div class="content">
+    <div class="left">
+      <img src="https://dmarket.kg/storage/app/public/company/2025-05-19-682b0dd2e0a15.webp" alt="Lalafo logo" class="logo" />
+      <div class="text">Установка приложения Dmarket</div>
+    </div>
 
+    <div class="store-contents">
+      <!-- iOS -->
+      @if($web_config['ios']['status'])
+      <div class="store-link">
+        <a href="{{ $web_config['ios']['link'] }}" role="button" aria-label="iOS ilovasini yuklab olish">
+          <img src="{{theme_asset(path: "public/assets/front-end/png/apple_app.png")}}" alt="App Store" />
+        </a>
+      </div>
+      @endif
+
+      <!-- Android -->
+      @if($web_config['android']['status'])
+      <div class="store-link">
+        <a href="{{ $web_config['android']['link'] }}" role="button" aria-label="Android ilovasini yuklab olish">
+          <img src="{{theme_asset(path: "public/assets/front-end/png/google_app.png")}}" alt="Google Play" />
+        </a>
+      </div>
+      @endif
+    </div>
+
+    <button class="close-btn" aria-label="Bannerni yopish" onclick="closeBanner()">×</button>
+  </div>
+</div>
+
+
+<script>
+ function closeBanner() {
+  document.getElementById('mobileBanner').style.display = 'none';
+}
+
+</script>
 
 <script src="{{dynamicAsset(path: 'public/assets/back-end/js/vendor.min.js')}}"></script>
 <script src="{{dynamicAsset(path: 'public/assets/back-end/js/theme.min.js')}}"></script>
