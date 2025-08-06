@@ -779,4 +779,9 @@ return [
 	"your_Email_Address" => "Your Email Address",
 	"subscribe_to_our_new_channel_to_get_latest_updates" => "Subscribe to our new channel to get latest updates",
 	"wish_list" => "Wish list",
+	"top_rated_product" => "Top rated product",
+	"special" => "Special",
+	"sorry_the_minimum_order_quantity_does_not_match" => "Sorry the minimum order quantity does not match",
+	"sorry_stock_limit_exceeded" => "Sorry stock limit exceeded",
+	"update_successfully" => "Update successfully",
 ];
