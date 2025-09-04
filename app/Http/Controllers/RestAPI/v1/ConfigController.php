@@ -24,7 +24,7 @@ class ConfigController extends Controller
          * === TILNI QABUL QILISH VA O‘RNATISH ===
          * header -> lang: uz/ru/en
          */
-        $lang = $request->header('lang', 'uz');
+        $lang = $request->header('lang', 'ru');
         App::setLocale($lang);
 
         $socialLoginConfig = [];

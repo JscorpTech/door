@@ -18,8 +18,18 @@ class APILocalizationMiddleware
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        $local = ($request->hasHeader('lang')) ? (strlen($request->header('lang')) > 0 ? $request->header('lang') : Helpers::default_lang()) : Helpers::default_lang();
-        App::setLocale($local);
+        // Header orqali til olish yoki default tilga tushish
+        $locale = $request->header('lang') ?? Helpers::default_lang();
+
+        // Faqat mavjud tillarga ruxsat beramiz
+        $availableLocales = ['uz', 'ru', 'en'];
+
+        if (! in_array($locale, $availableLocales)) {
+            $locale = Helpers::default_lang();
+        }
+
+        App::setLocale($locale);
+
         return $next($request);
     }
 }
