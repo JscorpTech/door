@@ -135,7 +135,7 @@
 
     <div class="store-contents">
       <!-- iOS -->
-      @if($web_config['ios']['status'])
+      @if(isset($web_config['ios']) && $web_config['ios']['status'])
       <div class="store-link">
         <a href="{{ $web_config['ios']['link'] }}" role="button" aria-label="iOS ilovasini yuklab olish">
           <img src="{{theme_asset(path: "public/assets/front-end/png/apple_app.png")}}" alt="App Store" />
@@ -144,7 +144,7 @@
       @endif
 
       <!-- Android -->
-      @if($web_config['android']['status'])
+      @if(isset($web_config['android']) && $web_config['android']['status'])
       <div class="store-link">
         <a href="{{ $web_config['android']['link'] }}" role="button" aria-label="Android ilovasini yuklab olish">
           <img src="{{theme_asset(path: "public/assets/front-end/png/google_app.png")}}" alt="Google Play" />
