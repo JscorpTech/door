@@ -1,4 +1,10 @@
 <?php
+/* ob_start(); */
+/* phpinfo(); */
+/* ob_end_flush(); */
+/* exit(); */
+
+
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
