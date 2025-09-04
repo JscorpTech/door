@@ -29,6 +29,7 @@
         "iyzico/iyzipay-php": "^2.0",
         "kreait/firebase-php": "^7.0",
         "laravel/framework": "^10.10",
+        "laravel/octane": "^2.12",
         "laravel/passport": "^12.3",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.2",

@@ -19,9 +19,16 @@ if (!function_exists('theme_asset')) {
 if (!function_exists('theme_root_path')) {
     function theme_root_path(): string
     {
-        return env('WEB_THEME') == null ? 'default' : env('WEB_THEME');
+        // API request bo‘lsa, har doim 'theme_aster' ni qaytaradi
+        if (request()->is('api/*')) {
+            return 'theme_aster';
+        }
+
+        // Aks holda web uchun .env dan oladi
+        return env('WEB_THEME', 'default');
     }
 }
+
 
 if (!function_exists('getHexToRGBColorCode')) {
     function getHexToRGBColorCode($hex): ?string
