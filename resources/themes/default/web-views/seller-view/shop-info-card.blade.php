@@ -77,7 +77,7 @@
             </div>
 
             <div class="d-flex align-items-center">
-                <div class="{{Session::get('direction') === "rtl" ? 'ml-sm-4' : 'mr-sm-4'}}">
+                <!-- <div class="{{Session::get('direction') === "rtl" ? 'ml-sm-4' : 'mr-sm-4'}}">
                     @if (auth('customer')->check())
                         <div class="d-flex">
                             @if($seller_id == 0)
@@ -127,7 +127,7 @@
                         </div>
                     @endif
 
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
