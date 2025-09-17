@@ -165,144 +165,120 @@
                                     <th>{{translate('SL')}}</th>
                                     <th>{{translate('item_details')}}</th>
                                     <th>{{translate('item_price')}}</th>
-                                    <th>{{translate('tax')}}</th>
+                                    <th>Потребитель</th>
                                     <th>{{translate('item_discount')}}</th>
                                     <th>{{translate('total_price')}}</th>
                                 </tr>
                             </thead>
 
-                            <tbody>
-                                @php($item_price=0)
-                                @php($total_price=0)
-                                @php($subtotal=0)
-                                @php($total=0)
-                                @php($discount=0)
-                                @php($tax=0)
-                                @php($row=0)
-                                @foreach($order->details as $key=>$detail)
-                                @php($productDetails = $detail?->productAllStatus ?? json_decode($detail->product_details) )
+                           <tbody>
+                            @php($item_price=0)
+                            @php($total_price=0)
+                            @php($subtotal=0)
+                            @php($total=0)
+                            @php($discount=0)
+                            @php($tax=0)
+                            @php($row=0)
+                            @foreach($order->details as $key=>$detail)
+                                @php($productDetails = $detail?->productAllStatus ?? json_decode($detail->product_details))
                                 @if($productDetails)
-                                <tr>
-                                    <td>{{ ++$row }}</td>
-                                    <td>
-                                        <div class="media align-items-center gap-10">
-                                            <img class="avatar avatar-60 rounded img-fit"
-                                                src="{{ getStorageImages(path:$detail?->productAllStatus?->thumbnail_full_url, type: 'backend-product') }}"
-                                                alt="{{translate('image_Description')}}">
-                                            <div>
-                                                <h6 class="title-color">{{substr($productDetails->name, 0, 30)}}{{strlen($productDetails->name)>10?'...':''}}</h6>
-                                                <div><strong>{{translate('qty')}} :</strong> {{$detail['qty']}}
-                                                </div>
+                                    <tr>
+                                        <td>{{ ++$row }}</td>
+                                        <td>
+                                          <div class="media align-items-center gap-10"
+                                                style="cursor:pointer"
+                                                onclick="window.location='{{ url('order/product/detail/'.$detail->id) }}'">
+                                                <img class="avatar avatar-60 rounded img-fit"
+                                                    src="{{ getStorageImages(path:$detail?->productAllStatus?->thumbnail_full_url, type: 'backend-product') }}"
+                                                    alt="{{translate('image_Description')}}">
                                                 <div>
-                                                    <strong>{{translate('unit_price')}} :</strong>
-                                                    {{ setCurrencySymbol(amount: usdToDefaultCurrency(amount: $detail['price'] + ($detail->tax_model =='include' ? ($detail['tax'] / $detail['qty']) :0))) }}
-                                                    @if ($detail->tax_model =='include')
-                                                    ({{translate('tax_incl.')}})
-                                                    @else
-                                                    ({{translate('tax').":".($productDetails->tax)}}{{$productDetails->tax_type ==="percent" ? '%' :''}})
+                                                    <h6 class="title-color">
+                                                        {{ substr($productDetails->name, 0, 30) }}{{ strlen($productDetails->name) > 10 ? '...' : '' }}
+                                                    </h6>
+                                                    <div><strong>{{ translate('qty') }} :</strong> {{ $detail['qty'] }}</div>
+                                                    <div>
+                                                        <strong>{{ translate('unit_price') }} :</strong>
+                                                        {{ setCurrencySymbol(amount: usdToDefaultCurrency(amount: $detail['price'] + ($detail->tax_model =='include' ? ($detail['tax'] / $detail['qty']) : 0))) }}
+                                                        @if ($detail->tax_model =='include')
+                                                            ({{ translate('tax_incl.') }})
+                                                        @else
+                                                            ({{ translate('tax') . ":" . ($productDetails->tax) }}{{ $productDetails->tax_type === "percent" ? '%' : '' }})
+                                                        @endif
+                                                    </div>
+                                                    @if ($detail->variant)
+                                                        <div>
+                                                            <strong>{{ translate('variation') }} :</strong> {{ $detail['variant'] }}
+                                                        </div>
                                                     @endif
+                                                </div>
+                                            </div>
 
-                                                </div>
-                                                @if ($detail->variant)
-                                                <div>
-                                                    <strong>
-                                                        {{translate('variation')}} :
-                                                    </strong>
-                                                    {{$detail['variant']}}
-                                                </div>
-                                                @endif
+
+                                            @if(isset($productDetails->digital_product_type) && $productDetails->digital_product_type == 'ready_after_sell')
+                                                <button type="button" class="btn btn-sm btn--primary mt-2"
+                                                    title="{{translate('file_upload')}}" data-toggle="modal"
+                                                    data-target="#fileUploadModal-{{ $detail->id }}">
+                                                    <i class="tio-file-outlined"></i> {{translate('file')}}
+                                                </button>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            {{ setCurrencySymbol(amount: usdToDefaultCurrency(amount: $detail['price']*$detail['qty']), currencyCode: getCurrencyCode()) }}
+                                        </td>
+                                        <td>
+                                            {{-- Shu yerda order id bilan link --}}
+                                            <!-- <a href="{{ route('admin.orders.show', $order->id) }}" class="text-decoration-none text-dark"> -->
+                                        <h5>{{ $order->seller->shop->name }}</h5>
+                                            
+                                            <!-- <h5>{{ $companyName }}</h5>     -->
+                                            <!-- {{ $order->customer['f_name'].' '.$order->customer['l_name'] }} -->
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {{setCurrencySymbol(amount: usdToDefaultCurrency(amount: $detail['discount']), currencyCode: getCurrencyCode())}}
+                                        </td>
+                                        @php($subtotal=$detail['price']*$detail['qty']+$detail['tax']-$detail['discount'])
+                                        <td>
+                                            {{setCurrencySymbol(amount: usdToDefaultCurrency(amount: $subtotal), currencyCode: getCurrencyCode())}}
+                                        </td>
+                                    </tr>
+
+                                    @php($item_price+=$detail['price']*$detail['qty'])
+                                    @php($discount+=$detail['discount'])
+                                    @php($tax+=$detail['tax'])
+                                    @php($total+=$subtotal)
+                                @endif
+
+                                @php($sellerId=$detail->seller_id)
+
+                                {{-- Digital file modal --}}
+                                @if(isset($productDetails->digital_product_type) && $productDetails->digital_product_type == 'ready_after_sell')
+                                    @php($product_details = json_decode($detail->product_details))
+                                    <div class="modal fade" id="fileUploadModal-{{ $detail->id }}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form action="{{ route('admin.orders.digital-file-upload-after-sell') }}" method="post" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        {{-- Shu yerda digital file logikasi qoladi --}}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                            {{translate('close')}}
+                                                        </button>
+                                                        @if(($product_details->added_by == 'admin') && $detail->seller_id == 1)
+                                                            <button type="submit" class="btn btn--primary">{{translate('upload')}}</button>
+                                                        @endif
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
-
-                                        @if(isset($productDetails->digital_product_type) && $productDetails->digital_product_type == 'ready_after_sell')
-                                        <button type="button" class="btn btn-sm btn--primary mt-2"
-                                            title="{{translate('file_upload')}}" data-toggle="modal"
-                                            data-target="#fileUploadModal-{{ $detail->id }}">
-                                            <i class="tio-file-outlined"></i> {{translate('file')}}
-                                        </button>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        {{ setCurrencySymbol(amount: usdToDefaultCurrency(amount: $detail['price']*$detail['qty']), currencyCode: getCurrencyCode()) }}
-                                    </td>
-                                    <td>
-                                        {{ setCurrencySymbol(amount: usdToDefaultCurrency(amount: $detail['tax']), currencyCode: getCurrencyCode()) }}
-                                    </td>
-                                    <td>{{setCurrencySymbol(amount: usdToDefaultCurrency(amount: $detail['discount']), currencyCode: getCurrencyCode())}}</td>
-                                    @php($subtotal=$detail['price']*$detail['qty']+$detail['tax']-$detail['discount'])
-                                    <td>{{setCurrencySymbol(amount: usdToDefaultCurrency(amount: $subtotal), currencyCode: getCurrencyCode())}}</td>
-                                </tr>
-                                @php($item_price+=$detail['price']*$detail['qty'])
-                                @php($discount+=$detail['discount'])
-                                @php($tax+=$detail['tax'])
-                                @php($total+=$subtotal)
-                                @endif
-                                @php($sellerId=$detail->seller_id)
-                                @if(isset($productDetails->digital_product_type) && $productDetails->digital_product_type == 'ready_after_sell')
-                                @php($product_details = json_decode($detail->product_details))
-                                <div class="modal fade" id="fileUploadModal-{{ $detail->id }}" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <form
-                                                action="{{ route('admin.orders.digital-file-upload-after-sell') }}"
-                                                method="post" enctype="multipart/form-data">
-                                                @csrf
-                                                <div class="modal-body">
-                                                    @if($detail?->digital_file_after_sell_full_url && isset($detail->digital_file_after_sell_full_url['key']))
-                                                    <div class="mb-4">
-                                                        {{translate('uploaded_file').' : '}}
-                                                        @php($downloadPathExist = $detail->digital_file_after_sell_full_url['status'])
-                                                        <span data-file-path="{{ $downloadPathExist ? $detail->digital_file_after_sell_full_url['path'] : 'javascript:' }}" class="getDownloadFileUsingFileUrl btn btn-success btn-sm {{ $downloadPathExist ?  '' : 'download-path-not-found' }}" title="{{translate('download')}}">
-                                                            {{translate('download')}} <i class="tio-download"></i>
-                                                        </span>
-                                                    </div>
-                                                    @elseif($detail->digital_file_after_sell)
-                                                    <div class="mb-4">
-                                                        {{translate('uploaded_file').' : '}}
-                                                        @php($downloadPath =dynamicStorage(path: 'storage/app/public/product/digital-product/'.$detail->digital_file_after_sell))
-                                                        <span data-file-path="{{file_exists( $downloadPath) ?  $downloadPath : 'javascript:' }}" class="getDownloadFileUsingFileUrl btn btn-success btn-sm {{file_exists( $downloadPath) ?  $downloadPath : 'download-path-not-found'}}" title="{{translate('download')}}">
-                                                            {{translate('download')}} <i class="tio-download"></i>
-                                                        </span>
-                                                    </div>
-                                                    @else
-                                                    <h4 class="text-center">{{translate('file_not_found').'!'}}</h4>
-                                                    @endif
-                                                    @if(($product_details->added_by == 'admin') && $detail->seller_id == 1)
-                                                    <div class="inputDnD">
-                                                        <div
-                                                            class="form-group inputDnD input_image input_image_edit"
-                                                            data-title="{{translate('drag_&_drop_file_or_browse_file')}}">
-                                                            <input type="file"
-                                                                name="digital_file_after_sell"
-                                                                class="form-control-file text--primary font-weight-bold image-input"
-                                                                accept=".jpg, .jpeg, .png, .gif, .zip, .pdf">
-                                                        </div>
-                                                    </div>
-                                                    <div class="mt-1 text-info">
-                                                        {{translate('file_type').' '.':'.' '.'jpg, jpeg, png, gif, zip, pdf'}}
-                                                    </div>
-                                                    <input type="hidden" value="{{ $detail->id }}"
-                                                        name="order_id">
-                                                    @else
-                                                    <h4 class="mt-3 text-center">{{translate('admin_have_no_permission_for_vendors_digital_product_upload')}}</h4>
-                                                    @endif
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">{{translate('close')}}</button>
-                                                    @if(($product_details->added_by == 'admin') && $detail->seller_id == 1)
-                                                    <button type="submit"
-                                                        class="btn btn--primary">{{translate('upload')}}</button>
-                                                    @endif
-                                                </div>
-                                            </form>
-                                        </div>
                                     </div>
-                                </div>
                                 @endif
-                                @endforeach
-                            </tbody>
+                            @endforeach
+                        </tbody>
+
                         </table>
                     </div>
 
@@ -1432,6 +1408,7 @@
 
 @push('script_2')
 @if(getWebConfig('map_api_status') ==1 )
+
 <script
     src="https://maps.googleapis.com/maps/api/js?key={{getWebConfig('map_api_key')}}&callback=mapCallBackFunction&loading=async&libraries=places&v=3.56"
     defer>

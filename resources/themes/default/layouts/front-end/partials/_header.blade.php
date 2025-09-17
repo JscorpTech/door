@@ -517,7 +517,7 @@
                                         <button class="btn dropdown-toggle text-white text-max-md-dark text-capitalize ps-2"
                                                 type="button" id="dropdownMenuButton"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            {{ translate('vendor_zone')}}
+                                            Зона продавца
                                         </button>
                                         <div class="dropdown-menu __dropdown-menu-3 __min-w-165px text-align-direction"
                                              aria-labelledby="dropdownMenuButton">

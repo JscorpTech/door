@@ -138,20 +138,49 @@ class OrderController extends BaseController
             ]);
         }
 
-        return view(Order::LIST[VIEW], compact(
-            'orders',
-            'searchValue',
-            'from',
-            'to',
-            'status',
-            'filter',
-            'sellers',
-            'customer',
-            'vendorId',
-            'customerId',
-            'dateType',
-        ));
+        return view(Order::LIST[VIEW], [
+            'orders' => $orders,
+            'searchValue' => $searchValue,
+            'from' => $from,
+            'to' => $to,
+            'status' => $status,
+            'filter' => $filter,
+            'sellers' => $sellers,
+            'customer' => $customer,
+            'vendorId' => $vendorId,
+            'customerId' => $customerId,
+            'dateType' => $dateType,
+        ]);
+
     }
+
+    public function productDetail($id)
+    {
+        // OrderDetail bilan productAllStatus va order.customer relationlarini olish
+        $detail = \App\Models\OrderDetail::with('productAllStatus', 'order.customer')->findOrFail($id);
+
+        // Kategoriyalar va brendlar
+        $categories = \App\Models\Category::all()->keyBy('id'); // ID asosida tez topish uchun keyBy
+        $brands = \App\Models\Brand::all()->keyBy('id');
+
+        // Agar product_details JSON bo'lsa decode qilamiz
+        $productDetails = $detail->product_details ? json_decode($detail->product_details) : null;
+
+        // Kategoriya nomini aniqlash
+        $categoryName = $productDetails && isset($productDetails->category_id) 
+                        ? ($categories[$productDetails->category_id]->name ?? 'No Category') 
+                        : 'No Category';
+
+        // Brend nomi (agar kerak bo‘lsa)
+        $brandName = $productDetails && isset($productDetails->brand_id) 
+                    ? ($brands[$productDetails->brand_id]->name ?? 'No Brand') 
+                    : 'No Brand';
+
+        return view('admin-views.order.product_detail', compact('detail', 'categories', 'brands', 'categoryName', 'brandName'));
+    }
+
+
+
 
     public function exportList(Request $request, $status): BinaryFileResponse|RedirectResponse
     {

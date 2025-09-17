@@ -8,6 +8,21 @@ $('input[name=deliveryman_charge]').mousewheel(function(event) {
     event.preventDefault();
 });
 
+
+document.querySelectorAll('.getDownloadFileUsingFileUrl').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const detailId = this.dataset.detailId;
+
+        fetch(`/order-product-detail/${detailId}`)
+            .then(res => res.text())
+            .then(html => {
+                document.querySelector('#modalContent').innerHTML = html;
+                $('#fileUploadModal').modal('show');
+            });
+    });
+});
+
+
 $("#filter").change(function() {
     let val = $(this).val();
     if(val === 'admin'){

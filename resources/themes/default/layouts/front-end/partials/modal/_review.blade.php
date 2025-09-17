@@ -122,7 +122,6 @@
                         <textarea rows="4" class="form-control text-area-class" name="comment"
                                   placeholder="{{translate('best_product,_highly_recommended')}}.">{{$order_details->reviewData?->comment ?? ''}}</textarea>
                     </div>
-
                     <div class="mt-3">
                         <h6 class="mb-4 text-capitalize">{{translate('upload_images')}}</h6>
                         <div class="mt-2">

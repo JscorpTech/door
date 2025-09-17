@@ -738,7 +738,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 position-static mt-3">
+                                    <!-- <div class="col-12 position-static mt-3">
                                         <div class="chat_with_seller-buttons">
                                             @if (auth('customer')->id())
                                                 <button class="btn w-100 d-block text-center web--bg-primary text-white"
@@ -759,7 +759,7 @@
                                                 </a>
                                             @endif
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             @endif
                         @else

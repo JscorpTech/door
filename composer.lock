@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0b21f35b9bd79777e88cad6962406e0",
+    "content-hash": "722030b6d962ede74dee268747b62d6c",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -14618,8 +14618,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "laravelpkg/laravelchk": 20,
-        "amirami/localizator": 15
+        "amirami/localizator": 15,
+        "laravelpkg/laravelchk": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
