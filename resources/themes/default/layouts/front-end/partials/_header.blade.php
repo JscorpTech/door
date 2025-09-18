@@ -526,7 +526,7 @@
                                             </a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item text-nowrap" href="{{route('vendor.auth.login')}}">
-                                                {{ translate('vendor_login')}}
+                                                Вход для поставщика
                                             </a>
                                         </div>
                                     </div>
