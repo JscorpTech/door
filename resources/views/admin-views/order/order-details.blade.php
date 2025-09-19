@@ -165,7 +165,7 @@
                                     <th>{{translate('SL')}}</th>
                                     <th>{{translate('item_details')}}</th>
                                     <th>{{translate('item_price')}}</th>
-                                    <th>Потребитель</th>
+                                    <th>Продавец</th>
                                     <th>{{translate('item_discount')}}</th>
                                     <th>{{translate('total_price')}}</th>
                                 </tr>
@@ -229,6 +229,7 @@
                                             {{-- Shu yerda order id bilan link --}}
                                             <!-- <a href="{{ route('admin.orders.show', $order->id) }}" class="text-decoration-none text-dark"> -->
                                         <h5>{{ $order->seller->shop->name }}</h5>
+                                        <h4>{{ $order->seller->phone }}</h4>
                                             
                                             <!-- <h5>{{ $companyName }}</h5>     -->
                                             <!-- {{ $order->customer['f_name'].' '.$order->customer['l_name'] }} -->
