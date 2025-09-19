@@ -853,4 +853,10 @@ return [
 	"Order Created At" => "Order Created At",
 	"wish_listed" => "Wish listed",
 	"vendor_info" => "Vendor info",
+	"tax_amount" => "Tax amount",
+	"set_the_minimum_order_quantity_that_customers_must_choose._Otherwise,_the_checkout_process_would_not_start" => "Set the minimum order quantity that customers must choose. Otherwise  the checkout process would not start",
+	"this_Unit_Price_section_would_not_be_applied_if_you_set_a_variation_wise_price." => "This Unit Price section would not be applied if you set a variation wise price.",
+	"set_the_selling_price_for_each_unit_of_this_product." => "Set the selling price for each unit of this product.",
+	"unit" => "Unit",
+	"for_Ready_Product_deliveries,_customers_can_pay_&_instantly_download_pre-uploaded_digital_products._For_Ready_After_Sale_deliveries,_customers_pay_first,_then_admin_uploads_the_digital_products_that_become_available_to_customers_for_download" => "For Ready Product deliveries  customers can pay & instantly download pre-uploaded digital products. For Ready After Sale deliveries  customers pay first  then admin uploads the digital products that become available to customers for download",
 ];
