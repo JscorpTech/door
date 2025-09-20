@@ -863,4 +863,5 @@ return [
 	"variation_Wise_Price" => "Variation Wise Price",
 	"Variation price are required!" => "Variation price are required!",
 	"Требуются цветные изображения" => "Требуются цветные изображения",
+	"similar_products" => "Similar products",
 ];

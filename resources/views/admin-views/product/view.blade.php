@@ -57,8 +57,8 @@
 
                         <div class="d-block flex-grow-1 w-max-md-100">
                             @php($languages = getWebConfig(name: 'pnc_language'))
-                            @php($defaultLanguage = 'en')
-                            @php($defaultLanguage = $languages[0])
+                            @php($defaultLanguage = 'ru')
+                            @php($defaultLanguage = $languages[1])
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
                                 <ul class="nav nav-tabs w-fit-content mb-2">
                                     @foreach ($languages as $language)
