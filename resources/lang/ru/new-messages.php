@@ -860,4 +860,7 @@ return [
 	"unit" => "Unit",
 	"for_Ready_Product_deliveries,_customers_can_pay_&_instantly_download_pre-uploaded_digital_products._For_Ready_After_Sale_deliveries,_customers_pay_first,_then_admin_uploads_the_digital_products_that_become_available_to_customers_for_download" => "For Ready Product deliveries  customers can pay & instantly download pre-uploaded digital products. For Ready After Sale deliveries  customers pay first  then admin uploads the digital products that become available to customers for download",
 	"variation" => "Variation",
+	"variation_Wise_Price" => "Variation Wise Price",
+	"Variation price are required!" => "Variation price are required!",
+	"Требуются цветные изображения" => "Требуются цветные изображения",
 ];

@@ -81,6 +81,7 @@
     background: #ffffff;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex-direction: column; /* Продавец tepada chiqishi uchun */
 }
 
 .shop-info-card:hover {
@@ -88,11 +89,20 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
+.shop-title {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    text-align: left; /* chapda turadi */
+    width: 100%;
+}
+
 .shop-info-icon {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #4caf50, #66bb6a);
+    background: #9e9e9e;
     color: #fff;
     font-size: 28px;
     display: flex;
@@ -148,6 +158,10 @@
         padding: 15px;
     }
 
+    .shop-title {
+        text-align: center;
+    }
+
     .shop-info-icon {
         width: 50px;
         height: 50px;
@@ -164,6 +178,7 @@
         justify-content: center;
     }
 }
+
 </style>
 @endpush
 
@@ -194,6 +209,10 @@
 
     {{-- Shop Info --}}
    <div class="shop-info-card">
+    <div class="shop-title" style="margin-bottom: 15px;">
+        <h3>Продавец</h3>
+    </div>
+
     <div class="shop-info-icon">
         @if(!empty($detail->seller->shop->image))
             <img src="{{ asset('storage/' . $detail->seller->shop->image) }}" 
@@ -207,9 +226,17 @@
     <div class="shop-details">
         <h4><i class="bi bi-building"></i> {{ $detail->seller->shop->name ?? 'Shop Name' }}</h4>
 
-        <p><i class="bi bi-telephone"></i> <a href="tel:{{ $detail->seller->shop->contact ?? '#' }}">{{ $detail->seller->shop->contact ?? 'No contact available' }}</a></p>
+        <p><i class="bi bi-telephone"></i> 
+            <a href="tel:{{ $detail->seller->shop->contact ?? '#' }}">
+                {{ $detail->seller->shop->contact ?? 'No contact available' }}
+            </a>
+        </p>
         @if(!empty($detail->seller->shop->email))
-            <p><i class="bi bi-envelope"></i> <a href="mailto:{{ $detail->seller->shop->email }}">{{ $detail->seller->shop->email }}</a></p>
+            <p><i class="bi bi-envelope"></i> 
+                <a href="mailto:{{ $detail->seller->shop->email }}">
+                    {{ $detail->seller->shop->email }}
+                </a>
+            </p>
         @endif
         @if(!empty($detail->seller->shop->address))
             <p><i class="bi bi-geo-alt"></i> {{ $detail->seller->shop->address }}</p>
@@ -217,10 +244,15 @@
     </div>
 </div>
 
+
     @if($productDetails)
     <div class="card mb-4">
+
+    
         <div class="card-body product-detail-card">
-            
+            <div class="shop-title" style="margin-bottom: 15px;">
+             <h3>Информация о продукте</h3>
+    </div>
             {{-- Product Image --}}
             <div>
                 <img src="{{ getStorageImages(path: $detail?->productAllStatus?->thumbnail_full_url, type: 'backend-product') }}"
