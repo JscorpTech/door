@@ -153,31 +153,30 @@ class OrderController extends BaseController
         ]);
 
     }
-
     public function productDetail($id)
     {
-        // OrderDetail bilan productAllStatus va order.customer relationlarini olish
-        $detail = \App\Models\OrderDetail::with('productAllStatus', 'order.customer')->findOrFail($id);
+        $detail = \App\Models\OrderDetail::with('productAllStatus', 'order.customer', 'order.seller.shop')->findOrFail($id);
 
-        // Kategoriyalar va brendlar
-        $categories = \App\Models\Category::all()->keyBy('id'); // ID asosida tez topish uchun keyBy
+        $categories = \App\Models\Category::all()->keyBy('id'); 
         $brands = \App\Models\Brand::all()->keyBy('id');
 
-        // Agar product_details JSON bo'lsa decode qilamiz
         $productDetails = $detail->product_details ? json_decode($detail->product_details) : null;
 
-        // Kategoriya nomini aniqlash
+        // Kategoriya nomi
         $categoryName = $productDetails && isset($productDetails->category_id) 
                         ? ($categories[$productDetails->category_id]->name ?? 'No Category') 
                         : 'No Category';
 
-        // Brend nomi (agar kerak bo‘lsa)
+        // Brend nomi
         $brandName = $productDetails && isset($productDetails->brand_id) 
                     ? ($brands[$productDetails->brand_id]->name ?? 'No Brand') 
                     : 'No Brand';
 
-        return view('admin-views.order.product_detail', compact('detail', 'categories', 'brands', 'categoryName', 'brandName'));
+        return view('admin-views.order.product_detail', compact(
+            'detail', 'categories', 'brands', 'categoryName', 'brandName'
+        ));
     }
+
 
 
 

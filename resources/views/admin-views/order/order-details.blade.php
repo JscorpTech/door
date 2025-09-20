@@ -228,8 +228,8 @@
                                         <td>
                                             {{-- Shu yerda order id bilan link --}}
                                             <!-- <a href="{{ route('admin.orders.show', $order->id) }}" class="text-decoration-none text-dark"> -->
-                                        <h5>{{ $order->seller->shop->name }}</h5>
-                                        <h4>{{ $order->seller->phone }}</h4>
+                                        <h5>{{ $detail->seller->shop->name }}</h5>
+                                        <h4>{{ $detail->seller->shop->contact }}</h4>
                                             
                                             <!-- <h5>{{ $companyName }}</h5>     -->
                                             <!-- {{ $order->customer['f_name'].' '.$order->customer['l_name'] }} -->
