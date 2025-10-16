@@ -870,4 +870,7 @@ return [
 	"Уточнить стоимость доставки у менеджера для ( России, Казахстана)" => "Уточнить стоимость доставки у менеджера для ( России  Казахстана)",
 	"your_phone" => "Your phone",
 	"you_have_Saved" => "You have Saved",
+	"if_Flat,_discount_amount_will_be_set_as_fixed_amount._If_Percentage,_discount_amount_will_be_set_as_percentage." => "If Flat  discount amount will be set as fixed amount. If Percentage  discount amount will be set as percentage.",
+	"you_can_get_brand_and_category_id_from_their_list_please_input_the_right_ids." => "You can get brand and category id from their list please input the right ids.",
+	"you_can_not_delete_all_images" => "You can not delete all images",
 ];

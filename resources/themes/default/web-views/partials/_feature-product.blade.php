@@ -11,9 +11,18 @@
             @else
                 <span class="for-discount-value-null"></span>
             @endif
-            <a href="{{route('product',$product->slug)}}">
-                <img src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}" alt="">
-            </a>
+            <div class="p-10px pb-0">
+                <a href="{{ route('product', $product->slug) }}" class="w-100 d-block">
+                    <div style="aspect-ratio: 3 / 4; width: 100%; overflow: hidden; border-radius: 8px; display: flex; justify-content: center; align-items: center; background: #f9f9f9;">
+                        <img 
+                            alt="{{ $product->name ?? '' }}"
+                            src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
+                            style="max-width: 100%; max-height: 100%; object-fit: contain; object-position: center; transition: all 0.3s ease;"
+                        >
+                    </div>
+                </a>
+            </div>
+
 
             <div class="quick-view">
                 <a class="btn-circle stopPropagation action-product-quick-view" href="javascript:" data-product-id="{{ $product->id }}">
