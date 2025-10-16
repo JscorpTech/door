@@ -205,7 +205,7 @@
                                             @endif
                                             <!-- WhatsApp tugma -->
                                             <a href="https://wa.me/996556844777?text={{ urlencode(url('/product/' . $product->slug)) }}" target="_blank">
-                                                <img src="/images/knopka.png" alt="WhatsApp" class="img-fluid mt-2 mt-sm-0" style="width: 200px; height: 40px;">
+                                                <img src="{{theme_asset(path: "public/assets/front-end/png/knopka.png")}}" alt="WhatsApp" class="img-fluid mt-2 mt-sm-0" style="width: 200px; height: 40px;">
                                             </a>
                                         </h3>
                                     </div>
