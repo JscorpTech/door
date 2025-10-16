@@ -204,9 +204,11 @@
                                                 </del>
                                             @endif
                                             <!-- WhatsApp tugma -->
-                                            <a href="https://wa.me/996556844777?text={{ urlencode(url('/product/' . $product->slug)) }}" target="_blank">
-                                                <img src="{{theme_asset(path: "public/assets/front-end/png/knopka.svg")}}" alt="WhatsApp" class="img-fluid mt-2 mt-sm-0" style="width: 200px; height: 40px;">
-                                            </a>
+                                            @auth('customer')
+                                                <a href="https://wa.me/996556844777?text={{ urlencode(url('/product/' . $product->slug)) }}" target="_blank">
+                                                    <img src="{{theme_asset(path: "public/assets/front-end/png/knopka.svg")}}" alt="WhatsApp" class="img-fluid mt-2 mt-sm-0" style="width: 200px; height: 40px;">
+                                                </a>
+                                            @endauth
                                         </h3>
                                     </div>
 
@@ -356,68 +358,143 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="__btn-grp mt-2 mb-3 product-add-and-buy-section-parent">
-                                        <div class="product-add-and-buy-section gap-2 {!! $firstVariationQuantity <= 0 ? '' : 'd-flex' !!}" {!! $firstVariationQuantity <= 0 ? 'style="display: none;"' : '' !!}>
-                                            @if(($product->added_by == 'seller' && ($sellerTemporaryClose || (isset($product->seller->shop) && $product->seller->shop->vacation_status && $currentDate >= $sellerVacationStartDate && $currentDate <= $sellerVacationEndDate))) ||
-                                             ($product->added_by == 'admin' && ($inHouseTemporaryClose || ($inHouseVacationStatus && $currentDate >= $inHouseVacationStartDate && $currentDate <= $inHouseVacationEndDate))))
-                                                    <button class="btn btn-secondary" type="button" disabled>
-                                                        {{ translate('buy_now') }}
-                                                    </button>
-                                                    <button class="btn btn--primary string-limit" type="button" disabled>
-                                                        {{ translate('add_to_cart') }}
-                                                    </button>
-                                                @else
+                                    @if(Auth::guard('customer')->check())
+                                        <div class="__btn-grp mt-2 mb-3 product-add-and-buy-section-parent">
+                                            <div class="product-add-and-buy-section gap-2 {!! $firstVariationQuantity <= 0 ? '' : 'd-flex' !!}" {!! $firstVariationQuantity <= 0 ? 'style="display: none;"' : '' !!}>
+                                                @if(($product->added_by == 'seller' && ($sellerTemporaryClose || (isset($product->seller->shop) && $product->seller->shop->vacation_status && $currentDate >= $sellerVacationStartDate && $currentDate <= $sellerVacationEndDate))) ||
+                                                ($product->added_by == 'admin' && ($inHouseTemporaryClose || ($inHouseVacationStatus && $currentDate >= $inHouseVacationStartDate && $currentDate <= $inHouseVacationEndDate))))
+                                                        <button class="btn btn-secondary" type="button" disabled>
+                                                            {{ translate('buy_now') }}
+                                                        </button>
+                                                        <button class="btn btn--primary string-limit" type="button" disabled>
+                                                            {{ translate('add_to_cart') }}
+                                                        </button>
+                                                    @else
+                                                        <button type="button"
+                                                                class="btn btn-secondary element-center btn-gap-{{Session::get('direction') === "rtl" ? 'left' : 'right'}} product-buy-now-button"
+                                                                data-form=".add-to-cart-details-form"
+                                                                data-auth="{{( getWebConfig(name: 'guest_checkout') == 1 || Auth::guard('customer')->check() ? 'true':'false')}}"
+                                                                data-route="{{ route('shop-cart') }}"
+                                                        >
+                                                            <span class="string-limit">{{ translate('buy_now') }}</span>
+                                                        </button>
+                                                        <button class="btn btn--primary element-center product-add-to-cart-button"
+                                                                type="button"
+                                                                data-form=".add-to-cart-details-form"
+                                                                data-update="{{ translate('update_cart') }}"
+                                                                data-add="{{ translate('add_to_cart') }}"
+                                                        >
+                                                            <span class="string-limit">{{ translate('add_to_cart') }}</span>
+                                                        </button>
+                                                    @endif
+                                            </div>
+                                            @if(($product['product_type'] == 'physical'))
+                                                <div class="product-restock-request-section collapse" {!! $firstVariationQuantity <= 0 ? 'style="display: block;"' : '' !!}>
                                                     <button type="button"
-                                                            class="btn btn-secondary element-center btn-gap-{{Session::get('direction') === "rtl" ? 'left' : 'right'}} product-buy-now-button"
-                                                            data-form=".add-to-cart-details-form"
-                                                            data-auth="{{( getWebConfig(name: 'guest_checkout') == 1 || Auth::guard('customer')->check() ? 'true':'false')}}"
-                                                            data-route="{{ route('shop-cart') }}"
+                                                            class="btn request-restock-btn btn-outline-primary fw-semibold product-restock-request-button"
+                                                            data-auth="{{ auth('customer')->check() }}"
+                                                            data-form=".addToCartDynamicForm"
+                                                            data-default="{{ translate('Request_Restock') }}"
+                                                            data-requested="{{ translate('Request_Sent') }}"
                                                     >
-                                                        <span class="string-limit">{{ translate('buy_now') }}</span>
+                                                        {{ translate('Request_Restock')}}
                                                     </button>
-                                                    <button class="btn btn--primary element-center product-add-to-cart-button"
-                                                            type="button"
-                                                            data-form=".add-to-cart-details-form"
-                                                            data-update="{{ translate('update_cart') }}"
-                                                            data-add="{{ translate('add_to_cart') }}"
-                                                    >
-                                                        <span class="string-limit">{{ translate('add_to_cart') }}</span>
-                                                    </button>
-                                                @endif
-                                        </div>
-                                        @if(($product['product_type'] == 'physical'))
-                                            <div class="product-restock-request-section collapse" {!! $firstVariationQuantity <= 0 ? 'style="display: block;"' : '' !!}>
-                                                <button type="button"
-                                                        class="btn request-restock-btn btn-outline-primary fw-semibold product-restock-request-button"
-                                                        data-auth="{{ auth('customer')->check() }}"
-                                                        data-form=".addToCartDynamicForm"
-                                                        data-default="{{ translate('Request_Restock') }}"
-                                                        data-requested="{{ translate('Request_Sent') }}"
-                                                >
-                                                    {{ translate('Request_Restock')}}
-                                                </button>
-                                            </div>
-                                        @endif
-                                        <button type="button" data-product-id="{{ $product['id'] }}" class="btn __text-18px border product-action-add-wishlist">
-                                            <i class="fa {{($wishlistStatus == 1?'fa-heart':'fa-heart-o')}} wishlist_icon_{{$product['id']}} web-text-primary"
-                                               aria-hidden="true"></i>
-                                            <span class="fs-14 text-muted align-bottom countWishlist-{{$product['id']}}">{{$countWishlist}}</span>
-                                            <div class="wishlist-tooltip" x-placement="top">
-                                                <div class="arrow"></div><div class="inner">
-                                                    <span class="add">{{translate('added_to_wishlist')}}</span>
-                                                    <span class="remove">{{translate('removed_from_wishlist')}}</span>
                                                 </div>
-                                            </div>
-                                        </button>
-                                        @if(($product->added_by == 'seller' && ($sellerTemporaryClose || (isset($product->seller->shop) && $product->seller->shop->vacation_status && $currentDate >= $sellerVacationStartDate && $currentDate <= $sellerVacationEndDate))) ||
-                                         ($product->added_by == 'admin' && ($inHouseTemporaryClose || ($inHouseVacationStatus && $currentDate >= $inHouseVacationStartDate && $currentDate <= $inHouseVacationEndDate))))
-                                            <div class="alert alert-danger mt-2" role="alert">
-                                                {{translate('this_shop_is_temporary_closed_or_on_vacation._You_cannot_add_product_to_cart_from_this_shop_for_now')}}
-                                            </div>
-                                        @endif
+                                            @endif
+                                            <button type="button" data-product-id="{{ $product['id'] }}" class="btn __text-18px border product-action-add-wishlist">
+                                                <i class="fa {{($wishlistStatus == 1?'fa-heart':'fa-heart-o')}} wishlist_icon_{{$product['id']}} web-text-primary"
+                                                aria-hidden="true"></i>
+                                                <span class="fs-14 text-muted align-bottom countWishlist-{{$product['id']}}">{{$countWishlist}}</span>
+                                                <div class="wishlist-tooltip" x-placement="top">
+                                                    <div class="arrow"></div><div class="inner">
+                                                        <span class="add">{{translate('added_to_wishlist')}}</span>
+                                                        <span class="remove">{{translate('removed_from_wishlist')}}</span>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                            @if(($product->added_by == 'seller' && ($sellerTemporaryClose || (isset($product->seller->shop) && $product->seller->shop->vacation_status && $currentDate >= $sellerVacationStartDate && $currentDate <= $sellerVacationEndDate))) ||
+                                            ($product->added_by == 'admin' && ($inHouseTemporaryClose || ($inHouseVacationStatus && $currentDate >= $inHouseVacationStartDate && $currentDate <= $inHouseVacationEndDate))))
+                                                <div class="alert alert-danger mt-2" role="alert">
+                                                    {{translate('this_shop_is_temporary_closed_or_on_vacation._You_cannot_add_product_to_cart_from_this_shop_for_now')}}
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @else
+                                    <style>
+                                        .whatsapp-btn {
+                                            position: relative;
+                                            display: inline-block;
+                                            border-radius: 12px;
+                                        }
+
+                                        /* 🔹 Signal rasm ostidan chiqsin */
+                                        .whatsapp-btn::before {
+                                            content: "";
+                                            position: absolute;
+                                            top: 50%;
+                                            left: 50%;
+                                            width: 100%;
+                                            height: 100%;
+                                            border-radius: 12px;
+                                            transform: translate(-50%, -50%) scale(1);
+                                            background: rgba(37, 211, 102, 0.4);
+                                            filter: blur(20px);
+                                            opacity: 0;
+                                            animation: glowSpread 2.2s infinite ease-out;
+                                            z-index: 0;
+                                        }
+
+                                        @keyframes glowSpread {
+                                            0% {
+                                                transform: translate(-50%, -50%) scale(0.9);
+                                                opacity: 0.7;
+                                            }
+                                            50% {
+                                                transform: translate(-50%, -50%) scale(1.4);
+                                                opacity: 0.3;
+                                            }
+                                            100% {
+                                                transform: translate(-50%, -50%) scale(1.7);
+                                                opacity: 0;
+                                            }
+                                        }
+
+                                        .whatsapp-btn img {
+                                            position: relative;
+                                            z-index: 2;
+                                            display: block;
+                                            border-radius: 12px;
+                                            width: 300px;
+                                            max-width: 100%;
+                                            height: auto;
+                                            transition: transform 0.3s ease;
+                                        }
+
+                                        .whatsapp-btn:hover img {
+                                            transform: scale(1.05);
+                                        }
+
+                                        /* 🔹 Web (desktop) uchun ozgina mt beramiz */
+                                        @media (min-width: 768px) {
+                                            .whatsapp-btn {
+                                                margin-top: 40px;
+                                            }
+                                        }
+                                    </style>
+
+                                    <div class="text-center mt-3 mb-3">
+                                        <a href="https://wa.me/996556844777?text={{ urlencode(url('/product/' . $product->slug)) }}" 
+                                        target="_blank" 
+                                        class="whatsapp-btn">
+                                            <img 
+                                                src="{{ theme_asset(path: 'public/assets/front-end/png/knopka.svg') }}" 
+                                                alt="WhatsApp"
+                                                class="img-fluid">
+                                        </a>
                                     </div>
 
+
+                                    @endauth
                                 </form>
                             </div>
                         </div>

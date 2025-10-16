@@ -877,4 +877,5 @@ return [
 	"Search_for_items..." => "Search for items...",
 	"Variation_SKU_are_required" => "Variation SKU are required",
 	"Variation_price_are_required" => "Variation price are required",
+	"Please_login_or_register_to_buy_or_add_to_cart" => "Please login or register to buy or add to cart",
 ];
