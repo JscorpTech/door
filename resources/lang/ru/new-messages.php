@@ -864,4 +864,9 @@ return [
 	"Variation price are required!" => "Variation price are required!",
 	"Требуются цветные изображения" => "Требуются цветные изображения",
 	"similar_products" => "Similar products",
+	"validation.same" => "Validation.same",
+	"shipping_Address" => "Shipping Address",
+	"shipping_To" => "Shipping To",
+	"Уточнить стоимость доставки у менеджера для ( России, Казахстана)" => "Уточнить стоимость доставки у менеджера для ( России  Казахстана)",
+	"your_phone" => "Your phone",
 ];

@@ -193,17 +193,20 @@
                                 @endif
 
                                 <form class="mb-2 addToCartDynamicForm add-to-cart-details-form">
-
                                     <div class="mb-3">
-                                        <h3 class="font-weight-normal text-accent d-flex align-items-end gap-2 pt-1">
-                                            <span class="discounted-unit-price fs-24 font-bold">
+                                        <h3 class="font-weight-normal text-accent d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-2 pt-1">
+                                            <span class="discounted-unit-price fs-4 fw-bold">
                                                 {{ getProductPriceByType(product: $product, type: 'discounted_unit_price', result: 'string') }}
                                             </span>
                                             @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
-                                                <del class="product-total-unit-price align-middle text-muted fs-18 font-semibold">
+                                                <del class="product-total-unit-price text-muted fs-6 fw-semibold">
                                                     {{ webCurrencyConverter(amount: $product->unit_price) }}
                                                 </del>
                                             @endif
+                                            <!-- WhatsApp tugma -->
+                                            <a href="https://wa.me/996556844777?text={{ urlencode(url('/product/' . $product->slug)) }}" target="_blank">
+                                                <img src="/images/knopka.png" alt="WhatsApp" class="img-fluid mt-2 mt-sm-0" style="width: 200px; height: 40px;">
+                                            </a>
                                         </h3>
                                     </div>
 

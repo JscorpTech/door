@@ -67,6 +67,15 @@
     <link rel="stylesheet" href="{{theme_asset(path: 'public/assets/front-end/css/custom.css')}}">
 
     {!! getSystemDynamicPartials(type: 'analytics_script') !!}
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17607933708"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-17607933708');
+    </script>
 </head>
 
 <body class="toolbar-enabled">
