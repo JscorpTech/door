@@ -15,8 +15,27 @@
                 </div>
             @endif
             <div class="p-10px pb-0">
-                <a href="{{route('product',$product->slug)}}" class="w-100">
-                    <img alt="" src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}">
+                <a href="{{ route('product', $product->slug) }}" class="w-100 d-block">
+                    <div style="
+                        aspect-ratio: 3 / 4;
+                        width: 100%;
+                        overflow: hidden;
+                        border-radius: 12px;
+                        background: #fff;
+                        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+                    ">
+                        <img 
+                            alt="{{ $product->name ?? '' }}"
+                            src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
+                            style="
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                object-position: center;
+                                transition: transform 0.3s ease;
+                            "
+                        >
+                    </div>
                 </a>
             </div>
 
