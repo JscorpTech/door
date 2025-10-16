@@ -13,15 +13,29 @@
             @endif
             <div class="p-10px pb-0">
                 <a href="{{ route('product', $product->slug) }}" class="w-100 d-block">
-                    <div style="aspect-ratio: 3 / 4; width: 100%; overflow: hidden; border-radius: 8px; display: flex; justify-content: center; align-items: center; background: #f9f9f9;">
+                    <div style="
+                        aspect-ratio: 3 / 4;
+                        width: 100%;
+                        overflow: hidden;
+                        border-radius: 12px;
+                        background: #fff;
+                        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+                    ">
                         <img 
                             alt="{{ $product->name ?? '' }}"
                             src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
-                            style="max-width: 100%; max-height: 100%; object-fit: contain; object-position: center; transition: all 0.3s ease;"
+                            style="
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                object-position: center;
+                                transition: transform 0.3s ease;
+                            "
                         >
                     </div>
                 </a>
             </div>
+
 
 
             <div class="quick-view">
