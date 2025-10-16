@@ -14,6 +14,7 @@
                     <span class="for-discount-value-null"></span>
                 </div>
             @endif
+            sa
             <div class="p-10px pb-0">
                 <a href="{{ route('product', $product->slug) }}" class="w-100 d-block">
                     <div style="
