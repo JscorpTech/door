@@ -41,7 +41,7 @@
             </div>
 
             <div class="quick-view" style="margin: 0; padding: 0;">
-                <a class="btn-circle stopPropagation action-product-quick-view" href="javascript:" data-product-id="{{ $product->id }}">
+                <a class="btn-circle stopPropagation action-product-quick-view" href="{{route('product',$product->slug)}}">
                     <i class="czi-eye align-middle"></i>
                 </a>
             </div>
