@@ -29,7 +29,7 @@
 
         @if ($featuredProductsList->count() > 0 )
             <div class="container py-4 rtl px-0 px-md-3">
-                <div class="__inline-62 pt-3">
+                <div class="__inline-62">
                     <h2 class="feature-product-title mt-0 web-text-primary mb-0 letter-spacing-0">
                         {{ translate('featured_products') }}
                     </h2>
