@@ -449,14 +449,45 @@ function _defineProperty(e, t, r) {
                 )
                     e(t);
         },
-        imageZoom: function () {
-            let elements = document.querySelectorAll(".cz-image-zoom");
-            for (let i = 0; i < elements.length; i++) {
-                new Drift(elements[i], {
-                    paneContainer: elements[i].parentElement.querySelector(".cz-image-zoom-pane"),
+            imageZoom: function () {
+            let items = document.querySelectorAll(".product-preview-item");
+
+            items.forEach(item => {
+                const img = item.querySelector(".cz-image-zoom");
+                const pane = item.querySelector(".cz-image-zoom-pane");
+                const icon = item.querySelector(".zoom-icon");
+
+                item.dataset.zoomed = "false";
+
+                icon.addEventListener("click", (e) => {
+                    e.stopPropagation(); 
+
+                    if (!item.classList.contains("active")) return;
+
+                    if(item.dataset.zoomed === "true"){
+                        // Zoom o'chirish
+                        if(item._drift){
+                            item._drift.disable();
+                            item._drift = null;
+                        }
+                        item.dataset.zoomed = "false";
+                    } else {
+                        // Zoom ishga tushirish
+                        item._drift = new Drift(img, {
+                            paneContainer: pane,
+                        });
+                        item.dataset.zoomed = "true";
+                    }
                 });
-            }
+
+                // item bosilganda active class berish
+                item.addEventListener("click", () => {
+                    items.forEach(i => i.classList.remove("active"));
+                    item.classList.add("active");
+                });
+            });
         },
+
         videoPopupBtn: function () {
             var e = document.querySelectorAll(".video-popup-btn");
             if (e.length)

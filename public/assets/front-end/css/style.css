@@ -4128,8 +4128,8 @@ a {
 
 .__inline-61 .flash-deals-background-image {
     border-radius: 5px;
-    width: 105px;
-    height: 105px;
+    width: 120px;
+    height: 190px;
 }
 
 .__inline-61 .feature-product-title {
@@ -4188,10 +4188,9 @@ a {
 
 .__inline-62 {
     background: white;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.05);
-    padding-bottom: 0.5rem; 
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.0509803922);
+    padding-bottom: -20px;
 }
-
 
 .__inline-63 {
     width: 100%;

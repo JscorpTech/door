@@ -11,33 +11,53 @@
             @else
                 <span class="for-discount-value-null"></span>
             @endif
+               <div style="margin: 0; padding: 0; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <a href="{{ route('product', $product->slug) }}" class="d-block w-100" style="position: relative; display: block;">
+                        <div style="
+                            width: 100%;    
+                            aspect-ratio: 3 / 4;
+                            overflow: hidden;
+                            border-radius: 12px;
+                            background: #fff;
+                            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                            position: relative;
+                        ">
+                            <img 
+                                alt="{{ $product->name ?? '' }}"
+                                src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
+                                style="
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    object-position: center;
+                                    display: block;
+                                    image-rendering: auto;
+                                    transition: transform 0.3s ease;
+                                "
+                            >
 
-           <div style="margin: 0; padding: 0; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto;">
-    <a href="{{ route('product', $product->slug) }}" class="d-block w-100">
-        <div style="
-            width: 100%;
-            aspect-ratio: 3 / 4;
-            overflow: hidden;
-            border-radius: 12px;
-            background: #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        ">
-            <img 
-                alt="{{ $product->name ?? '' }}"
-                src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
-                style="
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    object-position: center;
-                    display: block;
-                    image-rendering: auto;
-                    transition: transform 0.3s ease;
-                "
-            >
-        </div>
-    </a>
-</div>
+                            <!-- Brend logotipi: pastki o'ng -->
+                            <div style="
+                                position: absolute;
+                                bottom: 10px;
+                                right: 10px;
+                                width: 60px;       /* kattaroq o'lcham */
+                                height: 60px;      /* kattaroq o'lcham */
+                                border-radius: 50%; 
+                                overflow: hidden;
+                                border: 2px solid #fff;
+                                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                                background: #fff;
+                            ">
+                                <img 
+                                    src="{{ getStorageImages(path: $product?->seller?->shop->image_full_url, type: 'shop') }}" 
+                                    alt="Brand" 
+                                    style="width: 100%; height: 100%; object-fit: cover;"
+                                >
+                            </div>
+                        </div>
+                    </a>
+                </div>
 
 
             <div class="quick-view" style="margin: 0; padding: 0;">

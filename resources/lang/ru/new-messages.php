@@ -852,7 +852,7 @@ return [
 	"theme_setup" => "Theme setup",
 	"Order Created At" => "Order Created At",
 	"wish_listed" => "Wish listed",
-	"vendor_info" => "Vendor info",
+	"vendor_info" => "Информация о продавце",
 	"tax_amount" => "Tax amount",
 	"set_the_minimum_order_quantity_that_customers_must_choose._Otherwise,_the_checkout_process_would_not_start" => "Set the minimum order quantity that customers must choose. Otherwise  the checkout process would not start",
 	"this_Unit_Price_section_would_not_be_applied_if_you_set_a_variation_wise_price." => "This Unit Price section would not be applied if you set a variation wise price.",

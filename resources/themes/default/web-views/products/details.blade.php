@@ -51,6 +51,11 @@
                                                              src="{{ getStorageImages($photo, type: 'product') }}"
                                                              data-zoom="{{ getStorageImages(path: $photo, type: 'product') }}"
                                                              alt="{{ translate('product') }}" width="">
+                                                        <span class="zoom-icon" title="Click to zoom">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                                            </svg>
+                                                        </span>
                                                         <div class="cz-image-zoom-pane"></div>
                                                     </div>
                                                 @endforeach
@@ -740,7 +745,7 @@
                 <div class="col-lg-3">
                     @php($companyReliability = getWebConfig('company_reliability'))
                     @if($companyReliability != null)
-                        <div class="product-details-shipping-details">
+                        <!-- <div class="product-details-shipping-details">
                             @foreach ($companyReliability as $key=>$value)
                                 @if ($value['status'] == 1 && !empty($value['title']))
                                     <div class="shipping-details-bottom-border">
@@ -753,7 +758,7 @@
                                     </div>
                                 @endif
                             @endforeach
-                        </div>
+                        </div> -->
                     @endif
 
                     @if(getWebConfig(name: 'business_mode')=='multi')
@@ -926,7 +931,7 @@
                     @endif
 
                     <div class="pt-4 pb-3">
-                        <h2 class=" __text-16px font-bold text-capitalize">
+                        <h2 class=" __text-16px font-bold text-capitalize"> 
                             @if(getWebConfig(name: 'business_mode')=='multi')
                                 {{ translate('more_from_the_store')}}
                             @else
