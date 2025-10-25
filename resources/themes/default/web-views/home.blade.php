@@ -28,8 +28,8 @@
         @endif
 
         @if ($featuredProductsList->count() > 0 )
-            <div class="container py-4 rtl px-0 px-md-3">
-                <div class="__inline-62">
+            <div class="container py-4 rtl px-0 px-md-3" style="padding-bottom: 1rem;">
+                <div class="">
                     <h2 class="feature-product-title mt-0 web-text-primary mb-0 letter-spacing-0">
                         {{ translate('featured_products') }}
                     </h2>
@@ -40,7 +40,7 @@
                         </a>
                     </div>
                     <div class="feature-product">
-                        <div class="carousel-wrap p-1">
+                        <div class="carousel-wrap p-1" style="padding-bottom: 0.5rem;">
                             <div class="owl-carousel owl-theme" id="featured_products_list">
                                 @foreach($featuredProductsList as $product)
                                     <div>
@@ -58,6 +58,7 @@
                     </div>
                 </div>
             </div>
+
         @endif
 
         @include('web-views.partials._category-section-home')

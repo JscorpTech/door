@@ -17896,8 +17896,8 @@ html:not([dir="rtl"]) .cz-range-slider-ui.noUi-horizontal .noUi-handle {
 
 .product-preview-item {
     z-index: 1;
-    width: 100%;
-    height: 100%;
+    width: 500px;
+    height: 550px;
     aspect-ratio: 1;
     overflow: hidden;
     border-radius: 5px;

@@ -12,33 +12,33 @@
                 <span class="for-discount-value-null"></span>
             @endif
 
-            <div style="margin: 0; padding: 0;">
-                <a href="{{ route('product', $product->slug) }}" class="w-100 d-block">
-                    <div style="
-                        aspect-ratio: 3 / 4;
-                        width: 100%;
-                        overflow: hidden;
-                        border-radius: 12px;
-                        background: #fff;
-                        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-                        margin: 0;
-                        padding: 0;
-                    ">
-                        <img 
-                            alt="{{ $product->name ?? '' }}"
-                            src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
-                            style="
-                                width: 100%;
-                                height: 100%;
-                                object-fit: cover;
-                                object-position: center;
-                                transition: transform 0.3s ease;
-                                display: block;
-                            "
-                        >
-                    </div>
-                </a>
-            </div>
+           <div style="margin: 0; padding: 0; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto;">
+    <a href="{{ route('product', $product->slug) }}" class="d-block w-100">
+        <div style="
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        ">
+            <img 
+                alt="{{ $product->name ?? '' }}"
+                src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
+                style="
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                    display: block;
+                    image-rendering: auto;
+                    transition: transform 0.3s ease;
+                "
+            >
+        </div>
+    </a>
+</div>
+
 
             <div class="quick-view" style="margin: 0; padding: 0;">
                 <a class="btn-circle stopPropagation action-product-quick-view" href="{{route('product',$product->slug)}}">

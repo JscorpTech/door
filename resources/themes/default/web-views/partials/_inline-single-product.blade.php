@@ -16,11 +16,11 @@
                     <span class="for-discount-value-null"></span>
                 </div>
             @endif
-            <div class="p-10px pb-0">
-                <a href="{{ route('product', $product->slug) }}" class="w-100 d-block">
+           <div>
+                <a href="{{ route('product', $product->slug) }}" class="d-block w-100">
                     <div style="
-                        aspect-ratio: 3 / 4;
                         width: 100%;
+                        aspect-ratio: 3 / 4;
                         overflow: hidden;
                         border-radius: 12px;
                         background: #fff;
@@ -34,12 +34,15 @@
                                 height: 100%;
                                 object-fit: cover;
                                 object-position: center;
+                                display: block;
+                                image-rendering: auto;
                                 transition: transform 0.3s ease;
                             "
                         >
                     </div>
                 </a>
             </div>
+
 
             <div class="quick-view">
                 <a class="btn-circle stopPropagation action-product-quick-view" href="{{route('product',$product->slug)}}" >
