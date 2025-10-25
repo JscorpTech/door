@@ -221,6 +221,31 @@
 </script>
 
 
+<style>
+#mobileBanner {
+  display: none; /* dastlab yashirin */
+ 
+}
+
+</style>
+
+<script>
+function closeBanner() {
+  document.getElementById('mobileBanner').style.display = 'none';
+}
+
+window.addEventListener('scroll', function() {
+  const banner = document.getElementById('mobileBanner');
+  const scrollY = window.scrollY || window.pageYOffset;
+
+  if (scrollY > 200) { // sahifa 200px pastga scroll qilganda
+    banner.style.display = 'flex';
+  } else {
+    banner.style.display = 'none';
+  }
+});
+</script>
+
 
 
 <div id="mobileBanner" role="banner" aria-live="polite" aria-label="Ilovani o'rnatish banneri">
