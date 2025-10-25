@@ -9,7 +9,12 @@
                      src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'backend-product') }}"
                      data-zoom="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'backend-product') }}"
                      alt="{{translate('product_image')}}">
-                <div class="cz-image-zoom-pane"></div>
+                <span class="zoom-icon" title="Click to zoom">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                                            </svg>
+                                                        </span>
+                                                        <div class="cz-image-zoom-pane"></div>
             </div>
 
             <div class="d-flex flex-column gap-10 fz-14 mt-3">

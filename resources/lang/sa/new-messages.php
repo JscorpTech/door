@@ -2588,7 +2588,7 @@ return [
 	"Total_Vendor" => "Total Vendor",
 	"Total_amount" => "Total amount",
 	"Total_entries" => "Total entries",
-	"Total_price :" => "Total price :",
+	"Total_price:" => "Total price :",
 	"Total_refundable_amount" => "Total refundable amount",
 	"Totals_Cost" => "Totals Cost",
 	"Toys Kids & Babies" => "Toys   Kids & Babies",
