@@ -7807,7 +7807,7 @@ return [
 	"top_rated_products_are_the_mostly_ordered_product_list_of_customer_choice_which_are_highly_rated_&_reviewed" => "Top rated products are the mostly ordered product list of customer choice which are highly rated & reviewed",
 	"top_rated_seller" => "Top rated seller",
 	"top_rated_vendor" => "Top rated vendor",
-	"top_sellers" => "Лучшие продавцы",
+	"top_sellers" => "ТОП МАГАЗИНЫ",
 	"top_selling_products" => "top selling products",
 	"top_selling_store" => "Top selling store",
 	"top_store_by_order_received" => "Top store by order received",

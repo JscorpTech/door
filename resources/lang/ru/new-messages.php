@@ -790,7 +790,7 @@ return [
 	"view_more" => "View more",
 	"shopping_cart" => "Shopping cart",
 	"top_rated" => "Top rated",
-	"top_sellers" => "Лучшие продавцы",
+	"top_sellers" => "ТОП МАГАЗИНЫ",
 	"you_will_lost_the_this_theme" => "You will lost the this theme",
 	"skip" => "Skip",
 	"Notification_Sent_to_All_Vendors" => "Notification Sent to All Vendors",

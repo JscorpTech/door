@@ -725,7 +725,7 @@ return [
 "top_rated_products_are_the_mostly_ordered_product_list_of_customer_choice_which_are_highly_rated_&_reviewed" => "Лучшие продукты по рейтингу — это список наиболее часто заказываемых продуктов, выбранных клиентами и высоко оцененных",
 "top_rated_seller" => "Лучший продавец",
 "top_rated_vendor" => "Лучший поставщик",
-"top_sellers" => "Лучшие продавцы",
+"top_sellers" => "ТОП МАГАЗИНЫ",
 "top_selling_products" => "Лучшие продаваемые продукты",
 "top_selling_store" => "Лучший магазин по продажам",
 "top_store_by_order_received" => "Лучший магазин по количеству заказов",
