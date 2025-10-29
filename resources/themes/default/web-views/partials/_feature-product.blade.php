@@ -50,7 +50,7 @@
                                 background: #fff;
                             ">
                                 <img 
-                                    src="{{ getStorageImages(path: $product?->seller?->shop->image_full_url, type: 'shop') }}" 
+                                    src="{{ getStorageImages(path: $product?->brand?->image_full_url, type: 'shop') }}" 
                                     alt="Brand" 
                                     style="width: 100%; height: 100%; object-fit: cover;"
                                 >
@@ -58,8 +58,6 @@
                         </div>
                     </a>
                 </div>
-
-
             <div class="quick-view" style="margin: 0; padding: 0;">
                 <a class="btn-circle stopPropagation action-product-quick-view" href="{{route('product',$product->slug)}}">
                     <i class="czi-eye align-middle"></i>
