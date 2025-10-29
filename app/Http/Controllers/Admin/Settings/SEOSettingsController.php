@@ -56,12 +56,23 @@ class SEOSettingsController extends BaseController
         return redirect()->back();
     }
 
-    public function getRobotTxtView(): View
+    public function getRobotTxtView(Request $request): View
     {
-        $path = DOMAIN_POINTED_DIRECTORY == 'public' ? public_path('robots.txt') : base_path('robots.txt');
+        $host = $request->getHost();
+
+        if ($host === 'door.kg') {
+            $fileName = 'robots.txt_door.kg';
+        } else {
+            $fileName = 'robots.txt';
+        }
+
+        $path = DOMAIN_POINTED_DIRECTORY == 'public' ? public_path($fileName) : base_path($fileName);
         $content = File::exists($path) ? File::get($path) : '';
-        return view(SEOSettings::ROBOT_TXT[VIEW], compact('content', 'path'));
+
+        return view(SEOSettings::ROBOT_TXT[VIEW], compact('content', 'path', 'fileName'));
     }
+
+
 
     public function updateRobotText(Request $request): RedirectResponse
     {
@@ -69,13 +80,25 @@ class SEOSettingsController extends BaseController
             Toastr::error(translate('you_can_not_update_this_on_demo_mode'));
             return redirect()->back();
         }
+
+        $domain = $request->getHost(); 
         $content = $request->input('robot_text');
-        $path = DOMAIN_POINTED_DIRECTORY == 'public' ? public_path('robots.txt') : base_path('robots.txt');
+
+        if ($domain === 'dmarket.kg') {
+            $path = public_path('robots.txt');
+        } elseif ($domain === 'door.kg') {
+            $path = public_path('robots.txt_door.kg');
+        } else {
+            $path = public_path('robots.txt');
+        }
+
         if (!File::exists($path)) {
             File::put($path, '');
         }
+
         File::put($path, $content);
         Toastr::success(translate('updated_successfully'));
         return redirect()->back();
     }
+
 }
