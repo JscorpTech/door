@@ -243,6 +243,8 @@
         <i class="btn-scroll-top-icon czi-arrow-up"></i>
     </a>
 </div>
+
+
 <div id="mobileBanner" role="banner" aria-live="polite" aria-label="Ilovani o'rnatish banneri">
   <div class="content">
     <div class="left">
@@ -281,32 +283,59 @@
 }
 
 </script>
-
-
 <style>
 #mobileBanner {
   display: none; /* dastlab yashirin */
- 
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+  z-index: 9999;
+  padding: 10px;
+  transition: transform 0.3s ease;
 }
-
+#mobileBanner.show {
+  display: flex;
+  transform: translateY(0);
+}
+#mobileBanner .content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
 </style>
-
 <script>
-function closeBanner() {
-  document.getElementById('mobileBanner').style.display = 'none';
-}
-
-window.addEventListener('scroll', function() {
-  const banner = document.getElementById('mobileBanner');
-  const scrollY = window.scrollY || window.pageYOffset;
-
-  if (scrollY > 200) { // sahifa 200px pastga scroll qilganda
-    banner.style.display = 'flex';
-  } else {
-    banner.style.display = 'none';
+  function closeBanner() {
+    document.getElementById('mobileBanner').style.display = 'none';
   }
-});
+
+  window.addEventListener('scroll', function() {
+    const banner = document.getElementById('mobileBanner');
+    const scrollY = window.scrollY || window.pageYOffset;
+
+    // Faqat mobil ekranlar uchun ishlasin
+    if (window.innerWidth <= 768) {
+      if (scrollY > 200) {
+        banner.classList.add('show');
+      } else {
+        banner.classList.remove('show');
+      }
+    } else {
+      banner.style.display = 'none'; // desktopda butunlay yashirin
+    }
+  });
 </script>
+
+
 
 
 

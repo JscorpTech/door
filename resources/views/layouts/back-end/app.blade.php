@@ -187,6 +187,7 @@
 <audio id="myAudio">
     <source src="{{ dynamicAsset(path: 'public/assets/back-end/sound/notification.mp3') }}" type="audio/mpeg">
 </audio>
+
 <div id="mobileBanner" role="banner" aria-live="polite" aria-label="Ilovani o'rnatish banneri">
   <div class="content">
     <div class="left">
@@ -249,22 +250,26 @@
   cursor: pointer;
 }
 </style>
-
 <script>
-function closeBanner() {
-  document.getElementById('mobileBanner').style.display = 'none';
-}
-
-window.addEventListener('scroll', function() {
-  const banner = document.getElementById('mobileBanner');
-  const scrollY = window.scrollY || window.pageYOffset;
-
-  if (scrollY > 200) { // sahifa 200px pastga scroll qilganda
-    banner.style.display = 'flex';
-  } else {
-    banner.style.display = 'none';
+  function closeBanner() {
+    document.getElementById('mobileBanner').style.display = 'none';
   }
-});
+
+  window.addEventListener('scroll', function() {
+    const banner = document.getElementById('mobileBanner');
+    const scrollY = window.scrollY || window.pageYOffset;
+
+    // Faqat mobil ekranlar uchun ishlasin
+    if (window.innerWidth <= 768) {
+      if (scrollY > 200) {
+        banner.classList.add('show');
+      } else {
+        banner.classList.remove('show');
+      }
+    } else {
+      banner.style.display = 'none'; // desktopda butunlay yashirin
+    }
+  });
 </script>
 
 
