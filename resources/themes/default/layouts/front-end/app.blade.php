@@ -30,6 +30,68 @@
     <link rel="stylesheet" href="{{ theme_asset(path: 'public/assets/back-end/vendor/icon-set/style.css') }}">
     <link rel="stylesheet" href="{{ theme_asset(path: 'public/assets/front-end/css/owl.carousel.min.css') }}">
 
+
+
+   <!-- SEO -->
+
+   <!-- DMARKET.KG — SEO ДОБАВЛЕНИЕ (append-only, безопасно) -->
+  <link rel="canonical" href="https://dmarket.kg">
+  <link rel="alternate" hreflang="ru" href="https://dmarket.kg/">
+  <link rel="alternate" hreflang="x-default" href="https://dmarket.kg/">
+
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://dmarket.kg/#organization",
+    "name": "Dmarket.kg",
+    "url": "https://dmarket.kg/",
+    "logo": "https://dmarket.kg/storage/app/public/company/2025-07-17-68789491c139d.webp",
+    "sameAs": [
+      "https://www.instagram.com/dmarket.kg",
+      "https://t.me/dmarketkgs",
+      "https://www.youtube.com/@Dmarket-kg"
+    ],
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "telephone": "+996552844777",
+      "contactType": "customer service",
+      "areaServed": "KG",
+      "availableLanguage": ["ru","ky"]
+    }]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://dmarket.kg/#localbusiness",
+    "name": "Dmarket.kg",
+    "url": "https://dmarket.kg/",
+    "image": "https://dmarket.kg/storage/app/public/company/2025-07-17-68789491c139d.webp",
+    "telephone": ["+996552844777","+996556844777"],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "г. Бишкек",
+      "addressLocality": "Бишкек",
+      "addressRegion": "Чуйская область",
+      "postalCode": "720038",
+      "addressCountry": "KG"
+    },
+    "areaServed": "KG",
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "00:00",
+      "closes": "23:59"
+    }]
+  }
+  </script>
+  <!-- /append-only -->
+
     @stack('css_or_js')
 
     @include(VIEW_FILE_NAMES['robots_meta_content_partials'])

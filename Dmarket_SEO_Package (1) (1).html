@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dmarket.kg — SEO Пакет для разработчиков (безопасно для админки)</title>
+<style>
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,sans-serif;margin:0;padding:24px;line-height:1.6;color:#0f172a;background:#f8fafc}
+  h1,h2,h3{color:#0b1220;margin:0 0 12px}
+  h1{font-size:28px;margin-bottom:16px}
+  h2{font-size:20px;margin-top:28px}
+  code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  pre{background:#0b1220;color:#e2e8f0;padding:16px;border-radius:12px;overflow:auto}
+  .note{background:#ecfeff;border-left:4px solid #06b6d4;padding:12px;border-radius:8px}
+  .ok{background:#ecfdf5;border-left:4px solid #10b981;padding:12px;border-radius:8px}
+  .warn{background:#fff7ed;border-left:4px solid #f59e0b;padding:12px;border-radius:8px}
+  .small{opacity:.85}
+  .box{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin:16px 0}
+  .muted{color:#475569}
+  ol,ul{margin:0 0 0 18px}
+</style>
+</head>
+<body>
+<h1>DMARKET.KG — Единый SEO-файл (безопасно для админки)</h1>
+<div class="note">
+  <strong>Задача:</strong> добавить SEO-настройки, не ломая связку с админкой и не меняя дизайн.
+  Варианты внедрения ниже. Рекомендуемый — <strong>Вариант B (append-only)</strong>.
+</div>
+
+<h2>Куда вставлять</h2>
+<div class="box">
+<ol>
+  <li>Откройте шаблон, где находится тег <code>&lt;head&gt;</code>.</li>
+  <li><strong>Вариант A (замена):</strong> замените содержимое между <code>&lt;head&gt;...&lt;/head&gt;</code> на блок ниже «Вариант A».<br>
+      Подходит, если админка разрешает редактировать весь head.</li>
+  <li><strong>Вариант B (append-only):</strong> если замена рискованна, просто вставьте блок ниже «Вариант B» <u>сразу перед</u> строкой <code>&lt;/head&gt;</code>.
+      Ничего не удаляйте. Это безопасно для админки.</li>
+</ol>
+</div>
+
+<h2>Важно</h2>
+<ul class="small muted">
+  <li>Все теги в пакетах — невидимы для пользователей (meta/link/script JSON-LD).</li>
+  <li>Не трогает CSS/JS и верстку. Дизайн не меняется.</li>
+  <li>Маркет круглосуточный — в JSON‑LD указан режим <strong>00:00–23:59</strong> для всех дней.</li>
+</ul>
+
+<h2>Вариант A — Полная замена содержимого &lt;head&gt; (если разрешено)</h2>
+<pre>&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+
+  &lt;title&gt;Dmarket.kg — Маркетплейс Кыргызстана | Оптом и в розницу с рынков Дордой и Ош&lt;/title&gt;
+  &lt;meta name="description" content="Продавцы с рынков Дордой и Ош теперь онлайн на Dmarket.kg — маркетплейсе Кыргызстана. Оптом и в розницу, поставщики, доставка по всей стране и СНГ."&gt;
+  &lt;meta name="robots" content="index, follow"&gt;
+
+  &lt;!-- Canonical + hreflang --&gt;
+  &lt;link rel="canonical" href="https://dmarket.kg/"&gt;
+  &lt;link rel="alternate" hreflang="ru" href="https://dmarket.kg/"&gt;
+  &lt;link rel="alternate" hreflang="x-default" href="https://dmarket.kg/"&gt;
+
+  &lt;!-- Sitemap reference --&gt;
+  &lt;link rel="sitemap" type="application/xml" href="https://dmarket.kg/sitemap.xml"&gt;
+
+  &lt;!-- Open Graph --&gt;
+  &lt;meta property="og:type" content="website"&gt;
+  &lt;meta property="og:site_name" content="Dmarket.kg"&gt;
+  &lt;meta property="og:locale" content="ru_RU"&gt;
+  &lt;meta property="og:url" content="https://dmarket.kg/"&gt;
+  &lt;meta property="og:title" content="Dmarket.kg — Маркетплейс Кыргызстана | Оптовая и розничная торговля"&gt;
+  &lt;meta property="og:description" content="Dmarket.kg — площадка для оптовых и розничных продаж. Продавцы с рынков Дордой и Ош теперь онлайн! Доставка по всей стране и СНГ."&gt;
+  &lt;meta property="og:image" content="https://dmarket.kg/static/logo.png"&gt;
+
+  &lt;!-- Twitter --&gt;
+  &lt;meta name="twitter:card" content="summary_large_image"&gt;
+  &lt;meta name="twitter:title" content="Dmarket.kg — Маркетплейс Кыргызстана"&gt;
+  &lt;meta name="twitter:description" content="Оптовая и розничная торговля, продавцы с рынков Дордой и Ош онлайн."&gt;
+  &lt;meta name="twitter:image" content="https://dmarket.kg/static/logo.png"&gt;
+
+  &lt;!-- Icons (пути заменить на реальные при необходимости) --&gt;
+  &lt;link rel="icon" href="/favicon.ico" sizes="any"&gt;
+  &lt;link rel="icon" type="image/png" sizes="32x32" href="https://dmarket.kg/static/favicon-32.png"&gt;
+  &lt;link rel="apple-touch-icon" sizes="180x180" href="https://dmarket.kg/static/apple-touch-icon.png"&gt;
+
+  &lt;!-- Schema.org — Organization --&gt;
+  &lt;script type="application/ld+json"&gt;{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://dmarket.kg/#organization",
+    "name": "Dmarket.kg",
+    "url": "https://dmarket.kg/",
+    "logo": "https://dmarket.kg/static/logo.png",
+    "sameAs": [
+      "https://www.instagram.com/dmarket.kg?igsh=MWJucnJxanhhMjNsMQ==",
+      "https://t.me/dmarketkgs",
+      "https://whatsapp.com/channel/0029Vb6Vqly1noz53n5zsN2Q",
+      "https://www.youtube.com/@Dmarket-kg"
+    ],
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "telephone": "+996552844777",
+      "contactType": "customer service",
+      "areaServed": "KG",
+      "availableLanguage": ["ru","ky"]
+    },{
+      "@type": "ContactPoint",
+      "telephone": "+996556844777",
+      "contactType": "sales",
+      "areaServed": "KG",
+      "availableLanguage": ["ru","ky"]
+    }]
+  }&lt;/script&gt;
+
+  &lt;!-- Schema.org — LocalBusiness (24/7) --&gt;
+  &lt;script type="application/ld+json"&gt;{
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://dmarket.kg/#localbusiness",
+    "name": "Dmarket.kg",
+    "url": "https://dmarket.kg/",
+    "image": "https://dmarket.kg/static/logo.png",
+    "telephone": ["+996552844777", "+996556844777"],
+    "address": {
+      "@type":"PostalAddress",
+      "streetAddress":"г. Бишкек",
+      "addressLocality":"Бишкек",
+      "addressRegion":"Чуйская область",
+      "postalCode":"720038",
+      "addressCountry":"KG"
+    },
+    "areaServed":"KG",
+    "openingHoursSpecification":[{
+      "@type":"OpeningHoursSpecification",
+      "dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens":"00:00",
+      "closes":"23:59"
+    }],
+    "sameAs":[
+      "https://www.instagram.com/dmarket.kg?igsh=MWJucnJxanhhMjNsMQ==",
+      "https://t.me/dmarketkgs",
+      "https://whatsapp.com/channel/0029Vb6Vqly1noz53n5zsN2Q",
+      "https://www.youtube.com/@Dmarket-kg"
+    ]
+  }&lt;/script&gt;
+&lt;/head&gt;</pre>
+
+<h2>Вариант B — Безопасная вставка перед &lt;/head&gt; (append-only)</h2>
+<div class="ok">Рекомендуется, если замена всего head может повлиять на админку. Просто добавьте этот блок в самом конце, <strong>перед</strong> строкой <code>&lt;/head&gt;</code>.</div>
+<pre>&lt;!-- DMARKET.KG — SEO ДОБАВЛЕНИЕ (append-only, безопасно) --&gt;
+&lt;link rel="canonical" href="https://dmarket.kg"&gt;
+&lt;link rel="alternate" hreflang="ru" href="https://dmarket.kg/"&gt;
+&lt;link rel="alternate" hreflang="x-default" href="https://dmarket.kg/"&gt;
+
+&lt;meta name="twitter:card" content="summary_large_image"&gt;
+
+&lt;script type="application/ld+json"&gt;{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://dmarket.kg/#organization",
+  "name": "Dmarket.kg",
+  "url": "https://dmarket.kg/",
+  "logo": "https://dmarket.kg/storage/app/public/company/2025-07-17-68789491c139d.webp",
+  "sameAs": [
+    "https://www.instagram.com/dmarket.kg",
+    "https://t.me/dmarketkgs",
+    "https://www.youtube.com/@Dmarket-kg"
+  ],
+  "contactPoint": [{
+    "@type": "ContactPoint",
+    "telephone": "+996552844777",
+    "contactType": "customer service",
+    "areaServed": "KG",
+    "availableLanguage": ["ru","ky"]
+  }]
+}&lt;/script&gt;
+
+&lt;script type="application/ld+json"&gt;{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://dmarket.kg/#localbusiness",
+  "name": "Dmarket.kg",
+  "url": "https://dmarket.kg/",
+  "image": "https://dmarket.kg/storage/app/public/company/2025-07-17-68789491c139d.webp",
+  "telephone": ["+996552844777","+996556844777"],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "г. Бишкек",
+    "addressLocality": "Бишкек",
+    "addressRegion": "Чуйская область",
+    "postalCode": "720038",
+    "addressCountry": "KG"
+  },
+  "areaServed": "KG",
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "00:00",
+    "closes": "23:59"
+  }]
+}&lt;/script&gt;
+&lt;!-- /append-only --&gt;</pre>
+
+<h2>Рекомендации (необязательные, можно позже)</h2>
+<ul>
+  <li>Проверьте, чтобы не было 2+ одинаковых мета-тегов <code>description</code>, <code>robots</code>, <code>og:image</code>. Дубли можно оставить на первое время, но лучше чистить постепенно.</li>
+  <li>Убедитесь, что <code>twitter:card</code> имеет значение <code>summary_large_image</code> (не URL).</li>
+  <li>Используйте одну актуальную картинку 1200×630 для <code>og:image</code> и <code>twitter:image</code>.</li>
+</ul>
+
+<h2>Дополнительно (опционально, для корня сайта)</h2>
+<div class="box">
+<p class="muted">Если их нет — добавьте в корень сайта:</p>
+<h3>robots.txt</h3>
+<pre>User-agent: *
+Allow: /
+Sitemap: https://dmarket.kg/sitemap.xml</pre>
+
+<h3>sitemap.xml (пример каркаса)</h3>
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://dmarket.kg/&lt;/loc&gt;
+    &lt;changefreq&gt;daily&lt;/changefreq&gt;
+    &lt;priority&gt;1.0&lt;/priority&gt;
+  &lt;/url&gt;
+  &lt;!-- категории и товары добавляйте генератором --&gt;
+&lt;/urlset&gt;</pre>
+</div>
+
+<hr>
+<p class="small muted">Dmarket.kg • SEO пакет подготовлен для круглосуточного маркетплейса. Все блоки — невидимы для пользователей и безопасны для админки.</p>
+</body>
+</html>
