@@ -963,13 +963,11 @@
 
             var zoomIcon = easyzoomEl.querySelector('.zoom-icon');
             zoomIcon.addEventListener('click', function() {
-                // Faqat ikonani bosganda zoom ishga tushadi
-                $easyzoom.show(); // EasyZoom API chaqirish
+                $easyzoom.show(); 
             });
         });
     </script>
     <script src="{{ theme_asset('assets/js/product-details.js') }}"></script>
-    <!-- <script src="{{ theme_asset('assets/plugins/easyzoom/easyzoom.min.js') }}"></script> -->
     <script>
         'use strict';
         $(".easyzoom").each(function () {

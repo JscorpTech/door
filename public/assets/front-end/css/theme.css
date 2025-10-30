@@ -17894,30 +17894,7 @@ html:not([dir="rtl"]) .cz-range-slider-ui.noUi-horizontal .noUi-handle {
     overflow: hidden;
 }
 
-.zoom-icon {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    font-size: 26px; /* icon kattaligi */
-    color: #fff;
-    background: linear-gradient(145deg, rgba(0,0,0,0.7), rgba(0,0,0,0.4));
-    border-radius: 50%;
-    padding: 12px;
-    cursor: pointer;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-}
 
-/* Hover effekti */
-.zoom-icon:hover {
-    background: linear-gradient(145deg, rgba(0,0,0,0.9), rgba(50,50,50,0.6));
-    transform: scale(1.2) rotate(10deg);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.5);
-}
 
 
 .zoom-icon svg {
