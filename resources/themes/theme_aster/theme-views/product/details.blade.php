@@ -97,7 +97,7 @@
                                                                                     src="{{ getStorageImages(path: $photo, type:'product') }}">
                                                                             </a>
                                                                             <!-- Zoom icon -->
-                                                                            <span class="zoom-icon" title="Click to zoom">
+                                                                            <span class="zoom-icons" title="Click to zoom">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                                                                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                                                                                 </svg>
@@ -115,7 +115,7 @@
                                                                                 display: block;
                                                                             }
 
-                                                                            .zoom-icon {
+                                                                            .zoom-icons {
                                                                                 position: absolute;
                                                                                 top: 10px;
                                                                                 right: 10px;
@@ -127,7 +127,7 @@
                                                                                 transition: background 0.3s;
                                                                             }
 
-                                                                            .zoom-icon:hover {
+                                                                            .zoom-icons:hover {
                                                                                 background: rgba(255, 255, 255, 1);
                                                                             }
 
@@ -961,7 +961,7 @@
         document.querySelectorAll('.easyzoom').forEach(function(easyzoomEl) {
             var $easyzoom = new EasyZoom(easyzoomEl);
 
-            var zoomIcon = easyzoomEl.querySelector('.zoom-icon');
+            var zoomIcon = easyzoomEl.querySelector('.zoom-icons');
             zoomIcon.addEventListener('click', function() {
                 $easyzoom.show(); 
             });
