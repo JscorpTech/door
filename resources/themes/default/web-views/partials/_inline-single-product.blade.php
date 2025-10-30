@@ -55,7 +55,7 @@
                 background: #fff;
             ">
                 <img 
-                    src="{{ getStorageImages(path: $product?->seller?->shop->image_full_url, type: 'shop') }}" 
+                    src="{{ getStorageImages(path: $product?->brand->image_full_url, type: 'shop') }}" 
                     alt="Brand" 
                     style="width: 100%; height: 100%; object-fit: cover;"
                 >

@@ -15,50 +15,50 @@
                 </div>
             @endif
             <div class="p-10px pb-0" style="position: relative;">
-    <a href="{{ route('product', $product->slug) }}" class="w-100 d-block" style="position: relative; display: block;">
-        <div style="
-            aspect-ratio: 3 / 4;
-            width: 100%;
-            overflow: hidden;
-            border-radius: 12px;
-            background: #fff;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            position: relative;
-        ">
-            <img 
-                alt="{{ $product->name ?? '' }}"
-                src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
-                style="
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    object-position: center;
-                    transition: transform 0.3s ease;
-                "
-            >
+                <a href="{{ route('product', $product->slug) }}" class="w-100 d-block" style="position: relative; display: block;">
+                    <div style="
+                        aspect-ratio: 3 / 4;
+                        width: 100%;
+                        overflow: hidden;
+                        border-radius: 12px;
+                        background: #fff;
+                        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+                        position: relative;
+                    ">
+                        <img 
+                            alt="{{ $product->name ?? '' }}"
+                            src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
+                            style="
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                object-position: center;
+                                transition: transform 0.3s ease;
+                            "
+                        >
 
-            <!-- Brend logotipi: pastki o'ng -->
-            <div style="
-                position: absolute;
-                bottom: 10px;
-                right: 10px;
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                overflow: hidden;
-                border: 2px solid #fff;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-                background: #fff;
-            ">
-                <img 
-                    src="{{ getStorageImages(path: $product?->seller?->shop->image_full_url, type: 'shop') }}" 
-                    alt="Brand" 
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                >
+                        <!-- Brend logotipi: pastki o'ng -->
+                        <div style="
+                            position: absolute;
+                            bottom: 10px;
+                            right: 10px;
+                            width: 60px;
+                            height: 60px;
+                            border-radius: 50%;
+                            overflow: hidden;
+                            border: 2px solid #fff;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                            background: #fff;
+                        ">
+                            <img 
+                                src="{{ getStorageImages(path: $product?->brand->image_full_url, type: 'shop') }}" 
+                                alt="Brand" 
+                                style="width: 100%; height: 100%; object-fit: cover;"
+                            >
+                        </div>
+                    </div>
+                </a>
             </div>
-        </div>
-    </a>
-</div>
 
 
             <div class="quick-view">
