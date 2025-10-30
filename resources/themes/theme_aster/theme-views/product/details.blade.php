@@ -957,18 +957,25 @@
 @endsection
 
 @push('script')
-<script src="{{ theme_asset('assets/plugins/easyzoom/easyzoom.min.js') }}"></script>
-<script>
-    document.querySelectorAll('.easyzoom').forEach(function(easyzoomEl) {
-        // EasyZoom instance yaratish
-        var $easyzoom = new EasyZoom(easyzoomEl);
+    <script>
+        document.querySelectorAll('.easyzoom').forEach(function(easyzoomEl) {
+            var $easyzoom = new EasyZoom(easyzoomEl);
 
-        var zoomIcon = easyzoomEl.querySelector('.zoom-icon');
-        zoomIcon.addEventListener('click', function() {
-            // Faqat ikonani bosganda zoom ishga tushadi
-            easyzoomEl.querySelector('a').click(); // linkni click qilib zoomni ishga tushirish
+            var zoomIcon = easyzoomEl.querySelector('.zoom-icon');
+            zoomIcon.addEventListener('click', function() {
+                // Faqat ikonani bosganda zoom ishga tushadi
+                $easyzoom.show(); // EasyZoom API chaqirish
+            });
         });
-    });
-</script>
-<script src="{{ theme_asset('assets/js/product-details.js') }}"></script>
+    </script>
+    <script src="{{ theme_asset('assets/js/product-details.js') }}"></script>
+    <!-- <script src="{{ theme_asset('assets/plugins/easyzoom/easyzoom.min.js') }}"></script> -->
+    <script>
+        'use strict';
+        $(".easyzoom").each(function () {
+            $(this).easyZoom();
+        });
+        getVariantPrice(".add-to-cart-details-form");
+        getVariantPrice(".add-to-cart-sticky-form");
+    </script>
 @endpush
