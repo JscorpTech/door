@@ -79,102 +79,67 @@
                                                     </div>
                                                 </div>
 
-                                              @if($product->images!=null && count($product->images_full_url)>0)
-    <div class="swiper-wrapper">
-        @if(json_decode($product->colors) && count($product->color_images_full_url)>0)
-            @foreach ($product->color_images_full_url as $key => $photo)
-                <div class="swiper-slide position-relative" id="preview-box-{{ $photo['color'] }}">
-                    @if (getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
-                        <span class="product__discount-badge">
-                            -{{ getProductPriceByType(product: $product, type: 'discount', result: 'string') }}
-                        </span>
-                    @endif
-                    <div class="easyzoom easyzoom--overlay">
-                        <a href="{{ getStorageImages(path:$photo['image_name'], type:'product') }}">
-                            <img class="dark-support rounded" alt=""
-                                 src="{{ getStorageImages(path:$photo['image_name'], type:'product') }}">
-                        </a>
-                        <!-- Zoom icon -->
-                        <button class="zoom-icon">
-                            <!-- Siz SVG ikon qo'shishingiz mumkin -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                 class="bi bi-zoom-in" viewBox="0 0 16 16">
-                                <path d="M6.5 12a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 1A6.5 6.5 0 1 0 6.5.5 6.5 6.5 0 0 0 6.5 13z"/>
-                                <path d="M10.344 10.344a.5.5 0 0 1-.708 0L6.5 7.207 5.854 7.854l3.136 3.136a.5.5 0 0 1 0 .708z"/>
-                                <path d="M6.5 4a.5.5 0 0 1 .5.5v1.5h1.5a.5.5 0 0 1 0 1H7v1.5a.5.5 0 0 1-1 0V7H4.5a.5.5 0 0 1 0-1H6V4.5a.5.5 0 0 1 .5-.5z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            @endforeach
-        @else
-            @foreach ($product->images_full_url as $key => $photo)
-                <div class="swiper-slide position-relative">
-                    @if (getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
-                        <span class="product__discount-badge">
-                            -{{ getProductPriceByType(product: $product, type: 'discount', result: 'string') }}
-                        </span>
-                    @endif
-                    <div class="easyzoom easyzoom--overlay">
-                        <a href="{{ getStorageImages(path: $photo, type:'product') }}">
-                            <img class="dark-support rounded" alt=""
-                                 src="{{ getStorageImages(path: $photo, type:'product') }}">
-                        </a>
-                        <button class="zoom-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                 class="bi bi-zoom-in" viewBox="0 0 16 16">
-                                <path d="M6.5 12a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 1A6.5 6.5 0 1 0 6.5.5 6.5 6.5 0 0 0 6.5 13z"/>
-                                <path d="M10.344 10.344a.5.5 0 0 1-.708 0L6.5 7.207 5.854 7.854l3.136 3.136a.5.5 0 0 1 0 .708z"/>
-                                <path d="M6.5 4a.5.5 0 0 1 .5.5v1.5h1.5a.5.5 0 0 1 0 1H7v1.5a.5.5 0 0 1-1 0V7H4.5a.5.5 0 0 1 0-1H6V4.5a.5.5 0 0 1 .5-.5z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            @endforeach
-        @endif
-    </div>
-@endif
-
-<!-- CSS -->
-<style>
-.easyzoom {
-    position: relative;
-}
-.zoom-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(255,255,255,0.8);
-    border: none;
-    border-radius: 50%;
-    padding: 5px;
-    cursor: pointer;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.zoom-icon svg {
-    width: 20px;
-    height: 20px;
-}
-</style>
-
-<!-- JS -->
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll('.easyzoom').forEach(function(easyzoomEl) {
-        var $easyzoom = new EasyZoom(easyzoomEl);
-        var easyzoomApi = $easyzoom.data('easyZoom');
-
-        var zoomIcon = easyzoomEl.querySelector('.zoom-icon');
-        zoomIcon.addEventListener('click', function(e) {
-            e.stopPropagation(); // boshqa eventlarni to‘xtatish
-            easyzoomApi.show(); // faqat ikon bosilganda zoom
-        });
-    });
-});
-</script>
+                                                @if($product->images!=null && count($product->images_full_url)>0)
+                                                    <div class="swiper-wrapper">
+                                                        @if(json_decode($product->colors) && count($product->color_images_full_url)>0)
+                                                            @foreach ($product->color_images_full_url as $key => $photo)
+                                                                @if($photo['color'] != null)
+                                                                    <div class="swiper-slide position-relative"
+                                                                         id="preview-box-{{ $photo['color'] }}">
+                                                                        @if (getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
+                                                                            <span class="product__discount-badge">
+                                                                                <span>
+                                                                                    -{{ getProductPriceByType(product: $product, type: 'discount', result: 'string') }}
+                                                                                </span>
+                                                                            </span>
+                                                                        @endif
+                                                                        <div class="easyzoom easyzoom--overlay">
+                                                                            <a href="{{ getStorageImages(path:$photo['image_name'], type:'product') }}">
+                                                                                <img class="dark-support rounded" alt=""
+                                                                                    src="{{ getStorageImages(path:$photo['image_name'], type:'product') }}">
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                @else
+                                                                    <div class="swiper-slide position-relative"
+                                                                         id="preview-box-{{ $photo['color'] }}">
+                                                                        @if (getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
+                                                                            <span class="product__discount-badge">
+                                                                                <span>
+                                                                                    -{{ getProductPriceByType(product: $product, type: 'discount', result: 'string') }}
+                                                                                </span>
+                                                                            </span>
+                                                                        @endif
+                                                                        <div class="easyzoom easyzoom--overlay">
+                                                                            <a href="{{ getStorageImages(path: $photo['image_name'], type:'product') }}">
+                                                                                <img class="dark-support rounded" alt=""
+                                                                                    src="{{ getStorageImages(path: $photo['image_name'], type:'product') }}">
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            @foreach ($product->images_full_url as $key => $photo)
+                                                                <div class="swiper-slide position-relative">
+                                                                    @if (getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
+                                                                        <span class="product__discount-badge">
+                                                                                <span>
+                                                                                    -{{ getProductPriceByType(product: $product, type: 'discount', result: 'string') }}
+                                                                                </span>
+                                                                            </span>
+                                                                    @endif
+                                                                    <div class="easyzoom easyzoom--overlay">
+                                                                        <a href="{{ getStorageImages(path: $photo, type:'product') }}">
+                                                                            <img class="dark-support rounded" alt=""
+                                                                                src="{{ getStorageImages(path: $photo, type:'product') }}">
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                @endif
 
                                                 @if($product?->preview_file_full_url['path'])
                                                     <div class="product-preview-modal-text"
