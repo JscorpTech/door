@@ -105,6 +105,34 @@
                                                                         </div>
                                                                     </div>
 
+
+                                                                    <style>
+                                                                        .easyzoom {
+                                                                                position: relative;
+                                                                            }
+
+                                                                            .easyzoom img {
+                                                                                display: block;
+                                                                            }
+
+                                                                            .zoom-icon {
+                                                                                position: absolute;
+                                                                                top: 10px;
+                                                                                right: 10px;
+                                                                                cursor: pointer;
+                                                                                background: rgba(255, 255, 255, 0.7);
+                                                                                border-radius: 50%;
+                                                                                padding: 5px;
+                                                                                z-index: 10;
+                                                                                transition: background 0.3s;
+                                                                            }
+
+                                                                            .zoom-icon:hover {
+                                                                                background: rgba(255, 255, 255, 1);
+                                                                            }
+
+                                                                    </style>
+
                                                                 @else
                                                                    <div class="swiper-slide position-relative">
                                                                         @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
@@ -929,6 +957,17 @@
 @endsection
 
 @push('script')
+    <script>
+        document.querySelectorAll('.easyzoom').forEach(function(easyzoomEl) {
+            var $easyzoom = new EasyZoom(easyzoomEl);
+
+            var zoomIcon = easyzoomEl.querySelector('.zoom-icon');
+            zoomIcon.addEventListener('click', function() {
+                // Faqat ikonani bosganda zoom ishga tushadi
+                $easyzoom.show(); // EasyZoom API chaqirish
+            });
+        });
+    </script>
     <script src="{{ theme_asset('assets/js/product-details.js') }}"></script>
     <script src="{{ theme_asset('assets/plugins/easyzoom/easyzoom.min.js') }}"></script>
     <script>
