@@ -878,4 +878,6 @@ return [
 	"Variation_SKU_are_required" => "Variation SKU are required",
 	"Variation_price_are_required" => "Variation price are required",
 	"Please_login_or_register_to_buy_or_add_to_cart" => "Please login or register to buy or add to cart",
+	"[" => "[",
+	"total_Product_Sale" => "Total Product Sale",
 ];
