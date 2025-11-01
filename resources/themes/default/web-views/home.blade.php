@@ -17,33 +17,10 @@
     <link rel="stylesheet" href="{{ theme_asset(path: 'public/assets/front-end/css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ theme_asset(path: 'public/assets/front-end/css/owl.theme.default.min.css') }}">
     <style>
-        img {
-            margin: 0 !important;
-            padding: 0 !important;
-            display: block !important;
-        }
 
         .owl-carousel .owl-item {
             margin: 0 3px !important; 
         }
-
-        .row, [class*="col-"] {
-            margin: 0 -3px !important;
-            padding: 0 3px !important; 
-        }
-
-        section {
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        .footer_banner_img, .__inline-63, img[class*="banner"] {
-            width: 100% !important;
-            height: auto !important;
-            border-radius: 4px; 
-        }
-
-        
     </style>
 @endpush
 @section('content')
