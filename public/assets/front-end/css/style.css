@@ -641,7 +641,8 @@ a {
 }
 
 .__img-125px {
-    width: 110px;
+    width: 120px;
+    height: 120px;
     aspect-ratio: 1;
     border-radius: 5px;
     -o-object-fit: cover;

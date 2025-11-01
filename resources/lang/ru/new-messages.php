@@ -880,4 +880,6 @@ return [
 	"Please_login_or_register_to_buy_or_add_to_cart" => "Please login or register to buy or add to cart",
 	"[" => "[",
 	"total_Product_Sale" => "Total Product Sale",
+	"set_the_selling_price_for_each_unit_of_this_product._This_Unit_Price_section_would_not_be_applied_if_you_set_a_variation_wise_price" => "Set the selling price for each unit of this product. This Unit Price section would not be applied if you set a variation wise price",
+	"Скидка не может быть больше или равна цене!" => "Скидка не может быть больше или равна цене!",
 ];

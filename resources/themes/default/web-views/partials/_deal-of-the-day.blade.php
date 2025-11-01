@@ -152,15 +152,15 @@
                         </div>
                     </div>
 
-                    <div class="row mt-0 g-2">
-                        @foreach($latestProductsList as $product)
-                            <div class="col-xl-3 col-sm-4 col-md-6 col-lg-4 col-6">
-                                <div>
-                                    @include('web-views.partials._inline-single-product',['product'=>$product,'decimal_point_settings'=>$decimal_point_settings])
-                                </div>
+                   <div class="row mt-0 g-0" style="margin:0; padding:0; gap:0;">
+                    @foreach($latestProductsList as $product)
+                        <div class="col-xl-3 col-sm-4 col-md-6 col-lg-4 col-6" style="margin:0; padding:2px;">
+                            <div style="margin:0; padding:0;">
+                                @include('web-views.partials._inline-single-product',['product'=>$product,'decimal_point_settings'=>$decimal_point_settings])
                             </div>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endforeach
+                </div>
                 </div>
             </div>
         </div>
