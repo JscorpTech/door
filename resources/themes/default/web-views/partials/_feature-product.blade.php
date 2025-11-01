@@ -16,6 +16,10 @@
 
             <div style="margin: 0; padding: 0; width: 100%;">
                 <a href="{{ route('product', $product->slug) }}" class="d-block w-100" style="position: relative; display: block; margin: 0; padding: 0;">
+                    <pre style="color:red; font-size:14px;">
+                        {{ print_r($product->brand->image_full_url, true) }}
+                    </pre>
+
                     <div style="
                         width: 100%;    
                         aspect-ratio: 3 / 4;
