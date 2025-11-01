@@ -69,7 +69,7 @@
                                                             </svg>
                                                         </span>
                                                         <div class="cz-image-zoom-pane"></div>
-                                                        <script>
+                                                       <script>
                                                             document.addEventListener('DOMContentLoaded', function() {
                                                                 const previewItems = document.querySelectorAll('.product-preview-item');
 
@@ -79,10 +79,11 @@
                                                                     const zoomPane = item.querySelector('.cz-image-zoom-pane');
 
                                                                     if (zoomIcon && img) {
-                                                                        let zoomActive = false;
+                                                                        let zoomActive = false; // 🔹 default holat — zoom o‘chirilgan
+                                                                        zoomPane.style.display = 'none'; // 🔹 panelni ham yashiramiz
 
                                                                         zoomIcon.addEventListener('click', function() {
-                                                                            zoomActive = !zoomActive; // toggle holat
+                                                                            zoomActive = !zoomActive; // toggle qilish
                                                                             if (zoomActive) {
                                                                                 img.classList.add('zoomed');
                                                                                 zoomPane.style.display = 'block';
@@ -97,6 +98,7 @@
                                                                 });
                                                             });
                                                             </script>
+
                                                     </div>
                                                 @endforeach
                                             @endif
