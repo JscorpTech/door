@@ -55,7 +55,7 @@
                                                     @endif
                                                 @endforeach
                                             @else
-                                                @foreach ($product->color_images_full_url as $key => $photo)
+                                                @foreach ($product->images_full_url as $key => $photo)
                                                     <div
                                                         class="product-preview-item d-flex align-items-center justify-content-center {{$key==0?'active':''}}"
                                                         id="image{{$key}}">
