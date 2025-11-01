@@ -1,22 +1,23 @@
 @php($overallRating = getOverallRating($product->reviews))
-<div class="product-single-hover style--card" style="margin:0; padding:0;">
-    <div class="overflow-hidden position-relative" style="margin:0; padding:0;">
-        <div class="inline_product clickable d-flex justify-content-center" style="margin:0; padding:0; gap:0;">
+
+<div class="product-single-hover style--card">
+    <div class="overflow-hidden position-relative">
+        <div class=" inline_product clickable d-flex justify-content-center">
             @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
-                <div class="d-flex" style="margin:0; padding:0;">
-                    <span class="for-discount-value font-bold fs-13">
+                <div class="d-flex">
+                    <span class="for-discount-value p-1 pl-2 pr-2 font-bold fs-13">
                         <span class="direction-ltr d-block">
                             -{{ getProductPriceByType(product: $product, type: 'discount', result: 'string') }}
                         </span>
                     </span>
                 </div>
             @else
-                <div class="d-flex justify-content-end" style="margin:0; padding:0;">
+                <div class="d-flex justify-content-end">
                     <span class="for-discount-value-null"></span>
                 </div>
             @endif
-            <div style="margin:0; padding:0;">
-                <a href="{{ route('product', $product->slug) }}" class="d-block w-100" style="position: relative; display: block; margin:0; padding:0;">
+           <div>
+                <a href="{{ route('product', $product->slug) }}" class="d-block w-100" style="position: relative; display: block;">
                     <div style="
                         width: 100%;
                         aspect-ratio: 3 / 5;
@@ -25,8 +26,6 @@
                         background: #fff;
                         box-shadow: 0 2px 6px rgba(0,0,0,0.05);
                         position: relative;
-                        margin:0;
-                        padding:0;
                     ">
                         <img 
                             alt="{{ $product->name ?? '' }}"
@@ -39,10 +38,10 @@
                                 display: block;
                                 image-rendering: auto;
                                 transition: transform 0.3s ease;
-                                margin:0;
-                                padding:0;
                             "
                         >
+
+                        <!-- Brend logotipi: pastki o'ng -->
                         @if(!empty($product->brand->image_full_url['path']) 
                             && $product->brand->image_full_url['status'] != 404
                             && $product->brand->image_full_url['path'] != 'https://dmarket.kg/storage/app/public/brand/2025-06-24-685acb68c0b0c.webp')
@@ -50,27 +49,27 @@
                                 position: absolute;
                                 bottom: 10px;
                                 right: 10px;
-                                width: 80px;
+                                width: 80px;       /* biroz kattalashtrildi */
                                 height: 80px;
                                 border-radius: 50%;
                                 overflow: hidden;
                                 border: 2px solid #fff;
                                 box-shadow: 0 2px 8px rgba(0,0,0,0.2);
                                 background: #fff;
-                                margin:0;
-                                padding:0;
                             ">
                                 <img 
                                     src="{{ getStorageImages(path: $product?->brand->image_full_url, type: 'shop') }}" 
                                     alt="Brand" 
-                                    style="width: 100%; height: 100%; object-fit: cover; margin:0; padding:0;"
+                                    style="width: 100%; height: 100%; object-fit: cover;"
                                 >
                             </div>
                         @endif
+
                     </div>
                 </a>
             </div>
-            <div class="quick-view" style="margin:0; padding:0;">
+
+            <div class="quick-view">
                 <a class="btn-circle stopPropagation action-product-quick-view" href="{{route('product',$product->slug)}}" >
                     <i class="czi-eye align-middle"></i>
                 </a>
@@ -79,10 +78,10 @@
                 <span class="out_fo_stock">{{translate('out_of_stock')}}</span>
             @endif
         </div>
-        <div class="single-product-details" style="margin:0; padding:0;">
+        <div class="single-product-details">
             @if($overallRating[0] != 0 )
-                <div class="rating-show justify-content-between text-center" style="margin:0; padding:0;">
-                    <span class="d-inline-block font-size-sm text-body" style="margin:0; padding:0;">
+                <div class="rating-show justify-content-between text-center">
+                    <span class="d-inline-block font-size-sm text-body">
                         @for($inc=1;$inc<=5;$inc++)
                             @if ($inc <= (int)$overallRating[0])
                                 <i class="tio-star text-warning"></i>
@@ -96,13 +95,13 @@
                     </span>
                 </div>
             @endif
-            <h3 class="text-center mb-1 letter-spacing-0" style="margin:0; padding:0;">
+            <h3 class="text-center mb-1 letter-spacing-0">
                 <a href="{{route('product',$product->slug)}}">
                     {{ $product['name'] }}
                 </a>
             </h3>
-            <div class="justify-content-between text-center" style="margin:0; padding:0;">
-                <h4 class="product-price text-center d-flex flex-wrap justify-content-center align-items-center gap-8 mb-0 letter-spacing-0" style="margin:0; padding:0;">
+            <div class="justify-content-between text-center">
+                <h4 class="product-price text-center d-flex flex-wrap justify-content-center align-items-center gap-8 mb-0 letter-spacing-0">
                     @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
                         <del class="category-single-product-price">
                             {{ webCurrencyConverter(amount: $product->unit_price) }}
@@ -116,3 +115,5 @@
         </div>
     </div>
 </div>
+
+
