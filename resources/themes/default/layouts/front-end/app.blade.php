@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>@yield('title')</title>
-    <meta name="_token" content="{{csrf_token()}}">
-    <meta name="robots" content="index, follow">
-    <meta property="og:site_name" content="{{ $web_config['company_name'] }}" />
+    <title>Dmarket.kg — Маркетплейс Кыргызстана | Покупай и продавай онлайн</title>
+    <meta name="description" content="Dmarket.kg — маркетплейс Кыргызстана, объединяющий продавцов и покупателей по всей стране. Онлайн-покупки, доставка и безопасные сделки.">
+    <meta property="og:title" content="Dmarket.kg — Маркетплейс Кыргызстана" />
+    <meta property="og:description" content="Покупай и продавай товары с доставкой по Кыргызстану. Dmarket.kg — единая торговая площадка страны." />
 
     <meta name="google-site-verification" content="{{getWebConfig('google_search_console_code')}}">
     <meta name="msvalidate.01" content="{{getWebConfig('bing_webmaster_code')}}">
