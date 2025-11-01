@@ -944,9 +944,6 @@
 
                     <div class="pt-4 pb-3">
                         <h2 class=" __text-16px font-bold text-capitalize"> 
-                            <pre style="color:red; font-size:14px;">
-                                {{ print_r($product->brand->image_full_url, true) }}
-                            </pre>
                             @if(getWebConfig(name: 'business_mode')=='multi')
                                 {{ translate('more_from_the_store')}}
                             @else
