@@ -944,6 +944,7 @@
 
                     <div class="pt-4 pb-3">
                         <h2 class=" __text-16px font-bold text-capitalize"> 
+                           
                             @if(getWebConfig(name: 'business_mode')=='multi')
                                 {{ translate('more_from_the_store')}}
                             @else
