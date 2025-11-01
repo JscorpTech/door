@@ -293,12 +293,15 @@
   background: #fff;
   box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
   z-index: 9999;
-  padding: 10px;
-  transition: transform 0.3s ease;
+  padding: 40px; /* balandligini oshirdik */
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  transform: translateY(100%);
+  opacity: 0;
 }
 #mobileBanner.show {
   display: flex;
   transform: translateY(0);
+  opacity: 1;
 }
 #mobileBanner .content {
   display: flex;
@@ -313,26 +316,32 @@
   cursor: pointer;
 }
 </style>
+
 <script>
-  function closeBanner() {
-    document.getElementById('mobileBanner').style.display = 'none';
+let lastScroll = 0;
+
+function closeBanner() {
+  document.getElementById('mobileBanner').classList.remove('show');
+}
+
+window.addEventListener('scroll', function() {
+  const banner = document.getElementById('mobileBanner');
+  const scrollY = window.scrollY || window.pageYOffset;
+
+  if (window.innerWidth <= 768) { // faqat mobil
+    if (scrollY > 200 && scrollY > lastScroll) {
+      // pastga scroll bo'lsa va 200px dan oshsa banner chiqadi
+      banner.classList.add('show');
+    } else if(scrollY < lastScroll) {
+      // tepaga scroll bo'lsa banner yo'q bo'ladi
+      banner.classList.remove('show');
+    }
+  } else {
+    banner.classList.remove('show'); // desktopda yashirin
   }
 
-  window.addEventListener('scroll', function() {
-    const banner = document.getElementById('mobileBanner');
-    const scrollY = window.scrollY || window.pageYOffset;
-
-    // Faqat mobil ekranlar uchun ishlasin
-    if (window.innerWidth <= 768) {
-      if (scrollY > 200) {
-        banner.classList.add('show');
-      } else {
-        banner.classList.remove('show');
-      }
-    } else {
-      banner.style.display = 'none'; // desktopda butunlay yashirin
-    }
-  });
+  lastScroll = scrollY;
+});
 </script>
 
 
