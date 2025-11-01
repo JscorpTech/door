@@ -68,7 +68,35 @@
                                                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                                                             </svg>
                                                         </span>
-                                                        <!-- <div class="cz-image-zoom-pane"></div> -->
+                                                        <div class="cz-image-zoom-pane"></div>
+                                                        <script>
+                                                            document.addEventListener('DOMContentLoaded', function() {
+                                                                const previewItems = document.querySelectorAll('.product-preview-item');
+
+                                                                previewItems.forEach(item => {
+                                                                    const img = item.querySelector('.cz-image-zoom');
+                                                                    const zoomIcon = item.querySelector('.zoom-icon');
+                                                                    const zoomPane = item.querySelector('.cz-image-zoom-pane');
+
+                                                                    if (zoomIcon && img) {
+                                                                        let zoomActive = false;
+
+                                                                        zoomIcon.addEventListener('click', function() {
+                                                                            zoomActive = !zoomActive; // toggle holat
+                                                                            if (zoomActive) {
+                                                                                img.classList.add('zoomed');
+                                                                                zoomPane.style.display = 'block';
+                                                                                zoomIcon.setAttribute('title', 'Click to close zoom');
+                                                                            } else {
+                                                                                img.classList.remove('zoomed');
+                                                                                zoomPane.style.display = 'none';
+                                                                                zoomIcon.setAttribute('title', 'Click to zoom');
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                });
+                                                            });
+                                                            </script>
                                                     </div>
                                                 @endforeach
                                             @endif
