@@ -68,7 +68,9 @@
                                                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                                                             </svg>
                                                         </span>
-                                                        <!-- <div class="cz-image-zoom-pane"></div> -->
+                                                        <div class="cz-image-zoom-pane"></div>
+
+                                                        
                                                     </div>
                                                 @endforeach
                                             @endif
@@ -1024,6 +1026,46 @@
 
 @push('script')
     <script src="{{ theme_asset(path: 'public/assets/front-end/js/product-details.js') }}"></script>
+    <script>
+         imageZoom: function () {
+            let items = document.querySelectorAll(".product-preview-item");
+
+            items.forEach(item => {
+                const img = item.querySelector(".cz-image-zoom");
+                const pane = item.querySelector(".cz-image-zoom-pane");
+                const icon = item.querySelector(".zoom-icon");
+
+                item.dataset.zoomed = "false";
+
+                icon.addEventListener("click", (e) => {
+                    e.stopPropagation(); 
+
+                    if (!item.classList.contains("active")) return;
+
+                    if(item.dataset.zoomed === "true"){
+                        // Zoom o'chirish
+                        if(item._drift){
+                            item._drift.disable();
+                            item._drift = null;
+                        }
+                        item.dataset.zoomed = "false";
+                    } else {
+                        // Zoom ishga tushirish
+                        item._drift = new Drift(img, {
+                            paneContainer: pane,
+                        });
+                        item.dataset.zoomed = "true";
+                    }
+                });
+
+                // item bosilganda active class berish
+                item.addEventListener("click", () => {
+                    items.forEach(i => i.classList.remove("active"));
+                    item.classList.add("active");
+                });
+            });
+        },
+    </script>
     <script type="text/javascript" async="async"
             src="https://platform-api.sharethis.com/js/sharethis.js#property=5f55f75bde227f0012147049&product=sticky-share-buttons"></script>
 @endpush
