@@ -1,8 +1,6 @@
-@php($overallRating = getOverallRating($product->reviews))
-
-<div class="product-single-hover style--card">
+<div class="product-single-hover style--card" style="border:1px solid #ccc;">
     <div class="overflow-hidden position-relative">
-        <div class=" inline_product clickable d-flex justify-content-center">
+        <div class="inline_product clickable d-flex justify-content-center">
             @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
                 <div class="d-flex">
                     <span class="for-discount-value p-1 pl-2 pr-2 font-bold fs-13">
@@ -41,7 +39,6 @@
                             "
                         >
 
-                        <!-- Brend logotipi: pastki o'ng -->
                         @if(!empty($product->brand->image_full_url['path']) 
                             && $product->brand->image_full_url['status'] != 404
                             && $product->brand->image_full_url['path'] != 'https://dmarket.kg/storage/app/public/brand/2025-06-24-685acb68c0b0c.webp')
@@ -49,7 +46,7 @@
                                 position: absolute;
                                 bottom: 10px;
                                 right: 10px;
-                                width: 80px;       /* biroz kattalashtrildi */
+                                width: 80px;
                                 height: 80px;
                                 border-radius: 50%;
                                 overflow: hidden;
@@ -115,5 +112,3 @@
         </div>
     </div>
 </div>
-
-
