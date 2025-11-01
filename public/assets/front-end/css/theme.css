@@ -17895,6 +17895,104 @@ html:not([dir="rtl"]) .cz-range-slider-ui.noUi-horizontal .noUi-handle {
 }
 
 
+
+
+
+
+
+
+.image-box {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.image-box.is-active {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.zoomable-img {
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+/* 🔍 Zoom icon style */
+.zoom-trigger {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    font-size: 28px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    padding: 12px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.35s ease;
+}
+
+.zoom-trigger:hover {
+    background: rgba(0, 0, 0, 0.55);
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.icon-zoom {
+    width: 26px;
+    height: 26px;
+    fill: #fff;
+    transition: all 0.3s ease;
+}
+
+.zoom-trigger:hover .icon-zoom {
+    fill: #ffd700;
+    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.7));
+}
+
+/* Aktiv holatda icon o'zgarishi */
+.zoom-trigger.is-zoomed {
+    background: rgba(255, 215, 0, 0.7);
+}
+.zoom-trigger.is-zoomed .icon-zoom {
+    fill: #000;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .product-preview-item {
     position: relative; /* juda muhim! zoom-icon uchun kontekst yaratadi */
     overflow: hidden; /* icon chiqib ketmasin */
