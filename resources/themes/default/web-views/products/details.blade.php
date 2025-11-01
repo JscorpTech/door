@@ -55,25 +55,22 @@
                                                     @endif
                                                 @endforeach
                                             @else
-                                                @foreach ($product->images_full_url as $key => $photo)
+                                                <!-- @foreach ($product->images_full_url as $key => $photo) -->
                                                     <div
-                                                        class="image-box d-flex align-items-center justify-content-center {{$key==0?'is-active':''}}"
+                                                        class="product-preview-item d-flex align-items-center justify-content-center {{$key==0?'active':''}}"
                                                         id="image{{$key}}">
-                                                        <img class="zoomable-img img-responsive w-100"
-                                                            src="{{ getStorageImages($photo, type: 'product') }}"
-                                                            data-zoom="{{ getStorageImages(path: $photo, type: 'product') }}"
-                                                            alt="{{ translate('product') }}" width="">
-                                                        <span class="zoom-trigger" title="Click to zoom">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
-                                                                class="icon-zoom" viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                                        <img class="cz-image-zoom img-responsive w-100"
+                                                             src="{{ getStorageImages($photo, type: 'product') }}"
+                                                             data-zoom="{{ getStorageImages(path: $photo, type: 'product') }}"
+                                                             alt="{{ translate('product') }}" width="">
+                                                        <span class="zoom-icon" title="Click to zoom">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                                                             </svg>
                                                         </span>
-                                                        <div class="zoom-pane"></div>
+                                                        <div class="cz-image-zoom-pane"></div>
                                                     </div>
-                                                @endforeach
-
+                                                <!-- @endforeach -->
                                             @endif
                                         @endif
                                     </div>
@@ -1027,53 +1024,6 @@
 
 @push('script')
     <script src="{{ theme_asset(path: 'public/assets/front-end/js/product-details.js') }}"></script>
-    <script>
-         document.addEventListener("DOMContentLoaded", () => {
-            const boxes = document.querySelectorAll(".image-box");
-
-            boxes.forEach(box => {
-                const img = box.querySelector(".zoomable-img");
-                const pane = box.querySelector(".zoom-pane");
-                const trigger = box.querySelector(".zoom-trigger");
-
-                box.dataset.zoomed = "false";
-
-                // Zoom icon bosilganda
-                trigger.addEventListener("click", (e) => {
-                    e.stopPropagation();
-
-                    // Faqat aktiv bo'lsa ishlasin
-                    if (!box.classList.contains("is-active")) return;
-
-                    if (box.dataset.zoomed === "true") {
-                        // Zoomni o'chirish
-                        if (box._drift) {
-                            box._drift.disable();
-                            box._drift = null;
-                        }
-                        box.dataset.zoomed = "false";
-                        trigger.classList.remove("is-zoomed");
-                    } else {
-                        // Zoomni yoqish
-                        box._drift = new Drift(img, {
-                            paneContainer: pane,
-                            inlinePane: false,
-                            hoverBoundingBox: true
-                        });
-                        box.dataset.zoomed = "true";
-                        trigger.classList.add("is-zoomed");
-                    }
-                });
-
-                // Rasm bosilganda aktivlash
-                box.addEventListener("click", () => {
-                    boxes.forEach(b => b.classList.remove("is-active"));
-                    box.classList.add("is-active");
-                });
-            });
-        });
-
-    </script>
     <script type="text/javascript" async="async"
             src="https://platform-api.sharethis.com/js/sharethis.js#property=5f55f75bde227f0012147049&product=sticky-share-buttons"></script>
 @endpush
