@@ -43,27 +43,27 @@
 
                         <!-- Brend logotipi: pastki o'ng -->
                         @if(!empty($product->brand->image_full_url['path']) 
-                            && $product->brand->image_full_url['status'] != 404
-                            && $product->brand->image_full_url['path'] != 'https://dmarket.kg/storage/app/public/brand/2025-06-24-685acb68c0b0c.webp')
-                            <div style="
-                                position: absolute;
-                                bottom: 10px;
-                                right: 10px;
-                                width: 80px;       /* biroz kattalashtrildi */
-                                height: 80px;
-                                border-radius: 50%;
-                                overflow: hidden;
-                                border: 2px solid #fff;
-                                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-                                background: #fff;
-                            ">
-                                <img 
-                                    src="{{ getStorageImages(path: $product?->brand->image_full_url, type: 'shop') }}" 
-                                    alt="Brand" 
-                                    style="width: 100%; height: 100%; object-fit: cover;"
-                                >
-                            </div>
-                        @endif
+                        && $product->brand->image_full_url['status'] != 404
+                        && $product->brand->image_full_url['path'] != 'https://dmarket.kg/storage/app/public/brand/2025-06-24-685acb68c0b0c.webp')
+                        <div style="
+                            position: absolute;
+                            bottom: 10px;
+                            right: 10px;
+                            width: 80px;       /* biroz kattalashtrildi */
+                            height: 80px;
+                            border-radius: 50%;
+                            overflow: hidden;
+                            border: 2px solid #fff;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                            background: #fff;
+                        ">
+                            <img 
+                                src="{{ getStorageImages(path: $product?->brand->image_full_url, type: 'shop') }}" 
+                                alt="Brand" 
+                                style="width: 100%; height: 100%; object-fit: cover;"
+                            >
+                        </div>
+                    @endif
 
                     </div>
                 </a>

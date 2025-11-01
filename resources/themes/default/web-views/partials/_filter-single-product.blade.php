@@ -1,8 +1,8 @@
 @php($overallRating = getOverallRating($product->reviews))
 
-<div class="product-single-hover style--card h-100">
+<div class="product-single-hover style--card h-100" style="border:1px solid #ccc; border-radius:12px;">
     <div class="overflow-hidden position-relative">
-        <div class=" inline_product clickable d-flex justify-content-center">
+        <div class="inline_product clickable d-flex justify-content-center">
             @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
                 <span class="for-discount-value p-1 pl-2 pr-2 font-bold fs-13">
                     <span class="direction-ltr d-block">
@@ -17,7 +17,7 @@
             <div class="p-10px pb-0" style="position: relative;">
                 <a href="{{ route('product', $product->slug) }}" class="w-100 d-block" style="position: relative; display: block;">
                     <div style="
-                        aspect-ratio: 3 / 4;
+                        aspect-ratio: 3 / 5;
                         width: 100%;
                         overflow: hidden;
                         border-radius: 12px;
@@ -38,31 +38,34 @@
                         >
 
                         <!-- Brend logotipi: pastki o'ng -->
-                        <div style="
-                            position: absolute;
-                            bottom: 10px;
-                            right: 10px;
-                            width: 60px;
-                            height: 60px;
-                            border-radius: 50%;
-                            overflow: hidden;
-                            border: 2px solid #fff;
-                            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-                            background: #fff;
-                        ">
-                            <img 
-                                src="{{ getStorageImages(path: $product?->brand->image_full_url, type: 'shop') }}" 
-                                alt="Brand" 
-                                style="width: 100%; height: 100%; object-fit: cover;"
-                            >
-                        </div>
+                        @if(!empty($product->brand->image_full_url['path']) 
+                        && $product->brand->image_full_url['status'] != 404
+                        && $product->brand->image_full_url['path'] != 'https://dmarket.kg/storage/app/public/brand/2025-06-24-685acb68c0b0c.webp')
+                            <div style="
+                                position: absolute;
+                                bottom: 10px;
+                                right: 10px;
+                                width: 80px;
+                                height: 80px;
+                                border-radius: 50%;
+                                overflow: hidden;
+                                border: 2px solid #fff;
+                                box-shadow: 0 2px 8px rgba(50,0,0,0.2);
+                                background: #fff;
+                            ">
+                                <img 
+                                    src="{{ getStorageImages(path: $product?->brand->image_full_url, type: 'shop') }}" 
+                                    alt="Brand" 
+                                    style="width: 100%; height: 100%; object-fit: cover;"
+                                >
+                            </div>
+                        @endif
                     </div>
                 </a>
             </div>
 
-
             <div class="quick-view">
-                <a class="btn-circle stopPropagation action-product-quick-view" href="{{route('product',$product->slug)}}>
+                <a class="btn-circle stopPropagation action-product-quick-view" href="{{route('product',$product->slug)}}">
                     <i class="czi-eye align-middle"></i>
                 </a>
             </div>
