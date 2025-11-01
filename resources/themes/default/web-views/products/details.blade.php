@@ -58,20 +58,17 @@
                                                 @foreach ($product->images_full_url as $key => $photo)
                                                     <div
                                                         class="product-preview-item d-flex align-items-center justify-content-center {{$key==0?'active':''}}"
-                                                        id="image{{$key}}">
+                                                        id="image{{$photo['color']}}">
                                                         <img class="cz-image-zoom img-responsive w-100"
-                                                             src="{{ getStorageImages($photo, type: 'product') }}"
-                                                             data-zoom="{{ getStorageImages(path: $photo, type: 'product') }}"
-                                                             alt="{{ translate('product') }}" width="">
+                                                                src="{{ getStorageImages(path: $photo['image_name'], type: 'product') }}"
+                                                                data-zoom="{{ getStorageImages(path: $photo['image_name'], type: 'product')  }}"
+                                                                alt="{{ translate('product') }}" width="">
                                                         <span class="zoom-icon" title="Click to zoom">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                                                            </svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                                        </svg>
                                                         </span>
-                                                        <div class="cz-image-zoom-pane"></div>
-
-                                                        
-                                                    </div>
+                                                    <div class="cz-image-zoom-pane"></div>
                                                 @endforeach
                                             @endif
                                         @endif
