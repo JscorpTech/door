@@ -43,7 +43,9 @@
                                 padding: 0;
                             "
                         >
-                        @if(!empty($product->brand->image_full_url['path']) && $product->brand->image_full_url['status'] != 404)
+                        @if(!empty($product->brand->image_full_url['path']) 
+                            && $product->brand->image_full_url['status'] != 404
+                            && $product->brand->image_full_url['path'] != 'https://dmarket.kg/storage/app/public/brand/2025-06-24-685acb68c0b0c.webp')
                             <div style="
                                 position: absolute;
                                 bottom: 10px;
