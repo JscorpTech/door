@@ -43,26 +43,26 @@
                             "
                         >
 
-                        @if($product?->brand?->image_full_url)
-                            <div style="
-                                position: absolute;
-                                bottom: 10px;
-                                right: 10px;
-                                width: 60px;
-                                height: 60px;
-                                border-radius: 50%; 
-                                overflow: hidden;
-                                border: 2px solid #fff;
-                                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-                                background: #fff;
-                                margin: 0;
-                                padding: 0;
-                            ">
-                                <img 
-                                    src="{{ getStorageImages(path: $product->brand->image_full_url, type: 'shop') }}" 
-                                    alt="Brand" 
-                                    style="width: 100%; height: 100%; object-fit: cover; margin: 0; padding: 0;"
-                                >
+                        @if(!empty($product->brand) && !empty($product->brand->image_full_url))
+                        <div style="
+                            position: absolute;
+                            bottom: 10px;
+                            right: 10px;
+                            width: 60px;
+                            height: 60px;
+                            border-radius: 50%; 
+                            overflow: hidden;
+                            border: 2px solid #fff;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                            background: #fff;
+                            margin: 0;
+                            padding: 0;
+                        ">
+                            <img 
+                                src="{{ getStorageImages(path: $product->brand->image_full_url, type: 'shop') }}" 
+                                alt="Brand" 
+                                style="width: 100%; height: 100%; object-fit: cover; margin: 0; padding: 0;"
+                            >
                             </div>
                         @endif
 
