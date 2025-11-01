@@ -3,7 +3,6 @@
 <div class="product-single-hover shadow-none rtl" style="margin: 0; padding: 0;">
     <div class="overflow-hidden position-relative" style="margin: 0; padding: 0;">
         <div class="inline_product clickable" style="margin: 0; padding: 0; display: flex; flex-direction: column; width: 100%;">
-            
             @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
                 <span class="for-discount-value p-1 pl-2 pr-2 font-bold fs-13" style="margin: 0;">
                     <span class="direction-ltr d-block">
@@ -13,12 +12,10 @@
             @else
                 <span class="for-discount-value-null" style="margin: 0; padding: 0;"></span>
             @endif
-
+            
             <div style="margin: 0; padding: 0; width: 100%;">
+                
                 <a href="{{ route('product', $product->slug) }}" class="d-block w-100" style="position: relative; display: block; margin: 0; padding: 0;">
-                    <pre style="color:red; font-size:14px;">
-                        {{ print_r($product->brand->image_full_url, true) }}
-                    </pre>
 
                     <div style="
                         width: 100%;    

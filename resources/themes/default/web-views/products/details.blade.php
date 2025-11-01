@@ -13,6 +13,8 @@
             <div class="row {{Session::get('direction') === "rtl" ? '__dir-rtl' : ''}}">
                 <div class="col-lg-9">
                     <div class="row">
+                   
+
                         <div class="col-lg-5 col-md-4">
                             <div class="cz-product-gallery">
                                 <div class="cz-preview">
@@ -942,6 +944,9 @@
 
                     <div class="pt-4 pb-3">
                         <h2 class=" __text-16px font-bold text-capitalize"> 
+                            <pre style="color:red; font-size:14px;">
+                                {{ print_r($product->brand->image_full_url, true) }}
+                            </pre>
                             @if(getWebConfig(name: 'business_mode')=='multi')
                                 {{ translate('more_from_the_store')}}
                             @else

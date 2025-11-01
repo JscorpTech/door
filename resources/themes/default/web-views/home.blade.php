@@ -37,6 +37,7 @@
                 <div class="">
                     <h2 class="feature-product-title mt-0 web-text-primary mb-0 letter-spacing-0">
                         {{ translate('featured_products') }}
+                        
                     </h2>
                     <div class="text-end px-3 d-none d-md-block">
                         <a class="text-capitalize view-all-text web-text-primary" href="{{route('products',['data_from'=>'featured','page'=>1])}}">
