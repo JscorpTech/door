@@ -400,7 +400,7 @@ trait CacheManagerTrait
         return Cache::remember(CACHE_FOR_HOME_PAGE_LATEST_PRODUCT_LIST, CACHE_FOR_3_HOURS, function () {
             $latestProductsList = Product::active()->with(['seller.shop', 'flashDealProducts.flashDeal', 'clearanceSale' => function ($query) {
                 return $query->active();
-            }])->orderBy('id', 'desc')->take(10)->get();
+            }])->orderBy('id', 'desc')->take(12)->get();
             return $this->getUpdateLatestProductWithFlashDeal(latestProducts: $latestProductsList);
         });
     }
