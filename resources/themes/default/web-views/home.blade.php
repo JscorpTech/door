@@ -122,7 +122,7 @@
                     <div class="section-header">
                         <h2 class="arrival-title d-block mb-1">
                             <div class="text-capitalize">
-                                {{ translate('new_arrivals')}}
+                                Yangi 
                             </div>
                         </h2>
                     </div>
