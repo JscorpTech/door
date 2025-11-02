@@ -122,13 +122,12 @@
                     <div class="section-header">
                         <h2 class="arrival-title d-block mb-1">
                             <div class="text-capitalize">
-                                <!-- {{ translate('new_arrivals')}} -->
-                            sa
+                                {{ translate('new_arrivals')}}
                             </div>
                         </h2>
                     </div>
                 </div>
-                <!-- <div class="container rtl mb-3 overflow-hidden">
+                <div class="container rtl mb-3 overflow-hidden">
                     <div class="py-2">
                         <div class="new_arrival_product">
                             <div class="carousel-wrap">
@@ -140,7 +139,7 @@
                             </div>
                         </div>
                     </div>
-                </div> -->
+                </div>
             @endif
 
             <div class="container rtl px-0 px-md-3">
