@@ -10,11 +10,11 @@
         @endif
         <div class=" d-flex">
             <div class="d-flex align-items-center justify-content-center">
-                    <div class="flash-deals-background-image" style="width: 320px; height: 220px; overflow: hidden; border-radius: 8px;">
-                        <img class="__img-125px" 
-                            alt="{{ $product->name }}" 
-                            src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}" 
-                            style="width: 320px; height: 220px; object-fit: cover; border-radius: 8px;">
+                <div class="flash-deals-background-image" style="padding: 3px;">
+                    <img class="__img-125px" 
+                        alt="{{ $product->name }}" 
+                        src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}" 
+                        style="width: 320px; height: 220px; object-fit: cover; border-radius: 8px;">
                 </div>
             </div>
 
