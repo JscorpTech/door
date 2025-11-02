@@ -2780,11 +2780,11 @@ select {
 
 
 
-.__inline-23 .flash-deals-background-image {
+/* .__inline-23 .flash-deals-background-image {
     border-radius: 5px;
     width: 145px;
     height: 155px;
-}
+} */
 
 @media (max-width: 768px) {
     .__inline-23 .feature_header span {
@@ -4173,11 +4173,11 @@ select {
 }
 
 
-.__inline-61 .flash-deals-background-image {
+/* .__inline-61 .flash-deals-background-image {
     border-radius: 5px;
     width: 145px;
     height: 145px;
-}
+} */
 
 .__inline-61 .feature-product-title {
     text-align: center;

@@ -2733,8 +2733,8 @@ a {
     background-color: #ffffff;
     text-transform: uppercase;
 }
-
-/* .__inline-23 .flash-deals-background-image {
+/* 
+.__inline-23 .flash-deals-background-image {
     border-radius: 5px;
     width: 105px;
     height: 105px;
@@ -4126,12 +4126,12 @@ a {
 .__inline-61 .owl-next {
     float: right;
 }
-
+/* 
 .__inline-61 .flash-deals-background-image {
     border-radius: 5px;
     width: 120px;
     height: 190px;
-}
+} */
 
 .__inline-61 .feature-product-title {
     text-align: center;
