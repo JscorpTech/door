@@ -1218,9 +1218,9 @@ a {
 }
 .top-rated-image,
 .product-single-hover .inline_product a,
-.flash-deals-background-image {
+/* .flash-deals-background-image {
     overflow: hidden;
-}
+} */
 
 .footer-web-logo a {
     display: block;
@@ -2734,11 +2734,11 @@ a {
     text-transform: uppercase;
 }
 
-.__inline-23 .flash-deals-background-image {
+/* .__inline-23 .flash-deals-background-image {
     border-radius: 5px;
     width: 105px;
     height: 105px;
-}
+} */
 
 @media (max-width: 768px) {
     .__inline-23 .feature_header span {
