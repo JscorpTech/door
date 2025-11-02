@@ -142,7 +142,7 @@
                 </div>
             @endif
 
-            <!-- <div class="container rtl px-0 px-md-3">
+            <div class="container rtl px-0 px-md-3">
                 <div class="row g-3 mx-max-md-0">
 
                     @if ($bestSellProduct->count() >0)
@@ -153,7 +153,7 @@
                         @include('web-views.partials._top-rated')
                     @endif
                 </div>
-            </div> -->
+            </div>
         </section>
 
 
