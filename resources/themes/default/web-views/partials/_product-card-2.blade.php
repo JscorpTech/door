@@ -8,6 +8,7 @@
                 </span>
             </span>
         @endif
+
         <div class=" d-flex">
             <div class="d-flex align-items-center justify-content-center">
                 <div class="flash-deals-background-image" style="padding: 3px;">
