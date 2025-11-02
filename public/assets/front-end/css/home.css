@@ -847,9 +847,9 @@ html[dir="rtl"] .footer_banner:nth-child(5) {
     background: var(--web-primary-10);
 }
 
-.flash-deals-background-image {
+/* .flash-deals-background-image {
     background: var(--web-primary-10);
-}
+} */
 
 .view-all-text {
     color: var(--web-secondary) !important;
