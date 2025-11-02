@@ -217,7 +217,7 @@
             </section>
         @endif
 
-        <!-- @if ($homeCategories->count() > 0)
+        @if ($homeCategories->count() > 0)
             @foreach($homeCategories as $category)
                 @include('web-views.partials._category-wise-product', ['decimal_point_settings'=>$decimalPointSettings])
             @endforeach
@@ -226,7 +226,7 @@
         @php($companyReliability = getWebConfig(name: 'company_reliability'))
         @if($companyReliability != null)
             @include('web-views.partials._company-reliability')
-        @endif -->
+        @endif
     </div>
 
     <span id="direction-from-session" data-value="{{ session()->get('direction') }}"></span>
