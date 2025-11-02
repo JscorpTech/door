@@ -122,7 +122,7 @@
                     <div class="section-header">
                         <h2 class="arrival-title d-block mb-1">
                             <div class="text-capitalize">
-                                Yangi 
+                                {{ translate('new_arrivals')}}
                             </div>
                         </h2>
                     </div>
@@ -130,13 +130,13 @@
                 <div class="container rtl mb-3 overflow-hidden">
                     <div class="py-2">
                         <div class="new_arrival_product">
-                            <div class="carousel-wrap">
+                            <!-- <div class="carousel-wrap">
                                 <div class="owl-carousel owl-theme new-arrivals-product">
                                     @foreach($newArrivalProducts as $key=> $product)
                                         @include('web-views.partials._product-card-2',['product'=>$product,'decimal_point_settings'=>$decimalPointSettings])
                                     @endforeach
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
