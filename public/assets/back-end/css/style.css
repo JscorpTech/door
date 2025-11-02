@@ -2777,14 +2777,11 @@ select {
     text-transform: uppercase;
 }
 
-
-
-
-/* .__inline-23 .flash-deals-background-image {
+.__inline-23 .flash-deals-background-image {
     border-radius: 5px;
     width: 145px;
     height: 155px;
-} */
+}
 
 @media (max-width: 768px) {
     .__inline-23 .feature_header span {
@@ -4159,25 +4156,11 @@ select {
     float: right;
 }
 
-.flash-deals-background-image {
-    width: 400px !important;
-    height: 300px !important;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.flash-deals-background-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-
-/* .__inline-61 .flash-deals-background-image {
+.__inline-61 .flash-deals-background-image {
     border-radius: 5px;
     width: 145px;
     height: 145px;
-} */
+}
 
 .__inline-61 .feature-product-title {
     text-align: center;
