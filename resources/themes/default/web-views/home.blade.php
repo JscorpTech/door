@@ -80,10 +80,10 @@
                                 <span class="text-left text-nowrap">{{ translate('see_the_latest_deals_and_exciting_new_offers')}}!</span>
                             </div>
                             <div>
-                                <!-- <a class="text-capitalize view-all-text web-text-primary" href="{{route('products',['offer_type'=>'featured_deal'])}}">
+                                <a class="text-capitalize view-all-text web-text-primary" href="{{route('products',['offer_type'=>'featured_deal'])}}">
                                     {{ translate('view_all')}}
                                     <i class="czi-arrow-{{Session::get('direction') === 'rtl' ? 'left mr-1 ml-n1 mt-1' : 'right ml-1'}}"></i>
-                                </a> -->
+                                </a>
                             </div>
                         </div>
                         <div class="owl-carousel owl-theme new-arrivals-product">
@@ -217,7 +217,7 @@
             </section>
         @endif
 
-        @if ($homeCategories->count() > 0)
+        <!-- @if ($homeCategories->count() > 0)
             @foreach($homeCategories as $category)
                 @include('web-views.partials._category-wise-product', ['decimal_point_settings'=>$decimalPointSettings])
             @endforeach
@@ -226,7 +226,7 @@
         @php($companyReliability = getWebConfig(name: 'company_reliability'))
         @if($companyReliability != null)
             @include('web-views.partials._company-reliability')
-        @endif
+        @endif -->
     </div>
 
     <span id="direction-from-session" data-value="{{ session()->get('direction') }}"></span>
