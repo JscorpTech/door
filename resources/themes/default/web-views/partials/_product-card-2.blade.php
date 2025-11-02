@@ -1,6 +1,6 @@
 @if(isset($product))
     @php($overallRating = getOverallRating($product->reviews))
-    <div class="flash_deal_product get-view-by-onclick" data-link="{{ route('product',$product->slug) }}">
+    <div class="flash_de    al_product get-view-by-onclick" data-link="{{ route('product',$product->slug) }}">
         @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
             <span class="for-discount-value p-1 pl-2 pr-2 font-bold fs-13">
                 <span class="direction-ltr d-block">
@@ -10,14 +10,13 @@
         @endif
 
         <div class=" d-flex">
-            <div class="d-flex align-items-center justify-content-center">
-               <div  style="padding: 3px;">
-                    <img class="__img-125px"
-                        alt="{{ $product->name }}"
-                        src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
-                        style="width: 400px; height: 280px; object-fit: cover; border-radius: 8px;">
+            <div class="">
+                <div>
+                    <img class="__img-125px" 
+                        alt="{{ $product->name }}" 
+                        src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}" 
+                        style="width: 320px; height: 220px; object-fit: cover; border-radius: 8px;">
                 </div>
-
             </div>
 
             <div class="flash_deal_product_details pl-3 pr-3 pr-1 d-flex mt-3">
