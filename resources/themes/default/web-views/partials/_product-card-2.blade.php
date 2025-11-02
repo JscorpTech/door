@@ -14,7 +14,7 @@
                     <img class="__img-125px" 
                         alt="{{ $product->name }}" 
                         src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}" 
-                        style="width: 320px; height: 220px; object-fit: cover; border-radius: 8px;">
+                        style="width: 320px !important; height: 220px !important; object-fit: cover; border-radius: 8px;">
                 </div>
             </div>
 
