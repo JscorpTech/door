@@ -130,19 +130,19 @@
                 <div class="container rtl mb-3 overflow-hidden">
                     <div class="py-2">
                         <div class="new_arrival_product">
-                            <!-- <div class="carousel-wrap">
+                            <div class="carousel-wrap">
                                 <div class="owl-carousel owl-theme new-arrivals-product">
                                     @foreach($newArrivalProducts as $key=> $product)
                                         @include('web-views.partials._product-card-2',['product'=>$product,'decimal_point_settings'=>$decimalPointSettings])
                                     @endforeach
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>
             @endif
 
-            <div class="container rtl px-0 px-md-3">
+            <!-- <div class="container rtl px-0 px-md-3">
                 <div class="row g-3 mx-max-md-0">
 
                     @if ($bestSellProduct->count() >0)
@@ -153,7 +153,7 @@
                         @include('web-views.partials._top-rated')
                     @endif
                 </div>
-            </div>
+            </div> -->
         </section>
 
 
