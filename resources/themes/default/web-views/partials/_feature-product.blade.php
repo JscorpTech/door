@@ -13,10 +13,8 @@
                 <span class="for-discount-value-null" style="margin: 0; padding: 0;"></span>
             @endif
             
-            <div style="margin: 0; padding: 0; width: 100%;">
-                
-                <a href="{{ route('product', $product->slug) }}" class="d-block w-100" style="position: relative; display: block; margin: 0; padding: 0;">
-
+           <div style="margin: 0; padding: 0; width: 100%; max-width: 300px;">
+                <a href="{{ route('product', $product->slug) }}" class="d-block w-100" style="position: relative; display: block;">
                     <div style="
                         width: 100%;    
                         aspect-ratio: 3 / 4;
@@ -25,8 +23,6 @@
                         background: #fff;
                         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
                         position: relative;
-                        margin: 0;
-                        padding: 0;
                     ">
                         <img 
                             alt="{{ $product->name ?? '' }}"
@@ -37,10 +33,7 @@
                                 object-fit: cover;
                                 object-position: center;
                                 display: block;
-                                image-rendering: auto;
                                 transition: transform 0.3s ease;
-                                margin: 0;
-                                padding: 0;
                             "
                         >
                         @if(!empty($product->brand->image_full_url['path']) 
@@ -57,21 +50,18 @@
                                 border: 2px solid #fff;
                                 box-shadow: 0 2px 8px rgba(0,0,0,0.3);
                                 background: #fff;
-                                margin: 0;
-                                padding: 0;
                             ">
-                            
                                 <img 
                                     src="{{ getStorageImages(path: $product->brand->image_full_url, type: 'shop') }}" 
                                     alt="Brand" 
-                                    style="width: 100%; height: 100%; object-fit: cover; margin: 0; padding: 0;"
+                                    style="width: 100%; height: 100%; object-fit: cover;"
                                 >
-
-                                </div>
+                            </div>
                         @endif
                     </div>
                 </a>
             </div>
+
 
             <div class="quick-view" style="margin: 0; padding: 0;">
                 <a class="btn-circle stopPropagation action-product-quick-view" href="{{route('product',$product->slug)}}" style="margin: 0; padding: 0;">

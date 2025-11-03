@@ -17,7 +17,7 @@
             <div class="p-10px pb-0" style="position: relative;">
                 <a href="{{ route('product', $product->slug) }}" class="w-100 d-block" style="position: relative; display: block;">
                     <div style="
-                        aspect-ratio: 3 / 5;
+                        aspect-ratio: 3 / 4;
                         width: 100%;
                         overflow: hidden;
                         border-radius: 12px;

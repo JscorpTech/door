@@ -18,17 +18,25 @@
                 @endif
                 <div class="d-block pb-0">
                    <a href="{{ route('product', $product->slug) }}" class="d-block">
-                        <img 
-                            alt="{{ $product->name }}"
-                            src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
-                            style="
-                                width: 300px;        /* kenglik */
-                                height: 400px;       /* 3:4 nisbati (masalan 300x400) */
-                                object-fit: cover;   /* rasmni sig‘dirish uchun */
-                                border-radius: 10px; /* burchaklarni yumalatish (ixtiyoriy) */
-                                transition: all 0.3s ease;
-                            "
-                        >
+                        <div style="
+                            width: 300px;             /* kerakli kenglik */
+                            aspect-ratio: 3 / 4;      /* aniq 3:4 nisbati */
+                            overflow: hidden;
+                            border-radius: 10px;
+                            background: #fff;
+                        ">
+                            <img 
+                                alt="{{ $product->name }}"
+                                src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
+                                style="
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;      /* rasm containerga sig‘adi */
+                                    display: block;
+                                    transition: all 0.3s ease;
+                                "
+                            >
+                        </div>
                     </a>
 
                 </div>
