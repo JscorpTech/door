@@ -19,7 +19,7 @@
                             <div class="cz-product-gallery">
                                 <div class="cz-preview">
                                     <div id="sync1" class="owl-carousel owl-theme product-thumbnail-slider">
-                                         @if($product->images!=null && json_decode($product->images)>0)
+                                        @if($product->images!=null && json_decode($product->images)>0)
                                             @if(json_decode($product->colors) && count($product->color_images_full_url)>0)
                                                 @foreach ($product->color_images_full_url as $key => $photo)
                                                     @if($photo['color'] != null)
@@ -30,7 +30,12 @@
                                                                  src="{{ getStorageImages(path: $photo['image_name'], type: 'product') }}"
                                                                  data-zoom="{{ getStorageImages(path: $photo['image_name'], type: 'product')  }}"
                                                                  alt="{{ translate('product') }}" width="">
-                                                            <div class="cz-image-zoom-pane"></div>
+                                                            <span class="zoom-icon" title="Click to zoom">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                                            </svg>
+                                                        </span>
+                                                        <div class="cz-image-zoom-pane"></div>
                                                         </div>
                                                     @else
                                                         <div
@@ -40,7 +45,12 @@
                                                                  src="{{ getStorageImages(path: $photo['image_name'], type: 'product') }}"
                                                                  data-zoom="{{ getStorageImages(path: $photo['image_name'], type: 'product') }}"
                                                                  alt="{{ translate('product') }}" width="">
-                                                            <div class="cz-image-zoom-pane"></div>
+                                                            <span class="zoom-icon" title="Click to zoom">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                                            </svg>
+                                                        </span>
+                                                        <div class="cz-image-zoom-pane"></div>
                                                         </div>
                                                     @endif
                                                 @endforeach
@@ -53,7 +63,42 @@
                                                              src="{{ getStorageImages($photo, type: 'product') }}"
                                                              data-zoom="{{ getStorageImages(path: $photo, type: 'product') }}"
                                                              alt="{{ translate('product') }}" width="">
+                                                        <span class="zoom-icon" title="Click to zoom">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                                            </svg>
+                                                        </span>
                                                         <div class="cz-image-zoom-pane"></div>
+                                                       <script>
+                                                            document.addEventListener('DOMContentLoaded', function() {
+                                                                const previewItems = document.querySelectorAll('.product-preview-item');
+
+                                                                previewItems.forEach(item => {
+                                                                    const img = item.querySelector('.cz-image-zoom');
+                                                                    const zoomIcon = item.querySelector('.zoom-icon');
+                                                                    const zoomPane = item.querySelector('.cz-image-zoom-pane');
+
+                                                                    if (zoomIcon && img) {
+                                                                        let zoomActive = false; // 🔹 default holat — zoom o‘chirilgan
+                                                                        zoomPane.style.display = 'none'; // 🔹 panelni ham yashiramiz
+
+                                                                        zoomIcon.addEventListener('click', function() {
+                                                                            zoomActive = !zoomActive; // toggle qilish
+                                                                            if (zoomActive) {
+                                                                                img.classList.add('zoomed');
+                                                                                zoomPane.style.display = 'block';
+                                                                                zoomIcon.setAttribute('title', 'Click to close zoom');
+                                                                            } else {
+                                                                                img.classList.remove('zoomed');
+                                                                                zoomPane.style.display = 'none';
+                                                                                zoomIcon.setAttribute('title', 'Click to zoom');
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                });
+                                                            });
+                                                            </script>
+
                                                     </div>
                                                 @endforeach
                                             @endif
