@@ -1,15 +1,15 @@
 @if(isset($product))
     @php($overallRating = getOverallRating($product->reviews))
-    <div class="product-single-hover style--category shadow-none">
+    <div class="product-single-hover style--category shadow-none" style="border: 1px solid #ddd; border-radius: 10px; padding: 5px;">
         <div class="overflow-hidden position-relative">
-            <div class=" inline_product clickable d-flex justify-content-center">
+            <div class="inline_product clickable d-flex justify-content-center">
                 @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
                     <div class="d-flex">
-                    <span class="for-discount-value p-1 pl-2 pr-2 font-bold fs-13">
-                        <span class="direction-ltr d-block">
-                            -{{ getProductPriceByType(product: $product, type: 'discount', result: 'string') }}
+                        <span class="for-discount-value p-1 pl-2 pr-2 font-bold fs-13">
+                            <span class="direction-ltr d-block">
+                                -{{ getProductPriceByType(product: $product, type: 'discount', result: 'string') }}
+                            </span>
                         </span>
-                    </span>
                     </div>
                 @else
                     <div class="d-flex justify-content-end">
@@ -17,9 +17,9 @@
                     </div>
                 @endif
                 <div class="d-block pb-0">
-                   <a href="{{ route('product', $product->slug) }}" class="d-block">
+                    <a href="{{ route('product', $product->slug) }}" class="d-block">
                         <div style="
-                            width: 300px;             /* kerakli kenglik */
+                            width: 200px;             /* rasmni kichikroq qildik */
                             aspect-ratio: 3 / 4;      /* aniq 3:4 nisbati */
                             overflow: hidden;
                             border-radius: 10px;
@@ -31,14 +31,13 @@
                                 style="
                                     width: 100%;
                                     height: 100%;
-                                    object-fit: cover;      /* rasm containerga sig‘adi */
+                                    object-fit: cover;
                                     display: block;
                                     transition: all 0.3s ease;
                                 "
                             >
                         </div>
                     </a>
-
                 </div>
 
                 <div class="quick-view">
@@ -53,18 +52,18 @@
             <div class="single-product-details">
                 @if($overallRating[0] != 0 )
                     <div class="rating-show justify-content-between">
-                <span class="d-inline-block font-size-sm text-body">
-                    @for($inc=1;$inc<=5;$inc++)
-                        @if ($inc <= (int)$overallRating[0])
-                            <i class="tio-star text-warning"></i>
-                        @elseif ($overallRating[0] != 0 && $inc <= (int)$overallRating[0] + 1.1 && $overallRating[0] > ((int)$overallRating[0]))
-                            <i class="tio-star-half text-warning"></i>
-                        @else
-                            <i class="tio-star-outlined text-warning"></i>
-                        @endif
-                    @endfor
-                    <label class="badge-style">( {{ count($product->reviews) }} )</label>
-                </span>
+                        <span class="d-inline-block font-size-sm text-body">
+                            @for($inc=1;$inc<=5;$inc++)
+                                @if ($inc <= (int)$overallRating[0])
+                                    <i class="tio-star text-warning"></i>
+                                @elseif ($overallRating[0] != 0 && $inc <= (int)$overallRating[0] + 1.1 && $overallRating[0] > ((int)$overallRating[0]))
+                                    <i class="tio-star-half text-warning"></i>
+                                @else
+                                    <i class="tio-star-outlined text-warning"></i>
+                                @endif
+                            @endfor
+                            <label class="badge-style">( {{ count($product->reviews) }} )</label>
+                        </span>
                     </div>
                 @endif
                 <h3 class="mb-1 letter-spacing-0">
@@ -72,7 +71,7 @@
                         {{ $product['name'] }}
                     </a>
                 </h3>
-                <div class="justify-content-between ">
+                <div class="justify-content-between">
                     <h4 class="product-price d-flex flex-wrap gap-8 align-items-center row-gap-0 mb-0 letter-spacing-0">
                         @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
                             <del class="category-single-product-price">
@@ -88,5 +87,3 @@
         </div>
     </div>
 @endif
-
-
