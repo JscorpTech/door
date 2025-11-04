@@ -3,6 +3,8 @@
 <div class="product-single-hover shadow-none rtl" style="margin: 0; padding: 0;">
     <div class="overflow-hidden position-relative" style="margin: 0; padding: 0;">
         <div class="inline_product clickable" style="margin: 0; padding: 0; display: flex; flex-direction: column; width: 100%;">
+            
+            {{-- Discount --}}
             @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
                 <span class="for-discount-value p-1 pl-2 pr-2 font-bold fs-13" style="margin: 0;">
                     <span class="direction-ltr d-block">
@@ -13,7 +15,8 @@
                 <span class="for-discount-value-null" style="margin: 0; padding: 0;"></span>
             @endif
             
-           <div style="margin: 0; padding: 0; width: 100%; max-width: 300px;">
+            {{-- Product Image --}}
+            <div style="margin: 0; padding: 0; width: 100%; max-width: 300px;">
                 <a href="{{ route('product', $product->slug) }}" class="d-block w-100" style="position: relative; display: block;">
                     <div style="
                         width: 100%;    
@@ -62,18 +65,20 @@
                 </a>
             </div>
 
-
+            {{-- Quick View --}}
             <div class="quick-view" style="margin: 0; padding: 0;">
                 <a class="btn-circle stopPropagation action-product-quick-view" href="{{route('product',$product->slug)}}" style="margin: 0; padding: 0;">
                     <i class="czi-eye align-middle"></i>
                 </a>
             </div>
 
+            {{-- Out of stock --}}
             @if($product->product_type == 'physical' && $product->current_stock <= 0)
-                <span class="out_fo_stock" style="margin: 0; padding: 0;">{{translate('out_of_stock')}}</span>
+                <span class="out_of_stock" style="margin: 0; padding: 0;">{{translate('out_of_stock')}}</span>
             @endif
         </div>
 
+        {{-- Product Details --}}
         <div class="single-product-details" style="margin: 0; padding: 0; margin-top: 6px;">
             @if($overallRating[0] != 0)
                 <div class="rating-show justify-content-between" style="margin: 0 0 4px 0; padding: 0;">
@@ -113,3 +118,6 @@
         </div>
     </div>
 </div>
+
+{{-- Home.js ni chaqirish (serverda ishlashi uchun) --}}
+<script src="{{ asset('js/home.js') }}?v={{ time() }}"></script>

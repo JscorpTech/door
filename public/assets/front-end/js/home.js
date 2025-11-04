@@ -98,7 +98,7 @@ $(document).ready(function () {
                 items: 4,
             },
             1200: {
-                items: 4,
+                items: 5,
             },
         },
     });
