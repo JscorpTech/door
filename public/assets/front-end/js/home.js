@@ -104,9 +104,9 @@ $(document).ready(function () {
     });
 
     $("#featured_products_list").owlCarousel({
-        loop: true,
+        loop: false,
         autoplay: true,
-        margin: 5,
+        margin: 10,
         nav: true,
         navText:
             directionFromSession === "rtl"
