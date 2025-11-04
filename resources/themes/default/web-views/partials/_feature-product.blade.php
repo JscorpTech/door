@@ -119,5 +119,47 @@
     </div>
 </div>
 
-{{-- Home.js ni chaqirish (serverda ishlashi uchun) --}}
-<script src="{{ asset('js/home.js') }}?v={{ time() }}"></script>
+{{-- Owl Carousel va home.js fayllarini chaqirish --}}
+<link rel="stylesheet" href="{{ asset('vendor/owl-carousel/owl.carousel.min.css') }}">
+<link rel="stylesheet" href="{{ asset('vendor/owl-carousel/owl.theme.default.min.css') }}">
+
+<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('vendor/owl-carousel/owl.carousel.min.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+        let directionFromSession = "{{ session('direction', 'ltr') }}"; // rtl yoki ltr
+
+        $(".flash-deal-slider-mobile").owlCarousel({
+            loop: true,
+            autoplay: true,
+            center: true,
+            margin: 10,
+            nav: true,
+            navText:
+                directionFromSession === "rtl"
+                    ? [
+                          "<i class='czi-arrow-right'></i>",
+                          "<i class='czi-arrow-left'></i>",
+                      ]
+                    : [
+                          "<i class='czi-arrow-left'></i>",
+                          "<i class='czi-arrow-right'></i>",
+                      ],
+            dots: false,
+            autoplayHoverPause: true,
+            rtl: directionFromSession === "rtl",
+            ltr: directionFromSession === "ltr",
+            responsive: {
+                0: { items: 1.1 },
+                360: { items: 1.2 },
+                375: { items: 1.4 },
+                480: { items: 1.8 },
+                576: { items: 2 },
+                768: { items: 3 },
+                992: { items: 4 },
+                1200: { items: 5 },
+            },
+        });
+    });
+</script>
