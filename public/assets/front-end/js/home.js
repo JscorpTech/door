@@ -104,7 +104,7 @@ $(document).ready(function () {
     });
 
     $("#featured_products_list").owlCarousel({
-        loop: false,
+        loop: true,
         autoplay: true,
         margin: 10,
         nav: true,
@@ -145,7 +145,7 @@ $(document).ready(function () {
                 items: 4,
             },
             1200: {
-                items: 6,
+                items: 5,
             },
         },
     });
