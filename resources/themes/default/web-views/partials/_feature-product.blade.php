@@ -3,7 +3,7 @@
 
 @push('script')
     <script>
-         $(document).ready(function() {
+        $(document).ready(function() {
         $("#featured_products_list").owlCarousel({
             loop: true,
             autoplay: true,

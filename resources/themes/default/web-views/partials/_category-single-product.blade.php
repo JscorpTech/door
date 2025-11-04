@@ -1,55 +1,57 @@
 @push('script')
-    <script>
+<script>
+    $(document).ready(function() {
         $(".category-wise-product-slider").each(function () {
-        let loopEnable = $(this).data('loop')?.toString() === 'true';
+            let loopEnable = $(this).data('loop')?.toString() === 'true';
 
-        $(this).owlCarousel({
-            loop: loopEnable,
-            autoplay: true,
-            margin: 20,
-            nav: true,
-            navText:
-                directionFromSession === "rtl"
-                    ? [
-                          "<i class='czi-arrow-right'></i>",
-                          "<i class='czi-arrow-left'></i>",
-                      ]
-                    : [
-                          "<i class='czi-arrow-left'></i>",
-                          "<i class='czi-arrow-right'></i>",
-                      ],
-            dots: false,
-            autoplayHoverPause: true,
-            rtl: directionFromSession === "rtl",
-            ltr: directionFromSession === "ltr",
-            responsive: {
-                0: {
-                    items: 1.2,
+            $(this).owlCarousel({
+                loop: loopEnable,
+                autoplay: true,
+                margin: 20,
+                nav: true,
+                navText:
+                    directionFromSession === "rtl"
+                        ? [
+                            "<i class='czi-arrow-right'></i>",
+                            "<i class='czi-arrow-left'></i>",
+                        ]
+                        : [
+                            "<i class='czi-arrow-left'></i>",
+                            "<i class='czi-arrow-right'></i>",
+                        ],
+                dots: false,
+                autoplayHoverPause: true,
+                rtl: directionFromSession === "rtl",
+                responsive: {
+                    0: {
+                        items: 1.2,
+                    },
+                    375: {
+                        items: 1.4,
+                    },
+                    425: {
+                        items: 2,
+                    },
+                    576: {
+                        items: 3,
+                    },
+                    768: {
+                        items: 4,
+                    },
+                    992: {
+                        items: 5,
+                    },
+                    1200: {
+                        items: 5,
+                    },
                 },
-                375: {
-                    items: 1.4,
-                },
-                425: {
-                    items: 2,
-                },
-                576: {
-                    items: 3,
-                },
-                768: {
-                    items: 4,
-                },
-                992: {
-                    items: 5,
-                },
-                1200: {
-                    items: 5,
-                },
-            },
-            onInitialized: checkNavigationButtons,
+                onInitialized: checkNavigationButtons,
+            });
         });
-    });
-    </script>
+    }); // ❗ Bu joyda yopish kerak edi
+</script>
 @endpush
+
 
 
 
