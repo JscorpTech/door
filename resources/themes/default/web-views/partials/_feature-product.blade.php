@@ -1,44 +1,5 @@
 @php($overallRating = getOverallRating($product->reviews))
 
-@push('script')
-    <script src="{{theme_asset(path: 'public/assets/front-end/js/owl.carousel.min.js')}}"></script>
-    <script>
-        $(document).ready(function () {
-            var directionFromSession = $("#direction-from-session").data('value');
-
-            $("#featured_products_list").owlCarousel({
-                loop: true,
-                autoplay: true,
-                margin: 5, // cardlar orasidagi masofa
-                nav: true,
-                navText: directionFromSession === "rtl"
-                    ? [
-                        "<i class='czi-arrow-right' style='margin:0 10px;'></i>",
-                        "<i class='czi-arrow-left' style='margin:0 10px;'></i>"
-                      ]
-                    : [
-                        "<i class='czi-arrow-left' style='margin:0 10px;'></i>",
-                        "<i class='czi-arrow-right' style='margin:0 10px;'></i>"
-                      ],
-                dots: false,
-                autoplayHoverPause: true,
-                rtl: directionFromSession === "rtl",
-                responsive: {
-                    0: { items: 1 },
-                    360: { items: 1 },
-                    375: { items: 1 },
-                    540: { items: 2 },
-                    576: { items: 2 },
-                    768: { items: 3 },
-                    992: { items: 4 },
-                    1200: { items: 5 } // katta ekranlarda 7 ta item
-                }
-            });
-        });
-    </script>
-@endpush
-
-
 <div class="product-single-hover shadow-none rtl" style="margin: 0; padding: 0;">
     <div class="overflow-hidden position-relative" style="margin: 0; padding: 0;">
         <div class="inline_product clickable" style="margin: 0; padding: 0; display: flex; flex-direction: column; width: 100%;">
