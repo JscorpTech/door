@@ -883,4 +883,7 @@ return [
 	"set_the_selling_price_for_each_unit_of_this_product._This_Unit_Price_section_would_not_be_applied_if_you_set_a_variation_wise_price" => "Set the selling price for each unit of this product. This Unit Price section would not be applied if you set a variation wise price",
 	"Скидка не может быть больше или равна цене!" => "Скидка не может быть больше или равна цене!",
 	"featured_ products" => "Featured  products",
+	"no_coupon_found" => "No coupon found",
+	"For_Ready_After_Sale_deliveries,_customers_pay_first_then_admin_uploads_the_digital_products_that_become_available_to_customers_for_download" => "For Ready After Sale deliveries  customers pay first then admin uploads the digital products that become available to customers for download",
+	"upload_it_in_the_form_below_and_submit." => "Upload it in the form below and submit.",
 ];

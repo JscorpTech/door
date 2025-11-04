@@ -1,84 +1,82 @@
 @if(isset($product))
     @php($overallRating = getOverallRating($product->reviews))
-    <div class="product-single-hover style--category shadow-none" style="border: 1px solid #ddd; border-radius: 10px; padding: 5px;">
+    <div class="product-single-hover style--category shadow-none" style="border:none; padding:0; margin:0;">
         <div class="overflow-hidden position-relative">
-            <div class="inline_product clickable d-flex justify-content-center">
+            <div class="inline_product clickable d-flex justify-content-center" style="padding:0; margin:0;">
                 @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
-                    <div class="d-flex">
-                        <span class="for-discount-value p-1 pl-2 pr-2 font-bold fs-13">
-                            <span class="direction-ltr d-block">
-                                -{{ getProductPriceByType(product: $product, type: 'discount', result: 'string') }}
-                            </span>
+                    <div class="position-absolute top-0 start-0 m-2">
+                        <span class="for-discount-value p-1 px-2 font-bold fs-13 bg-danger text-white rounded">
+                            -{{ getProductPriceByType(product: $product, type: 'discount', result: 'string') }}
                         </span>
                     </div>
-                @else
-                    <div class="d-flex justify-content-end">
-                        <span class="for-discount-value-null"></span>
-                    </div>
                 @endif
-                <div class="d-block pb-0">
-                    <a href="{{ route('product', $product->slug) }}" class="d-block">
-                        <div style="
-                            width: 200px;             /* rasmni kichikroq qildik */
-                            aspect-ratio: 3 / 4;      /* aniq 3:4 nisbati */
-                            overflow: hidden;
-                            border-radius: 10px;
-                            background: #fff;
-                        ">
-                            <img 
-                                alt="{{ $product->name }}"
-                                src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
-                                style="
-                                    width: 100%;
-                                    height: 100%;
-                                    object-fit: cover;
-                                    display: block;
-                                    transition: all 0.3s ease;
-                                "
-                            >
-                        </div>
-                    </a>
-                </div>
 
-                <div class="quick-view">
-                    <a class="btn-circle stopPropagation action-product-quick-view" href="{{route('product',$product->slug)}}">
+                <a href="{{ route('product', $product->slug) }}" class="d-block w-100">
+                    <div style="
+                        width: 100%;
+                        aspect-ratio: 3 / 4;
+                        overflow: hidden;
+                        border-radius: 10px;
+                    ">
+                        <img 
+                            alt="{{ $product->name }}"
+                            src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}"
+                            style="
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                display: block;
+                                transition: transform 0.3s ease;
+                            "
+                            onmouseover="this.style.transform='scale(1.05)'"
+                            onmouseout="this.style.transform='scale(1)'"
+                        >
+                    </div>
+                </a>
+
+                <div class="quick-view position-absolute bottom-0 end-0 m-2">
+                    <a class="btn-circle stopPropagation action-product-quick-view bg-white shadow" href="{{route('product',$product->slug)}}">
                         <i class="czi-eye align-middle"></i>
                     </a>
                 </div>
+
                 @if($product->product_type == 'physical' && $product->current_stock <= 0)
-                    <span class="out_fo_stock">{{translate('out_of_stock')}}</span>
+                    <span class="out_fo_stock position-absolute top-0 end-0 m-2 bg-dark text-white px-2 py-1 rounded">
+                        {{translate('out_of_stock')}}
+                    </span>
                 @endif
             </div>
-            <div class="single-product-details">
-                @if($overallRating[0] != 0 )
-                    <div class="rating-show justify-content-between">
-                        <span class="d-inline-block font-size-sm text-body">
-                            @for($inc=1;$inc<=5;$inc++)
-                                @if ($inc <= (int)$overallRating[0])
-                                    <i class="tio-star text-warning"></i>
-                                @elseif ($overallRating[0] != 0 && $inc <= (int)$overallRating[0] + 1.1 && $overallRating[0] > ((int)$overallRating[0]))
-                                    <i class="tio-star-half text-warning"></i>
-                                @else
-                                    <i class="tio-star-outlined text-warning"></i>
-                                @endif
-                            @endfor
-                            <label class="badge-style">( {{ count($product->reviews) }} )</label>
-                        </span>
+
+            <div class="single-product-details text-center mt-2" style="padding:0; margin:0;">
+                @if($overallRating[0] != 0)
+                    <div class="rating-show justify-content-center mb-1">
+                        @for($inc=1;$inc<=5;$inc++)
+                            @if ($inc <= (int)$overallRating[0])
+                                <i class="tio-star text-warning"></i>
+                            @elseif ($overallRating[0] != 0 && $inc <= (int)$overallRating[0] + 1.1 && $overallRating[0] > ((int)$overallRating[0]))
+                                <i class="tio-star-half text-warning"></i>
+                            @else
+                                <i class="tio-star-outlined text-warning"></i>
+                            @endif
+                        @endfor
+                        <label class="badge-style">( {{ count($product->reviews) }} )</label>
                     </div>
                 @endif
-                <h3 class="mb-1 letter-spacing-0">
-                    <a href="{{route('product',$product->slug)}}" class="text-capitalize fw-semibold">
+
+                <h3 class="mb-1" style="font-size: 15px; font-weight: 600;">
+                    <a href="{{route('product',$product->slug)}}" class="text-capitalize text-dark text-decoration-none">
                         {{ $product['name'] }}
                     </a>
                 </h3>
-                <div class="justify-content-between">
-                    <h4 class="product-price d-flex flex-wrap gap-8 align-items-center row-gap-0 mb-0 letter-spacing-0">
+
+                <div>
+                    <h4 class="product-price mb-0" style="font-size: 14px;">
                         @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
-                            <del class="category-single-product-price">
+                            <del style="color:#888; font-size:13px; margin-right:4px;">
                                 {{ webCurrencyConverter(amount: $product->unit_price) }}
                             </del>
                         @endif
-                        <span class="text-accent text-dark">
+                        <span class="text-accent text-dark" style="font-weight:600;">
                             {{ getProductPriceByType(product: $product, type: 'discounted_unit_price', result: 'string') }}
                         </span>
                     </h4>
