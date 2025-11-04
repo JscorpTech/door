@@ -2,8 +2,23 @@
 
 
 @push('script')
-    <script src="{{theme_asset(path: 'public/assets/front-end/js/owl.carousel.min.js')}}"></script>
-    <script src="{{ theme_asset(path: 'public/assets/front-end/js/home.js') }}"></script>
+    <script>
+         $(document).ready(function() {
+        $("#featured_products_list").owlCarousel({
+            loop: true,
+            autoplay: true,
+            margin: 20,
+            nav: true,
+            rtl: directionFromSession === "rtl",
+            responsive: {
+                0: { items: 1 },
+                768: { items: 3 },
+                992: { items: 4 },
+                1200: { items: 5 }, // <--- siz o'zgartirgan qism
+            },
+        });
+    });
+    </script>
 @endpush
 
 
