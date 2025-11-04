@@ -103,51 +103,20 @@ $(document).ready(function () {
         },
     });
 
-    $("#featured_products_list").owlCarousel({
-        loop: true,
-        autoplay: true,
-        margin: 20,
-        nav: true,
-        navText:
-            directionFromSession === "rtl"
-                ? [
-                      "<i class='czi-arrow-right'></i>",
-                      "<i class='czi-arrow-left'></i>",
-                  ]
-                : [
-                      "<i class='czi-arrow-left'></i>",
-                      "<i class='czi-arrow-right'></i>",
-                  ],
-        dots: false,
-        autoplayHoverPause: true,
-        rtl: directionFromSession === "rtl",
-        ltr: directionFromSession === "ltr",
-        responsive: {
-            0: {
-                items: 1,
+    $(document).ready(function() {
+        $("#featured_products_list").owlCarousel({
+            loop: true,
+            autoplay: true,
+            margin: 20,
+            nav: true,
+            rtl: directionFromSession === "rtl",
+            responsive: {
+                0: { items: 1 },
+                768: { items: 3 },
+                992: { items: 4 },
+                1200: { items: 5 }, // <--- siz o'zgartirgan qism
             },
-            360: {
-                items: 1,
-            },
-            375: {
-                items: 1,
-            },
-            540: {
-                items: 2,
-            },
-            576: {
-                items: 2,
-            },
-            768: {
-                items: 3,
-            },
-            992: {
-                items: 4,
-            },
-            1200: {
-                items: 5,
-            },
-        },
+        });
     });
 
     $(".new-arrivals-product").owlCarousel({
