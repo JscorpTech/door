@@ -16,13 +16,8 @@
     <link rel="stylesheet" href="{{theme_asset(path: 'public/assets/front-end/css/home.css')}}"/>
     <link rel="stylesheet" href="{{ theme_asset(path: 'public/assets/front-end/css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ theme_asset(path: 'public/assets/front-end/css/owl.theme.default.min.css') }}">
-    <style>
-
-        .owl-carousel .owl-item {
-            margin: 0 3px !important; 
-        }
-    </style>
 @endpush
+
 @section('content')
     <div class="__inline-61">
         @php($decimalPointSettings = !empty(getWebConfig(name: 'decimal_point_settings')) ? getWebConfig(name: 'decimal_point_settings') : 0)
@@ -33,11 +28,10 @@
         @endif
 
         @if ($featuredProductsList->count() > 0 )
-            <div class="container py-4 rtl px-0 px-md-3" style="padding-bottom: 1rem;">
-                <div class="">
+            <div class="container py-4 rtl px-0 px-md-3">
+                <div class="__inline-62 pt-3">
                     <h2 class="feature-product-title mt-0 web-text-primary mb-0 letter-spacing-0">
                         {{ translate('featured_products') }}
-                        
                     </h2>
                     <div class="text-end px-3 d-none d-md-block">
                         <a class="text-capitalize view-all-text web-text-primary" href="{{route('products',['data_from'=>'featured','page'=>1])}}">
@@ -46,15 +40,15 @@
                         </a>
                     </div>
                     <div class="feature-product">
-                            <div class="carousel-wrap" style="padding-bottom: 0.5rem;">
-                                <div class="owl-carousel owl-theme" id="featured_products_list">
-                                    @foreach($featuredProductsList as $product)
-                                        <div>
-                                            @include('web-views.partials._feature-product',['product'=>$product, 'decimal_point_settings'=>$decimalPointSettings])
-                                        </div>
-                                    @endforeach
-                                </div>
+                        <div class="carousel-wrap p-1">
+                            <div class="owl-carousel owl-theme" id="featured_products_list">
+                                @foreach($featuredProductsList as $product)
+                                    <div>
+                                        @include('web-views.partials._feature-product',['product'=>$product, 'decimal_point_settings'=>$decimalPointSettings])
+                                    </div>
+                                @endforeach
                             </div>
+                        </div>
                         <div class="text-center pt-2 d-md-none">
                             <a class="text-capitalize view-all-text web-text-primary" href="{{route('products',['data_from'=>'featured','page'=>1])}}">
                                 {{ translate('view_all')}}
@@ -64,7 +58,6 @@
                     </div>
                 </div>
             </div>
-
         @endif
 
         @include('web-views.partials._category-section-home')
@@ -185,7 +178,7 @@
             <section class="container rtl pt-4">
 
                 <div class="section-header align-items-center mb-1">
-                    <h2 class="text-black font-bold __text-22px mb-0">
+                    <h2 class="text-black font-bold __text-22px mb-0">z
                         <span> {{translate('brands')}}</span>
                     </h2>
                     <div class="__mr-2px">

@@ -98,7 +98,7 @@ $(document).ready(function () {
                 items: 4,
             },
             1200: {
-                items: 5,
+                items: 4,
             },
         },
     });
@@ -106,7 +106,7 @@ $(document).ready(function () {
     $("#featured_products_list").owlCarousel({
         loop: true,
         autoplay: true,
-        margin: 10,
+        margin: 20,
         nav: true,
         navText:
             directionFromSession === "rtl"
@@ -145,7 +145,7 @@ $(document).ready(function () {
                 items: 4,
             },
             1200: {
-                items: 5,
+                items: 6,
             },
         },
     });

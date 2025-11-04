@@ -237,14 +237,8 @@ a {
 
 #new-arrivals-product .owl-stage-outer,
 #featured_products_list .owl-stage-outer {
-    overflow: visible !important;
+    overflow: visible;
 }
-
-
-
-
-
-
 
 @media (max-width: 534px) {
     #featured_products_list {
@@ -647,8 +641,7 @@ a {
 }
 
 .__img-125px {
-    width: 120px;
-    height: 120px;
+    width: 110px;
     aspect-ratio: 1;
     border-radius: 5px;
     -o-object-fit: cover;
@@ -4135,8 +4128,8 @@ a {
 
 .__inline-61 .flash-deals-background-image {
     border-radius: 5px;
-    width: 120px;
-    height: 190px;
+    width: 105px;
+    height: 105px;
 }
 
 .__inline-61 .feature-product-title {
@@ -4194,9 +4187,8 @@ a {
 }
 
 .__inline-62 {
-    background: white;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.0509803922);
-    padding-bottom: -20px;
+    border-radius: 5px;
 }
 
 .__inline-63 {
