@@ -82,7 +82,7 @@ return [
 	"update_cart" => "Update cart",
 	"similar_products_from_other_stores" => "Similar products from other stores",
 	"type_your_message" => "Type your message",
-	"Filter_By" => "Filter By",
+	"Filter_By" => "Фильтровать по",
 	"to" => "To",
 	"Alphabetical" => "Alphabetical",
 	"visit_store" => "Visit store",
