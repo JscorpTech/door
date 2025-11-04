@@ -91,7 +91,7 @@ class ProductDetailsController extends Controller
                 scope: 'active',
                 filters: ['added_by' => $product['added_by'] == 'admin' ? 'in_house' : $product['added_by'], 'seller_id' => $product['user_id']],
                 whereNotIn: ['id' => [$product['id']]],
-                dataLimit: 5,
+                dataLimit: 7,
                 offset: 1
             );
 

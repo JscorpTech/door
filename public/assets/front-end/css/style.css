@@ -237,8 +237,14 @@ a {
 
 #new-arrivals-product .owl-stage-outer,
 #featured_products_list .owl-stage-outer {
-    overflow: visible;
+    overflow: visible !important;
 }
+
+
+
+
+
+
 
 @media (max-width: 534px) {
     #featured_products_list {

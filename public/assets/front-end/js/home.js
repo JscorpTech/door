@@ -106,7 +106,7 @@ $(document).ready(function () {
     $("#featured_products_list").owlCarousel({
         loop: true,
         autoplay: true,
-        margin: 20,
+        margin: 5,
         nav: true,
         navText:
             directionFromSession === "rtl"

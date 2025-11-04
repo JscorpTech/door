@@ -46,15 +46,15 @@
                         </a>
                     </div>
                     <div class="feature-product">
-                        <div class="carousel-wrap" style="padding-bottom: 0.5rem;">
-                            <div class="owl-carousel owl-theme" id="featured_products_list">
-                                @foreach($featuredProductsList as $product)
-                                    <div>
-                                        @include('web-views.partials._feature-product',['product'=>$product, 'decimal_point_settings'=>$decimalPointSettings])
-                                    </div>
-                                @endforeach
+                            <div class="carousel-wrap" style="padding-bottom: 0.5rem;">
+                                <div class="owl-carousel owl-theme" id="featured_products_list">
+                                    @foreach($featuredProductsList as $product)
+                                        <div>
+                                            @include('web-views.partials._feature-product',['product'=>$product, 'decimal_point_settings'=>$decimalPointSettings])
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
                         <div class="text-center pt-2 d-md-none">
                             <a class="text-capitalize view-all-text web-text-primary" href="{{route('products',['data_from'=>'featured','page'=>1])}}">
                                 {{ translate('view_all')}}
