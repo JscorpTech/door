@@ -28,7 +28,7 @@
                 <div class="d-sm-none">
                     <div class="row g-2">
                         @foreach($category['products'] as $key=>$product)
-                            @if($key < 4)
+                            @if($key < 12)
                                 <div class="col-6">
                                     @include('web-views.partials._category-single-product', ['product'=>$product])
                                 </div>
