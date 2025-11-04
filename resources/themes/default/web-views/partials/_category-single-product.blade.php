@@ -48,7 +48,7 @@
                 onInitialized: checkNavigationButtons,
             });
         });
-    }); // ❗ Bu joyda yopish kerak edi
+    }); 
 </script>
 @endpush
 
