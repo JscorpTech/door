@@ -8,51 +8,52 @@
                 </span>
             </span>
         @endif
-        <div class=" d-flex">
-            <div class="d-flex align-items-center justify-content-center">
-                <div class="flash-deals-background-image" style="padding: 3px;">
-                    <img class="__img-125px" 
-                        alt="{{ $product->name }}" 
-                        src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}" 
-                        style="width: 320px !important; height: 220px !important; object-fit: cover; border-radius: 8px;">
-                </div>
+
+        <div class="d-flex align-items-start">
+            <!-- Rasm divi (2/3) -->
+            <div class="flash-deals-background-image" style="flex: 2; padding: 3px;">
+                <img class="__img-125px" 
+                     alt="{{ $product->name }}" 
+                     src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}" 
+                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
             </div>
 
-            <div class="flash_deal_product_details pl-3 pr-3 pr-1 d-flex mt-3">
-                <div>
-                    <h3 class="mb-0 letter-spacing-0">
-                        <a href="{{route('product',$product->slug)}}"
-                           class="flash-product-title text-capitalize fw-semibold">
-                            {{ Str::limit($product['name'], 80) }}
-                        </a>
-                    </h3>
-                    @if($overallRating[0] != 0 )
-                        <div class="flash-product-review">
-                            @for($inc=1;$inc<=5;$inc++)
-                                @if ($inc <= (int)$overallRating[0])
-                                    <i class="tio-star text-warning"></i>
-                                @elseif ($overallRating[0] != 0 && $inc <= (int)$overallRating[0] + 1.1 && $overallRating[0] > ((int)$overallRating[0]))
-                                    <i class="tio-star-half text-warning"></i>
-                                @else
-                                    <i class="tio-star-outlined text-warning"></i>
-                                @endif
-                            @endfor
-                            <label class="badge-style2">
-                                ( {{ count($product->reviews) }} )
-                            </label>
-                        </div>
+            <!-- Mahsulot detallar divi (1/3) -->
+            <div class="flash_deal_product_details pl-3 pr-3 d-flex flex-column mt-3" style="flex: 1;">
+                <h3 class="mb-0 letter-spacing-0">
+                    <a href="{{route('product',$product->slug)}}"
+                       class="flash-product-title text-capitalize fw-semibold">
+                        {{ Str::limit($product['name'], 80) }}
+                    </a>
+                </h3>
+
+                @if($overallRating[0] != 0 )
+                    <div class="flash-product-review">
+                        @for($inc=1;$inc<=5;$inc++)
+                            @if ($inc <= (int)$overallRating[0])
+                                <i class="tio-star text-warning"></i>
+                            @elseif ($overallRating[0] != 0 && $inc <= (int)$overallRating[0] + 1.1 && $overallRating[0] > ((int)$overallRating[0]))
+                                <i class="tio-star-half text-warning"></i>
+                            @else
+                                <i class="tio-star-outlined text-warning"></i>
+                            @endif
+                        @endfor
+                        <label class="badge-style2">
+                            ( {{ count($product->reviews) }} )
+                        </label>
+                    </div>
+                @endif
+
+                <h4 class="d-flex flex-wrap gap-8 align-items-center row-gap-0 mb-0 letter-spacing-0">
+                    @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
+                        <del class="category-single-product-price">
+                            {{ webCurrencyConverter(amount: $product->unit_price) }}
+                        </del>
                     @endif
-                    <h4 class="d-flex flex-wrap gap-8 align-items-center row-gap-0 mb-0 letter-spacing-0">
-                        @if(getProductPriceByType(product: $product, type: 'discount', result: 'value') > 0)
-                            <del class="category-single-product-price">
-                                {{ webCurrencyConverter(amount: $product->unit_price) }}
-                            </del>
-                        @endif
-                        <span class="flash-product-price text-dark fw-semibold">
-                            {{ getProductPriceByType(product: $product, type: 'discounted_unit_price', result: 'string') }}
-                        </span>
-                    </h4>
-                </div>
+                    <span class="flash-product-price text-dark fw-semibold">
+                        {{ getProductPriceByType(product: $product, type: 'discounted_unit_price', result: 'string') }}
+                    </span>
+                </h4>
             </div>
         </div>
     </div>
