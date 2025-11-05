@@ -886,4 +886,5 @@ return [
 	"no_coupon_found" => "No coupon found",
 	"For_Ready_After_Sale_deliveries,_customers_pay_first_then_admin_uploads_the_digital_products_that_become_available_to_customers_for_download" => "For Ready After Sale deliveries  customers pay first then admin uploads the digital products that become available to customers for download",
 	"upload_it_in_the_form_below_and_submit." => "Upload it in the form below and submit.",
+	"variant" => "Variant",
 ];
