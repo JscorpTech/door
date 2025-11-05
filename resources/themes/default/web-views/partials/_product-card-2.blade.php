@@ -1,4 +1,10 @@
-
+<style>
+    .flash-deals-background-image {
+            border-radius: 5px;
+            width: 140px;
+            height: 205px;
+        }
+</style>
 @if(isset($product))
     @php($overallRating = getOverallRating($product->reviews))
     <div class="flash_deal_product get-view-by-onclick" data-link="{{ route('product',$product->slug) }}">
@@ -11,7 +17,7 @@
         @endif
         <div class=" d-flex">
             <div class="d-flex align-items-center justify-content-center">
-                <div class="" style="padding: 3px;">
+                <div class="flash-deals-background-image" style="padding: 3px;">
                     <img class="__img-125px" 
                         alt="{{ $product->name }}" 
                         src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}" 
