@@ -2529,7 +2529,7 @@ return [
     "Top_5_Product_Wise_Sale" => "Top 5 Product Wise Sale",
     "Top_Delivery_Man" => "Top Delivery Man",
     "Top_Fashion_House" => "Top Fashion House",
-    "Top_Rated" => "Top Rated",
+    "Top_Rated" => "Лучшие",
     "Top_Rated_Product_from_This_Store" => "Top Rated Product from This Store",
     "Top_Rated_Products" => "Top Rated Products",
     "Top_Rated_Seller" => "Top Rated Seller",

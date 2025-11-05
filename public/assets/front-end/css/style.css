@@ -3921,11 +3921,18 @@ a {
 }
 
 .__inline-61 .best-selleing-image {
-    width: 100px;
-    aspect-ratio: 1;
+    width: 120px;           /* kerakli kenglik */
+    height: 175px;          /* kerakli balandlik */
     display: flex;
     align-items: center;
     border-radius: 5px;
+    overflow: hidden;       /* rasm chetidan chiqmasligi uchun */
+}
+
+.__inline-61 .best-selleing-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* rasm deformatsiyasiz moslashadi */
 }
 
 .__inline-61 .best-selling-details {
@@ -3935,11 +3942,18 @@ a {
 }
 
 .__inline-61 .top-rated-image {
-    width: 100px;
-    aspect-ratio: 1;
+    width: 120px;           /* kerakli kenglik */
+    height: 175px;          /* kerakli balandlik */
     display: flex;
     align-items: center;
     border-radius: 5px;
+    overflow: hidden;       /* rasm chetidan chiqmasligi uchun */
+}
+
+.__inline-61 .top-rated-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* rasm deformatsiyasiz moslashadi */
 }
 
 .__inline-61 .top-rated-details {

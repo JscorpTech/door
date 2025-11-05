@@ -1,10 +1,3 @@
-<style>
-    .flash-deals-background-image {
-            border-radius: 5px;
-            width: 140px;
-            height: 205px;
-        }
-</style>
 @if(isset($product))
     @php($overallRating = getOverallRating($product->reviews))
     <div class="flash_deal_product get-view-by-onclick" data-link="{{ route('product',$product->slug) }}">
