@@ -11,7 +11,7 @@
         @endif
         <div class=" d-flex">
             <div class="d-flex align-items-center justify-content-center">
-                <div class="flash-deals-background-image" style="padding: 3px;">
+                <div class="" style="padding: 3px;">
                     <img class="__img-125px" 
                         alt="{{ $product->name }}" 
                         src="{{ getStorageImages(path: $product->thumbnail_full_url, type: 'product') }}" 
