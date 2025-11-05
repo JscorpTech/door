@@ -31,6 +31,8 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
+
 
 ini_set('memory_limit', -1);
 ini_set('upload_max_filesize', '180M');
@@ -68,6 +70,15 @@ class AppServiceProvider extends ServiceProvider
         if (!in_array(request()->ip(), ['127.0.0.1', '::1']) && env('FORCE_HTTPS')) {
             \URL::forceScheme('https');
         }
+
+        Blade::directive('lazy', function ($expression) {
+            return "<?php ob_start(); ?>";
+        });
+
+        Blade::directive('endlazy', function () {
+            return "<?php echo str_replace('<img', '<img loading=\"lazy\"', ob_get_clean()); ?>";
+        });
+
 
         if (!App::runningInConsole()) {
             Paginator::useBootstrap();

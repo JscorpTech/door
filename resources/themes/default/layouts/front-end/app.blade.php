@@ -162,8 +162,9 @@
         </div>
     </div>
 </div>
-
-@yield('content')
+@lazy
+    @yield('content')
+@endlazy
 
 <span id="message-otp-sent-again" data-text="{{ translate('OTP_has_been_sent_again.') }}"></span>
 <span id="message-wait-for-new-code" data-text="{{ translate('please_wait_for_new_code.') }}"></span>

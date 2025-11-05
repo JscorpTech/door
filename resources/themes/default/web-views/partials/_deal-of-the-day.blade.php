@@ -1,7 +1,7 @@
 @if(isset($product))
     <div class="container rtl">
         <div class="row g-4 pt-2 mt-0 pb-2 __deal-of align-items-start">
-            <div class="col-xl-3 col-md-4">
+            <div class="col-xl-3 col-md-4 d-none d-md-block">
                 <div class="deal_of_the_day h-100 bg--light">
                     @if(isset($dealOfTheDay->product))
                         <div class="d-flex justify-content-center align-items-center py-4">
