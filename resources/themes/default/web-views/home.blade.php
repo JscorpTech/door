@@ -178,7 +178,7 @@
             <section class="container rtl pt-4">
 
                 <div class="section-header align-items-center mb-1">
-                    <h2 class="text-black font-bold __text-22px mb-0">z
+                    <h2 class="text-black font-bold __text-22px mb-0">
                         <span> {{translate('brands')}}</span>
                     </h2>
                     <div class="__mr-2px">
