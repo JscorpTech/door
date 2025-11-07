@@ -528,15 +528,21 @@ class WebController extends Controller
             }
             return back()->with('error', 'Something_went_wrong');
         }
+
         $uniqueID = OrderManager::gen_unique_id();
-        $orderIds = [];
+
+        // Faqat checked bo'lgan savatlarni olish
         $cartGroupIds = CartManager::get_cart_group_ids(request: $request, type: 'checked');
         $carts = Cart::whereHas('product', function ($query) {
             return $query->active();
         })->with('product')->whereIn('cart_group_id', $cartGroupIds)->where(['is_checked' => 1])->get();
 
-        $productStockCheck = CartManager::product_stock_check($carts);
-        if (!$productStockCheck) {
+        if ($carts->isEmpty()) {
+            return response()->json(['message' => translate('Your cart is empty')], 403);
+        }
+
+        // Mahsulot zaxirasi tekshiruvi
+        if (!CartManager::product_stock_check($carts)) {
             if ($request->ajax()) {
                 return response()->json([
                     'status' => 0,
@@ -547,103 +553,92 @@ class WebController extends Controller
             return redirect()->route('shop-cart');
         }
 
+        // Minimal buyurtma summasi
         $verifyStatus = OrderManager::verifyCartListMinimumOrderAmount($request);
         if ($verifyStatus['status'] == 0) {
             if ($request->ajax()) {
                 return response()->json([
                     'status' => 0,
                     'message' => translate('check_minimum_order_amount_requirement'),
-                    'redirect' => route('shop-cart'),
+                        'redirect' => route('shop-cart'),
                 ]);
             }
-
             Toastr::info(translate('check_minimum_order_amount_requirement'));
             return redirect()->route('shop-cart');
         }
 
-        $physicalProductExist = false;
-        foreach ($carts as $cart) {
-            if ($cart->product_type == 'physical') {
-                $physicalProductExist = true;
-            }
-        }
-
-        if ($physicalProductExist) {
-
-            if (session('newCustomerRegister')) {
-                $newCustomerRegister = session('newCustomerRegister');
-                if (User::where(['email' => $newCustomerRegister['email']])->orWhere(['phone' => $newCustomerRegister['phone']])->first()) {
-                    if ($request->ajax()) {
-                        return response()->json([
-                            'status' => 0,
-                            'message' => translate('Already_registered'),
-                        ]);
-                    }
-                    Toastr::error(translate('Already_registered'));
-                    return back();
+        // Yangi mijozni ro'yxatdan o'tkazish (agar kerak bo'lsa)
+        $newCustomerRegister = null;
+        if (session('newCustomerRegister')) {
+            $newCustomerRegister = session('newCustomerRegister');
+            if (User::where(['email' => $newCustomerRegister['email']])
+                    ->orWhere(['phone' => $newCustomerRegister['phone']])
+                    ->first()) {
+                if ($request->ajax()) {
+                    return response()->json(['status' => 0, 'message' => translate('Already_registered')]);
                 }
-
-                $addCustomer = User::create([
-                    'name' => $newCustomerRegister['name'],
-                    'f_name' => $newCustomerRegister['name'],
-                    'l_name' => $newCustomerRegister['l_name'],
-                    'email' => $newCustomerRegister['email'],
-                    'phone' => $newCustomerRegister['phone'],
-                    'is_active' => 1,
-                    'password' => bcrypt($newCustomerRegister['password']),
-                    'referral_code' => $newCustomerRegister['referral_code'],
-                ]);
-                session()->put('newRegisterCustomerInfo', $addCustomer);
-
-                $customerID = session()->has('guest_id') ? session('guest_id') : 0;
-                ShippingAddress::where(['customer_id' => $customerID, 'is_guest' => 1, 'id' => session('address_id')])
-                    ->update(['customer_id' => $addCustomer['id'], 'is_guest' => 0]);
-                ShippingAddress::where(['customer_id' => $customerID, 'is_guest' => 1, 'id' => session('billing_address_id')])
-                    ->update(['customer_id' => $addCustomer['id'], 'is_guest' => 0]);
+                Toastr::error(translate('Already_registered'));
+                return back();
             }
 
-            foreach ($cartGroupIds as $groupId) {
-                $data = [
-                    'payment_method' => 'cash_on_delivery',
-                    'order_status' => 'pending',
-                    'payment_status' => 'unpaid',
-                    'transaction_ref' => '',
-                    'order_group_id' => $uniqueID,
-                    'cart_group_id' => $groupId,
-                    'bring_change_amount' => $request['bring_change_amount'] ?? 0,
-                    'bring_change_amount_currency' => session('currency_code'),
-                ];
-                $orderId = OrderManager::generate_order($data);
-                $orderIds[] = $orderId;
-            }
-
-            CartManager::cart_clean();
-
-            if ($request->ajax()) {
-                return response()->json([
-                    'status' => 1,
-                    'message' => translate('Order_Placed_Successfully'),
-                    'redirect' => route('order-placed-success', ['orderIds' => json_encode($orderIds)]),
-                ]);
-            }
-
-            $isNewCustomerInSession = session('newCustomerRegister');
-            session()->forget('newCustomerRegister');
-            session()->forget('newRegisterCustomerInfo');
-
-            return view(VIEW_FILE_NAMES['order_complete'], [
-                'order_ids' => $orderIds,
-                'isNewCustomerInSession' => $isNewCustomerInSession,
+            $addCustomer = User::create([
+                'name' => $newCustomerRegister['name'],
+                'f_name' => $newCustomerRegister['name'],
+                'l_name' => $newCustomerRegister['l_name'],
+                'email' => $newCustomerRegister['email'],
+                'phone' => $newCustomerRegister['phone'],
+                'is_active' => 1,
+                'password' => bcrypt($newCustomerRegister['password']),
+                'referral_code' => $newCustomerRegister['referral_code'],
             ]);
+            session()->put('newRegisterCustomerInfo', $addCustomer);
+
+            $customerID = session()->has('guest_id') ? session('guest_id') : 0;
+            ShippingAddress::where(['customer_id' => $customerID, 'is_guest' => 1, 'id' => session('address_id')])
+                ->update(['customer_id' => $addCustomer['id'], 'is_guest' => 0]);
+            ShippingAddress::where(['customer_id' => $customerID, 'is_guest' => 1, 'id' => session('billing_address_id')])
+                ->update(['customer_id' => $addCustomer['id'], 'is_guest' => 0]);
         }
+
+        // ✅ Bitta cart_group_id ishlatish
+        $singleCartGroupId = $cartGroupIds;
+
+        // Log qo‘shish
+        \Log::info('Creating cash on delivery order', [
+            'cart_group_id' => $singleCartGroupId,
+            'user_id' => auth()->id() ?? $request['guest_id'] ?? 0,
+            'products' => $carts->pluck('product_id')->toArray(),
+        ]);
+
+        // Order yaratish
+        $orderId = OrderManager::generate_order([
+            'payment_method' => 'cash_on_delivery',
+            'order_status' => 'pending',
+            'payment_status' => 'unpaid',
+            'order_group_id' => $uniqueID,
+            'cart_group_id' => $singleCartGroupId,
+            'bring_change_amount' => $request['bring_change_amount'] ?? 0,
+            'bring_change_amount_currency' => session('currency_code'),
+        ]);
+
+        CartManager::cart_clean();
 
         if ($request->ajax()) {
             return response()->json([
-                'status' => 0,
-                'message' => translate('Something_went_wrong'),
+                'status' => 1,
+                'message' => translate('Order_Placed_Successfully'),
+                'redirect' => route('order-placed-success', ['orderIds' => json_encode([$orderId])]),
             ]);
         }
-        return back()->with('error', translate('Something_went_wrong'));
+
+        $isNewCustomerInSession = session('newCustomerRegister');
+        session()->forget('newCustomerRegister');
+        session()->forget('newRegisterCustomerInfo');
+
+        return view(VIEW_FILE_NAMES['order_complete'], [
+            'order_ids' => [$orderId],
+            'isNewCustomerInSession' => $isNewCustomerInSession,
+        ]);
     }
 
     public function getOrderPlaceView(Request $request): View

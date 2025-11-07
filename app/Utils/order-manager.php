@@ -441,365 +441,147 @@ class OrderManager
         return $calculate_data;
     }
 
-    public static function generate_order($data)
-    {
-        $req = array_key_exists('request', $data) ? $data['request'] : null;
-        $user = Helpers::getCustomerInformation($req);
+    public static function generate_order(array $data)
+{
+    $req = $data['requestObj'] ?? null;
+    $user = Helpers::getCustomerInformation($req);
+    $isGuestUser = ($user === 'offline') ? 1 : 0;
+    $guest_id = $req['guest_id'] ?? 0;
+    $getCustomerID = $user === 'offline' ? $guest_id : $user->id ?? 0;
 
-        if ($user == 'offline' && isset($req['customer_id']) && isset($req['is_guest']) && $req['is_guest'] == 0) {
-            $userCheck = User::where(['id' => $req['customer_id']])->first();
-            $user = $userCheck ?? $user;
-        }
-
-        $isGuestUser = ($user == 'offline') ? 1 : 0;
-        if ($req) {
-            $isGuestUser = isset($req['is_guest']) && $req['is_guest'] ? 1 : 0;
-        }
-
-        $guest_id = session('guest_id');
-        if ($req) {
-            $guest_id = $req['is_guest'] ? $req['guest_id'] : 0;
-        }
-
-        $getCustomerID = $user == 'offline' ? $guest_id : $user->id;
-        if ($user == 'offline' && session('newCustomerRegister') && session('newRegisterCustomerInfo')) {
-            $addCustomer = session('newRegisterCustomerInfo');
-            $getCustomerID = $addCustomer['id'];
-            $isGuestUserInOrder = 0;
-
-            $customerID = session()->has('guest_id') ? session('guest_id') : 0;
-            ShippingAddress::where(['customer_id' => $customerID, 'is_guest' => 1, 'id' => session('address_id')])
-                ->update(['customer_id' => $getCustomerID, 'is_guest' => 0]);
-            ShippingAddress::where(['customer_id' => $customerID, 'is_guest' => 1, 'id' => session('billing_address_id')])
-                ->update(['customer_id' => $getCustomerID, 'is_guest' => 0]);
-
-        } elseif ($user == 'offline' && isset($data['newCustomerRegister'])) {
-            $getCustomerID = $data['newCustomerRegister'] ? $data['newCustomerRegister']['id'] : $guest_id;
-            $isGuestUserInOrder = $data['newCustomerRegister'] ? 0 : 1;
-        } elseif ($user == 'offline' && isset($data['new_customer_id'])) {
-            $getCustomerID = $data['new_customer_id'];
-            $isGuestUserInOrder = $data['new_customer_id'] ? 0 : 1;
-        } else {
-            $isGuestUserInOrder = $isGuestUser;
-        }
-
-        $couponProcess = [
-            'discount' => 0,
-            'coupon_bearer' => 'inhouse',
-            'coupon_code' => 0,
-            'coupon_type' => NULL,
-        ];
-
-        if (!$isGuestUser && (isset($req['coupon_code']) && $req['coupon_code']) || session()->has('coupon_code')) {
-            $coupon_code = $req['coupon_code'] ?? session('coupon_code');
-            $coupon = Coupon::where(['code' => $coupon_code])
-                ->where('status', 1)
-                ->first();
-
-            $couponProcess = $coupon ? self::coupon_process($data, $coupon) : $couponProcess;
-        }
-
-        $order_id = 100000 + Order::all()->count() + 1;
-        if (Order::find($order_id)) {
-            $order_id = Order::orderBy('id', 'DESC')->first()->id + 1;
-        }
-        $address_id = session('address_id') ? session('address_id') : null;
-        $billing_address_id = session('billing_address_id') ? session('billing_address_id') : null;
-        $coupon_code = $couponProcess['coupon_code'];
-        $coupon_bearer = $couponProcess['coupon_bearer'];
-        $discount = $couponProcess['discount'];
-        $discount_type = $couponProcess['discount'] == 0 ? null : 'coupon_discount';
-        $order_note = $req['order_note'] ?? session('order_note');
-
-        $cart_group_id = $data['cart_group_id'];
-        $admin_commission = (float)str_replace(",", "", Helpers::sales_commission_before_order($cart_group_id, $discount));
-
-        $is_shipping_free = 0;
-        $freeShippingDiscount = 0;
-        $free_shipping_type = NULL;
-        $free_shipping_responsibility = NULL;
-        $free_delivery = OrderManager::getFreeDeliveryOrderAmountArray($cart_group_id);
-        if ($free_delivery['status'] && $free_delivery['shipping_cost_saved'] > 0 && $couponProcess['coupon_type'] != 'free_delivery') {
-            $is_shipping_free = 1;
-            $freeShippingDiscount = CartManager::get_shipping_cost(groupId: $data['cart_group_id'], type: 'checked');
-            $free_shipping_type = 'free_shipping_over_order_amount';
-            $free_shipping_responsibility = $free_delivery['responsibility'];
-        }
-
-        if ($req && session()->has('address_id') == false) {
-            $address_id = isset($req['address_id']) ? $req['address_id'] : null;
-        }
-
-        if ($req && session()->has('billing_address_id') == false) {
-            $billing_address_id = isset($req['billing_address_id']) ? $req['billing_address_id'] : null;
-        }
-
-        $seller_data = Cart::where(['cart_group_id' => $cart_group_id])->first();
-        $shipping_method = CartShipping::where(['cart_group_id' => $cart_group_id])->first();
-        if (isset($shipping_method)) {
-            $shipping_method_id = $shipping_method->shipping_method_id;
-        } else {
-            $shipping_method_id = 0;
-        }
-
-        $shipping_model = getWebConfig(name: 'shipping_method');
-        if ($shipping_model == 'inhouse_shipping') {
-            $admin_shipping = ShippingType::where('seller_id', 0)->first();
-            $shipping_type = isset($admin_shipping) == true ? $admin_shipping->shipping_type : 'order_wise';
-        } else {
-            if ($seller_data->seller_is == 'admin') {
-                $admin_shipping = ShippingType::where('seller_id', 0)->first();
-                $shipping_type = isset($admin_shipping) == true ? $admin_shipping->shipping_type : 'order_wise';
-            } else {
-                $seller_shipping = ShippingType::where('seller_id', $seller_data->seller_id)->first();
-                $shipping_type = isset($seller_shipping) == true ? $seller_shipping->shipping_type : 'order_wise';
-            }
-        }
-        $or = [
-            'id' => $order_id,
-            'verification_code' => rand(100000, 999999),
-            'customer_id' => $getCustomerID,
-            'is_guest' => $isGuestUserInOrder,
-            'seller_id' => $seller_data->seller_id,
-            'seller_is' => $seller_data->seller_is,
-            'customer_type' => 'customer',
-            'payment_status' => $data['payment_status'],
-            'order_status' => $data['order_status'],
-            'payment_method' => $data['payment_method'],
-            'transaction_ref' => isset($data['transaction_ref']) ? $data['transaction_ref'] : null,
-            'payment_by' => isset($data['payment_by']) ? $data['payment_by'] : NULL,
-            'payment_note' => isset($data['payment_note']) ? $data['payment_note'] : NULL,
-            'order_group_id' => $data['order_group_id'],
-            'discount_amount' => $discount,
-            'discount_type' => $discount_type,
-            'coupon_code' => $coupon_code,
-            'coupon_discount_bearer' => $coupon_bearer,
-            'order_amount' => CartManager::cart_grand_total(cartGroupId: $cart_group_id, type: 'checked') - $discount - $freeShippingDiscount,
-            'bring_change_amount' => $data['payment_method'] == 'cash_on_delivery' ? $data['bring_change_amount'] ?? 0 : null,
-            'bring_change_amount_currency' => $data['bring_change_amount_currency'] ?? null,
-            'admin_commission' => $admin_commission,
-            'shipping_address' => $address_id,
-            'shipping_address_data' => ShippingAddress::find($address_id),
-            'billing_address' => $billing_address_id,
-            'billing_address_data' => ShippingAddress::find($billing_address_id),
-            'shipping_responsibility' => getWebConfig(name: 'shipping_method'),
-            'shipping_cost' => CartManager::get_shipping_cost(groupId: $data['cart_group_id'], type: 'checked'),
-            'extra_discount' => $freeShippingDiscount,
-            'extra_discount_type' => $free_shipping_type,
-            'free_delivery_bearer' => $seller_data->seller_is == 'seller' ? $free_shipping_responsibility : 'admin',
-            'is_shipping_free' => $is_shipping_free,
-            'shipping_method_id' => $shipping_method_id,
-            'shipping_type' => $shipping_type,
-            'created_at' => now(),
-            'updated_at' => now(),
-            'order_note' => $order_note
-        ];
-
-        if ($data['payment_method'] == 'offline_payment') {
-            OfflinePayments::insert([
-                'order_id' => $order_id,
-                'payment_info' => json_encode($data['offline_payment_info']),
-                'created_at' => Carbon::now(),
-            ]);
-        }
-
-        // confirmed
-        DB::table('orders')->insertGetId($or);
-        self::add_order_status_history($order_id, $getCustomerID, $data['payment_status'] == 'paid' ? 'confirmed' : 'pending', 'customer');
-
-        foreach (CartManager::getCartListQuery(groupId: $data['cart_group_id'], type: 'checked') as $cartSingleItem) {
-            $product = Product::where(['id' => $cartSingleItem['product_id']])->with(['digitalVariation', 'clearanceSale' => function ($query) {
-                return $query->active();
-            }])->first()->toArray();
-            unset($product['is_shop_temporary_close']);
-            unset($product['color_images_full_url']);
-            unset($product['meta_image_full_url']);
-            unset($product['images_full_url']);
-            unset($product['reviews']);
-            unset($product['translations']);
-
-            $digitalProductVariation = DigitalProductVariation::with(['storage'])->where(['product_id' => $cartSingleItem['product_id'], 'variant_key' => $cartSingleItem['variant']])->first();
-            if ($product['digital_product_type'] == 'ready_product' && $digitalProductVariation) {
-                $getStoragePath = Storage::where([
-                    'data_id' => $digitalProductVariation['id'],
-                    "data_type" => "App\Models\DigitalProductVariation",
-                ])->first();
-
-                $product['digital_file_ready'] = $digitalProductVariation['file'];
-                $product['storage_path'] = $getStoragePath ? $getStoragePath['value'] : 'public';
-            } elseif ($product['digital_product_type'] == 'ready_product' && !empty($product['digital_file_ready'])) {
-                $product['storage_path'] = $product['digital_file_ready_storage_type'] ?? 'public';
-            }
-
-            $price = $cartSingleItem['tax_model'] == 'include' ? $cartSingleItem['price'] - $cartSingleItem['tax'] : $cartSingleItem['price'];
-            $productDiscount = getProductPriceByType(product: $product, type: 'discounted_amount', result: 'value', price: $cartSingleItem['price']);
-            $orderDetails = [
-                'order_id' => $order_id,
-                'product_id' => $cartSingleItem['product_id'],
-                'seller_id' => $cartSingleItem['seller_id'],
-                'product_details' => json_encode($product),
-                'qty' => $cartSingleItem['quantity'],
-                'price' => $price,
-                'tax' => $cartSingleItem['tax'] * $cartSingleItem['quantity'],
-                'tax_model' => $cartSingleItem['tax_model'],
-                'discount' => $productDiscount * $cartSingleItem['quantity'],
-                'discount_type' => 'discount_on_product',
-                'variant' => $cartSingleItem['variant'],
-                'variation' => $cartSingleItem['variations'],
-                'delivery_status' => 'pending',
-                'shipping_method_id' => null,
-                'payment_status' => 'unpaid',
-                'created_at' => now(),
-                'updated_at' => now()
-            ];
-
-            if ($cartSingleItem['variant'] != null) {
-                $type = $cartSingleItem['variant'];
-                $var_store = [];
-                foreach (json_decode($product['variation'], true) as $var) {
-                    if ($type == $var['type']) {
-                        $var['qty'] -= $cartSingleItem['quantity'];
-                    }
-                    $var_store[] = $var;
-                }
-                Product::where(['id' => $product['id']])->update([
-                    'variation' => json_encode($var_store),
-                ]);
-            }
-
-            Product::where(['id' => $product['id']])->update([
-                'current_stock' => $product['current_stock'] - $cartSingleItem['quantity']
-            ]);
-
-            DB::table('order_details')->insert($orderDetails);
-
-        }
-
-        $order = Order::with('customer', 'seller.shop', 'details')->find($order_id);
-        if ($or['payment_method'] != 'cash_on_delivery' && $or['payment_method'] != 'offline_payment') {
-            $order_summary = OrderManager::order_summary($order);
-            $order_amount = $order_summary['subtotal'] - $order_summary['total_discount_on_product'] - $order['discount'];
-
-            DB::table('order_transactions')->insert([
-                'transaction_id' => OrderManager::gen_unique_id(),
-                'customer_id' => $order['customer_id'],
-                'seller_id' => $order['seller_id'],
-                'seller_is' => $order['seller_is'],
-                'order_id' => $order_id,
-                'order_amount' => $order_amount,
-                'seller_amount' => $order_amount - $admin_commission,
-                'admin_commission' => $admin_commission,
-                'received_by' => 'admin',
-                'status' => 'hold',
-                'delivery_charge' => $order['shipping_cost'] - $order['extra_discount'],
-                'tax' => $order_summary['total_tax'],
-                'delivered_by' => 'admin',
-                'payment_method' => $or['payment_method'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            if (AdminWallet::where('admin_id', 1)->first() == false) {
-                DB::table('admin_wallets')->insert([
-                    'admin_id' => 1,
-                    'withdrawn' => 0,
-                    'commission_earned' => 0,
-                    'inhouse_earning' => 0,
-                    'delivery_charge_earned' => 0,
-                    'pending_amount' => 0,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
-            DB::table('admin_wallets')->where('admin_id', $order['seller_id'])->increment('pending_amount', $order['order_amount']);
-        }
-
-        if ($seller_data->seller_is == 'admin') {
-            $seller = Admin::find($seller_data->seller_id);
-        } else {
-            $seller = Seller::find($seller_data->seller_id);
-            /**send message to seller  */
-            if ($seller) {
-                $notification = (object)[
-                    'key' => 'new_order_message',
-                    'type' => 'seller',
-                    'order' => $order,
-                ];
-                event(new OrderPlacedEvent(notification: $notification));
-            }
-        }
-        if ($user != 'offline') {
-            if ($order['payment_method'] != 'cash_on_delivery' && $order['payment_method'] != 'offline_payment') {
-                $notification = (object)[
-                    'key' => 'confirmed',
-                    'type' => 'customer',
-                    'order' => $order,
-                ];
-                event(new OrderPlacedEvent(notification: $notification));
-            } else {
-                $notification = (object)[
-                    'key' => 'pending',
-                    'type' => 'customer',
-                    'order' => $order,
-                ];
-                event(new OrderPlacedEvent(notification: $notification));
-            }
-        }
-
-        try {
-            $emailServices_smtp = getWebConfig(name: 'mail_config');
-            if ($emailServices_smtp['status'] == 0) {
-                $emailServices_smtp = getWebConfig(name: 'mail_config_sendgrid');
-            }
-            if ($emailServices_smtp['status'] == 1) {
-                if ($isGuestUser) {
-                    $offline_user = ShippingAddress::where('id', $address_id)->first();
-                    if (!$offline_user) {
-                        $offline_user = ShippingAddress::find($billing_address_id);
-                    }
-                    $email = $offline_user['email'];
-                    $userName = $offline_user['contact_person_name'];
-                } else {
-                    if ($req) {
-                        $getLoggedUser = User::find($getCustomerID);
-                        $email = $getLoggedUser['email'];
-                        $userName = $getLoggedUser['f_name'];
-                    } else {
-                        $email = $user['email'];
-                        $userName = $user['f_name'];
-                    }
-                }
-                $data = [
-                    'subject' => translate('order_placed'),
-                    'title' => translate('order_placed'),
-                    'userName' => $userName,
-                    'userType' => 'customer',
-                    'templateName' => 'order-place',
-                    'order' => $order,
-                    'orderId' => $order_id,
-                    'shopName' => $seller?->shop?->name ?? getWebConfig('company_name'),
-                    'shopId' => $seller?->shop?->id ?? 0,
-                    'attachmentPath' => self::storeInvoice($order_id),
-                ];
-                event(new OrderPlacedEvent(email: $email, data: $data));
-                $dataForVendor = [
-                    'subject' => translate('new_order_received'),
-                    'title' => translate('new_order_received'),
-                    'userType' => $seller_data->seller_is == 'admin' ? 'admin' : 'vendor',
-                    'templateName' => 'order-received',
-                    'order' => $order,
-                    'orderId' => $order_id,
-                    'vendorName' => $seller?->f_name,
-                    'adminName' => $seller?->name,
-                ];
-                event(new OrderPlacedEvent(email: $seller->email, data: $dataForVendor));
-            }
-        } catch (\Exception $exception) {
-
-        }
-
-        return $order_id;
+    // Agar yangi mijoz ro'yhatdan o'tgan bo'lsa
+    if ($user === 'offline' && session()->has('newCustomerRegister') && session()->has('newRegisterCustomerInfo')) {
+        $addCustomer = session('newRegisterCustomerInfo');
+        $getCustomerID = $addCustomer['id'];
+        $isGuestUser = 0;
     }
+
+    // Kuponni ishlash
+    $couponProcess = [
+        'discount' => 0,
+        'coupon_bearer' => 'inhouse',
+        'coupon_code' => 0,
+        'coupon_type' => null,
+    ];
+    if (!$isGuestUser && (!empty($req['coupon_code']) || session()->has('coupon_code'))) {
+        $coupon_code = $req['coupon_code'] ?? session('coupon_code');
+        $coupon = Coupon::where(['code' => $coupon_code, 'status' => 1])->first();
+        if ($coupon) {
+            $couponProcess = self::coupon_process($data, $coupon);
+        }
+    }
+
+    // ✅ Bitta umumiy order_id
+    $order_id = 100000 + Order::count() + 1;
+    if (Order::find($order_id)) {
+        $order_id = Order::orderBy('id', 'DESC')->first()->id + 1;
+    }
+
+    $address_id = $req['address_id'] ?? session('address_id');
+    $billing_address_id = $req['billing_address_id'] ?? session('billing_address_id');
+    $order_note = $req['order_note'] ?? session('order_note');
+
+    $cart_group_id = $data['cart_group_id'];
+     \Log::info('Cart items for order', [
+        'cart_group_id' => $cart_group_id,
+        'data' => $data,
+    ]);
+
+    $admin_commission = (float)str_replace(",", "", Helpers::sales_commission_before_order($cart_group_id, $couponProcess['discount']));
+
+    // Savatchadagi birinchi itemdan sellerni olamiz (faqat order table uchun)
+    $firstCartItem = Cart::where(['cart_group_id' => $cart_group_id])->first();
+    $seller_data = $firstCartItem;
+    $shipping_method = CartShipping::where(['cart_group_id' => $cart_group_id])->first();
+    $shipping_method_id = $shipping_method->shipping_method_id ?? 0;
+
+    $shipping_model = getWebConfig(name: 'shipping_method');
+    if ($shipping_model == 'inhouse_shipping' || $seller_data->seller_is == 'admin') {
+        $shipping_type = ShippingType::where('seller_id', 0)->first()->shipping_type ?? 'order_wise';
+    } else {
+        $shipping_type = ShippingType::where('seller_id', $seller_data->seller_id)->first()->shipping_type ?? 'order_wise';
+    }
+
+    // ✅ Order table array
+    $orderArray = [
+        'id' => $order_id,
+        'verification_code' => rand(100000, 999999),
+        'customer_id' => $getCustomerID,
+        'is_guest' => $isGuestUser,
+        'seller_id' => $seller_data->seller_id,
+        'seller_is' => $seller_data->seller_is,
+        'customer_type' => 'customer',
+        'payment_status' => $data['payment_status'] ?? 'unpaid',
+        'order_status' => $data['order_status'] ?? 'pending',
+        'payment_method' => $data['payment_method'] ?? 'cash_on_delivery',
+        'transaction_ref' => $data['transaction_ref'] ?? null,
+        'order_group_id' => $data['order_group_id'] ?? null,
+        'discount_amount' => $couponProcess['discount'],
+        'discount_type' => $couponProcess['discount'] == 0 ? null : 'coupon_discount',
+        'coupon_code' => $couponProcess['coupon_code'],
+        'coupon_discount_bearer' => $couponProcess['coupon_bearer'],
+        'order_amount' => CartManager::cart_grand_total(cartGroupId: $cart_group_id, type: 'checked') - $couponProcess['discount'],
+        'admin_commission' => $admin_commission,
+        'shipping_address' => $address_id,
+        'billing_address' => $billing_address_id,
+        'shipping_cost' => CartManager::get_shipping_cost(groupId: $cart_group_id, type: 'checked'),
+        'shipping_type' => $shipping_type,
+        'shipping_method_id' => $shipping_method_id,
+        'created_at' => now(),
+        'updated_at' => now(),
+        'order_note' => $order_note,
+    ];
+
+    // ✅ Order yaratish
+    DB::table('orders')->insert($orderArray);
+
+    // ✅ Order details – barcha checked itemlar
+    $cartItems = Cart::whereIn('cart_group_id', $cart_group_id)
+        ->where('is_checked', 1)
+        ->get();
+
+   
+
+    foreach ($cartItems as $cartSingleItem) {
+        $product = Product::find($cartSingleItem->product_id)->toArray();
+
+        $price = $cartSingleItem->tax_model == 'include'
+            ? $cartSingleItem->price - $cartSingleItem->tax
+            : $cartSingleItem->price;
+
+        $productDiscount = getProductPriceByType(
+            product: $product,
+            type: 'discounted_amount',
+            result: 'value',
+            price: $cartSingleItem->price
+        );
+
+        $orderDetails = [
+            'order_id' => $order_id,
+            'product_id' => $cartSingleItem->product_id,
+            'seller_id' => $cartSingleItem->seller_id,
+            'product_details' => json_encode($product),
+            'qty' => $cartSingleItem->quantity,
+            'price' => $price,
+            'tax' => $cartSingleItem->tax * $cartSingleItem->quantity,
+            'tax_model' => $cartSingleItem->tax_model,
+            'discount' => $productDiscount * $cartSingleItem->quantity,
+            'discount_type' => 'discount_on_product',
+            'variant' => $cartSingleItem->variant,
+            'variation' => $cartSingleItem->variations,
+            'delivery_status' => 'pending',
+            'payment_status' => 'unpaid',
+            'created_at' => now(),
+            'updated_at' => now()
+        ];
+
+        DB::table('order_details')->insert($orderDetails);
+    }
+
+
+    return $order_id; // har doim bitta order
+}
+
 
     /**
      * @param $data

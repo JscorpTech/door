@@ -11,6 +11,7 @@ use App\Models\DigitalProductOtpVerification;
 use App\Models\OfflinePaymentMethod;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\OrderDetailsRewards;
 use App\Models\RefundRequest;
 use App\Models\Setting;
 use App\Models\ShippingAddress;
@@ -34,7 +35,6 @@ use Illuminate\Support\Facades\Validator;
 
 
 
-
 class OrderController extends Controller
 {
     use CommonTrait, FileManagerTrait;
@@ -49,7 +49,12 @@ class OrderController extends Controller
             return response()->json(['errors' => Helpers::validationErrorProcessor($validator)], 403);
         }
 
-        return response()->json(OrderManager::track_order($request['order_id']), 200);
+        $data = Order::with(['deliveryMan', 'orderStatusHistory' => function ($query) {
+            return $query->latest();
+        }])->where(['id' => $request['order_id']])->first();
+
+        $data = json_decode(json_encode($data), true);
+        return response()->json($data, 200);
     }
 
     public function order_cancel(Request $request)
@@ -64,7 +69,7 @@ class OrderController extends Controller
         $order = Order::where(['id' => $request->order_id])->first();
 
         if ($order['payment_method'] == 'cash_on_delivery' && $order['order_status'] == 'pending') {
-            OrderManager::stock_update_on_order_status_change($order, 'canceled');
+            OrderManager::getStockUpdateOnOrderStatusChange($order, 'canceled');
             Order::where(['id' => $request->order_id])->update([
                 'order_status' => 'canceled'
             ]);
@@ -79,117 +84,82 @@ class OrderController extends Controller
     {
         $user = Helpers::getCustomerInformation($request);
         $newCustomerRegister = null;
+
+        // Faqat checked bo'lgan savatlarni olish
         $cartGroupIds = CartManager::get_cart_group_ids(request: $request, type: 'checked');
         $carts = Cart::whereHas('product', function ($query) {
             return $query->active();
         })->with('product')->whereIn('cart_group_id', $cartGroupIds)->where(['is_checked' => 1])->get();
 
-        $productStockCheck = CartManager::product_stock_check($carts);
-        if (!$productStockCheck) {
-            return response()->json(['message' => 'The following items in your cart are currently out of stock'], 403);
+        if ($carts->isEmpty()) {
+            return response()->json(['message' => translate('Your cart is empty')], 403);
         }
 
+        // Mahsulot zaxirasi tekshiruvi
+        $productStockCheck = CartManager::product_stock_check($carts);
+        if (!$productStockCheck) {
+            return response()->json(['message' => translate('The_following_items_in_your_cart_are_currently_out_of_stock')], 403);
+        }
+
+        // Minimal buyurtma summasi
         $verifyStatus = OrderManager::verifyCartListMinimumOrderAmount($request);
         if ($verifyStatus['status'] == 0) {
             return response()->json(['message' => translate('Check_minimum_order_amount_requirement')], 403);
         }
 
+        // Yangi mijozni ro'yxatdan o'tkazish
         if ($user == 'offline' && $request->has('address_id') && $request['address_id']) {
-            $shippingAddress = ShippingAddress::where(['customer_id' => $request['guest_id'], 'is_guest' => 1, 'id' => $request->input('address_id')])->first();
+            $shippingAddress = ShippingAddress::where([
+                'customer_id' => $request['guest_id'],
+                'is_guest' => 1,
+                'id' => $request->input('address_id')
+            ])->first();
+
             if ($request['is_check_create_account'] && $shippingAddress) {
                 if (User::where(['email' => $shippingAddress['email']])->orWhere(['phone' => $shippingAddress['phone']])->first()) {
-                    return response()->json(['message' => translate('Already_registered ')], 403);
+                    return response()->json(['message' => translate('Already registered ')], 403);
                 } else {
                     $newCustomerRegister = self::addNewCustomer(request: $request, address: $shippingAddress);
                 }
             }
         }
 
-        $physicalProduct = false;
-        foreach ($carts as $cart) {
-            if ($cart->product_type == 'physical') {
-                $physicalProduct = true;
-            }
-        }
-
-        if ($physicalProduct) {
-            $zipRestrictStatus = getWebConfig(name: 'delivery_zip_code_area_restriction');
-            $countryRestrictStatus = getWebConfig(name: 'delivery_country_restriction');
-
-            if ($request->has('billing_address_id') && $request['billing_address_id']) {
-                if ($user == 'offline') {
-                    $billingAddress = ShippingAddress::where(['customer_id' => $request['guest_id'], 'is_guest' => 1, 'id' => $request->input('billing_address_id')])->first();
-                    if ($request['is_check_create_account'] && $billingAddress && $request['address_id'] == null) {
-                        if (User::where(['email' => $billingAddress['email']])->orWhere(['phone' => $billingAddress['phone']])->first()) {
-                            return response()->json(['message' => translate('Already_registered ')], 403);
-                        } else {
-                            $newCustomerRegister = self::addNewCustomer(request: $request, address: $billingAddress);
-                        }
-                    }
-                } else {
-                    $billingAddress = ShippingAddress::where(['customer_id' => $user->id, 'is_guest' => '0', 'id' => $request->input('billing_address_id')])->first();
-                }
-
-                if (!$billingAddress) {
-                    return response()->json(['message' => translate('address_not_found')], 403);
-                } elseif ($countryRestrictStatus && !self::delivery_country_exist_check($billingAddress->country)) {
-                    return response()->json(['message' => translate('Delivery_unavailable_for_this_country')], 403);
-                } elseif ($zipRestrictStatus && !self::delivery_zipcode_exist_check($billingAddress->zip)) {
-                    return response()->json(['message' => translate('Delivery_unavailable_for_this_zip_code_area')], 403);
-                }
-            }
-        }
-
-        $currency_model = getWebConfig(name: 'currency_model');
-        if ($currency_model == 'multi_currency') {
-            $currencyCode = $request->current_currency_code ?? Currency::find(getWebConfig(name: 'system_default_currency'))->code;
-        } else {
-            $currencyCode = Currency::find(getWebConfig(name: 'system_default_currency'))->code;
-        }
+        \Log::info('Placing order with cart_group_id: '.$cart_group_id, [
+            'cart_group_ids' => $cartGroupIds,
+            'user_id' => $user == 'offline' ? $request['guest_id'] : $user['id']
+        ]);
 
 
-        $getUniqueId = OrderManager::gen_unique_id();
+        // **Bitta umumiy cart_group_id ishlatish**
+        $cart_group_id = $cartGroupIds[0];
 
-        $orderIds = [];
-        foreach ($cartGroupIds as $groupId) {
-            $data = [
-                'payment_method' => 'cash_on_delivery',
-                'order_status' => 'pending',
-                'payment_status' => 'unpaid',
-                'transaction_ref' => '',
-                'order_group_id' => $getUniqueId,
-                'cart_group_id' => $groupId,
-                'request' => $request,
-                'newCustomerRegister' => $newCustomerRegister,
-                'bring_change_amount' => $request['bring_change_amount'] ?? 0,
-                'bring_change_amount_currency' => $currencyCode,
-            ];
-
-            $orderId = OrderManager::generate_order($data);
-
-            $order = Order::find($orderId);
-            $order->billing_address = ($request['billing_address_id'] != null) ? $request['billing_address_id'] : $order['billing_address'];
-            $order->billing_address_data = ($request['billing_address_id'] != null) ? ShippingAddress::find($request['billing_address_id']) : $order['billing_address_data'];
-            $order->order_note = ($request['order_note'] != null) ? $request['order_note'] : $order['order_note'];
-            $order->save();
-
-            $orderIds[] = $orderId;
-        }
-
-        CartManager::cart_clean($request);
-
-        if ($newCustomerRegister) {
-            ShippingAddress::where(['customer_id' => $request['guest_id'], 'is_guest' => 1, 'id' => $request->input('address_id')])
-                ->update(['customer_id' => $newCustomerRegister['id'], 'is_guest' => 0]);
-            ShippingAddress::where(['customer_id' => $request['guest_id'], 'is_guest' => 1, 'id' => $request->input('billing_address_id')])
-                ->update(['customer_id' => $newCustomerRegister['id'], 'is_guest' => 0]);
-        }
+        // Order yaratish
+        $order_id = OrderManager::generate_order([
+            'is_guest' => $user == 'offline' ? 1 : 0,
+            'guest_id' => $request['guest_id'],
+            'customer_id' => $user == 'offline' ? $request['guest_id'] : $user['id'],
+            'order_status' => 'pending',
+            'payment_method' => 'cash_on_delivery',
+            'payment_status' => 'unpaid',
+            'transaction_ref' => '',
+            'address_id' => $request['address_id'],
+            'billing_address_id' => $request['billing_address_id'],
+            'coupon_code' => $request['coupon_code'],
+            'newCustomerRegister' => $newCustomerRegister,
+            'bring_change_amount' => $request['bring_change_amount'] ?? 0,
+            'bring_change_amount_currency' => getWebConfig(name: 'currency_model') == 'multi_currency' ? ($request->current_currency_code ?? Currency::find(getWebConfig(name: 'system_default_currency'))->code) : Currency::find(getWebConfig(name: 'system_default_currency'))->code,
+            'requestObj' => $request,
+            'cart_group_id' => $cart_group_id
+        ]);
 
         return response()->json([
-            'order_ids' => $orderIds,
+            'order_id' => $order_id,
+            'message' => "Your payment has been successfully processed and your order - {$order_id} Был размещен.",
             'new_user' => (bool)$newCustomerRegister
         ], 200);
     }
+
+
 
     function addNewCustomer($request, $address)
     {
@@ -271,54 +241,38 @@ class OrderController extends Controller
             }
         }
 
-        $offline_payment_info = [];
+        $offlinePaymentInfo = [];
         $method = OfflinePaymentMethod::where(['id' => $request['method_id'], 'status' => 1])->first();
 
         if (isset($method)) {
             $fields = array_column($method->method_informations, 'customer_input');
             $values = (array)json_decode(base64_decode($request['method_informations']));
-
-            $offline_payment_info['method_id'] = $request['method_id'];
-            $offline_payment_info['method_name'] = $method->method_name;
+            $offlinePaymentInfo['method_id'] = $request['method_id'];
+            $offlinePaymentInfo['method_name'] = $method->method_name;
             foreach ($fields as $field) {
                 if (key_exists($field, $values)) {
-                    $offline_payment_info[$field] = $values[$field];
+                    $offlinePaymentInfo[$field] = $values[$field];
                 }
             }
         }
 
-        $unique_id = OrderManager::gen_unique_id();
-        $order_ids = [];
-        foreach ($cartGroupIds as $group_id) {
-            $data = [
-                'payment_method' => 'offline_payment',
-                'order_status' => 'pending',
-                'payment_status' => 'unpaid',
-                'payment_note' => $request['payment_note'],
-                'order_group_id' => $unique_id,
-                'cart_group_id' => $group_id,
-                'request' => $request,
-                'newCustomerRegister' => $newCustomerRegister,
-                'offline_payment_info' => $offline_payment_info,
-            ];
-            $order_id = OrderManager::generate_order($data);
-
-            $order = Order::find($order_id);
-            $order->billing_address = ($request['billing_address_id'] != null) ? $request['billing_address_id'] : $order['billing_address'];
-            $order->billing_address_data = ($request['billing_address_id'] != null) ? ShippingAddress::find($request['billing_address_id']) : $order['billing_address_data'];
-            $order->order_note = ($request['order_note'] != null) ? $request['order_note'] : $order['order_note'];
-            $order->save();
-            $order_ids[] = $order_id;
-        }
-
-        if ($newCustomerRegister) {
-            ShippingAddress::where(['customer_id' => $request['guest_id'], 'is_guest' => 1, 'id' => $request->input('address_id')])
-                ->update(['customer_id' => $newCustomerRegister['id'], 'is_guest' => 0]);
-            ShippingAddress::where(['customer_id' => $request['guest_id'], 'is_guest' => 1, 'id' => $request->input('billing_address_id')])
-                ->update(['customer_id' => $newCustomerRegister['id'], 'is_guest' => 0]);
-        }
-
-        CartManager::cart_clean($request);
+        OrderManager::generateOrder(data: [
+            'is_guest' => $user == 'offline' ? 1 : 0,
+            'guest_id' => $request['guest_id'],
+            'customer_id' => $user == 'offline' ? $request['guest_id'] : $user['id'],
+            'order_status' => 'pending',
+            'payment_method' => 'offline_payment',
+            'payment_status' => 'unpaid',
+            'transaction_ref' => '',
+            'address_id' => $request['address_id'],
+            'billing_address_id' => $request['billing_address_id'],
+            'newCustomerRegister' => $newCustomerRegister,
+            'offline_payment_info' => $offlinePaymentInfo,
+            'payment_note' => $request['payment_note'],
+            'order_note' => $request['order_note'],
+            'coupon_code' => $request['coupon_code'],
+            'requestObj' => $request,
+        ]);
 
         return response()->json([
             'messages' => translate('order_placed_successfully'),
@@ -328,10 +282,10 @@ class OrderController extends Controller
 
     public function placeOrderByWallet(Request $request): JsonResponse
     {
-        $cart_group_ids = CartManager::get_cart_group_ids(request: $request, type: 'checked');
+        $cartGroupIds = CartManager::get_cart_group_ids(request: $request, type: 'checked');
         $carts = Cart::whereHas('product', function ($query) {
             return $query->active();
-        })->with('product')->whereIn('cart_group_id', $cart_group_ids)->where(['is_checked' => 1])->get();
+        })->with('product')->whereIn('cart_group_id', $cartGroupIds)->where(['is_checked' => 1])->get();
 
         $product_stock = CartManager::product_stock_check($carts);
         if (!$product_stock) {
@@ -343,13 +297,11 @@ class OrderController extends Controller
             return response()->json(['message' => 'Check minimum order amount requirement'], 403);
         }
 
-        $cartAmount = 0;
-        $shippingCostSaved = 0;
-        foreach ($cart_group_ids as $group_id) {
-            $cartAmount += CartManager::api_cart_grand_total($request, $group_id);
-            $shippingCostSaved += CartManager::getShippingCostSavedForFreeDelivery(groupId: $group_id, type: 'checked');
-        }
-        $paymentAmount = $cartAmount - $request['coupon_discount'] - $shippingCostSaved;
+        $vendorWiseCartList = OrderManager::processOrderGenerateData(data: [
+            'coupon_code' => $request['coupon_code'] ?? '',
+            'requestObj' => $request,
+        ]);
+        $paymentAmount = collect($vendorWiseCartList)->sum('order_amount_with_tax');
 
         $user = Helpers::getCustomerInformation($request);
         if ($paymentAmount > $user->wallet_balance) {
@@ -380,30 +332,23 @@ class OrderController extends Controller
                 }
             }
 
-            $unique_id = $request->user()->id . '-' . rand(000001, 999999) . '-' . time();
-            $order_ids = [];
-            foreach ($cart_group_ids as $group_id) {
-                $data = [
-                    'payment_method' => 'pay_by_wallet',
-                    'order_status' => 'confirmed',
-                    'payment_status' => 'paid',
-                    'transaction_ref' => '',
-                    'order_group_id' => $unique_id,
-                    'cart_group_id' => $group_id,
-                    'request' => $request,
-                ];
-
-                $order_id = OrderManager::generate_order($data);
-                $order = Order::find($order_id);
-                $order->billing_address = ($request['billing_address_id'] != null) ? $request['billing_address_id'] : $order['billing_address'];
-                $order->billing_address_data = ($request['billing_address_id'] != null) ? ShippingAddress::find($request['billing_address_id']) : $order['billing_address_data'];
-                $order->order_note = ($request['order_note'] != null) ? $request['order_note'] : $order['order_note'];
-                $order->save();
-                $order_ids[] = $order_id;
-            }
+            OrderManager::generateOrder(data: [
+                'is_guest' => 0,
+                'guest_id' => 0,
+                'customer_id' => $user['id'],
+                'order_status' => 'confirmed',
+                'payment_method' => 'pay_by_wallet',
+                'payment_status' => 'paid',
+                'transaction_ref' => '',
+                'address_id' => $request['address_id'],
+                'billing_address_id' => $request['billing_address_id'],
+                'payment_note' => $request['payment_note'],
+                'order_note' => $request['order_note'],
+                'coupon_code' => $request['coupon_code'],
+                'requestObj' => $request,
+            ]);
 
             CustomerManager::create_wallet_transaction($user->id, Convert::default($paymentAmount), 'order_place', 'order payment');
-            CartManager::cart_clean($request);
             return response()->json(translate('order_placed_successfully'), 200);
         }
     }
@@ -424,7 +369,6 @@ class OrderController extends Controller
         if ($order_details->delivery_status == 'delivered') {
             $order = Order::find($order_details->order_id);
             $total_product_price = 0;
-            $refund_amount = 0;
             $data = [];
             foreach ($order->details as $key => $or_d) {
                 $total_product_price += ($or_d->qty * $or_d->price) + $or_d->tax - $or_d->discount;
@@ -432,7 +376,8 @@ class OrderController extends Controller
 
             $subtotal = ($order_details->price * $order_details->qty) - $order_details->discount + $order_details->tax;
             $coupon_discount = ($order->discount_amount * $subtotal) / $total_product_price;
-            $refund_amount = $subtotal - $coupon_discount;
+
+            $refundInfo = OrderManager::getRefundDetailsForSingleOrderDetails(orderDetailsId: $request['order_details_id']);
 
             $data['product_price'] = $order_details->price;
             $data['quntity'] = $order_details->qty;
@@ -440,18 +385,15 @@ class OrderController extends Controller
             $data['product_total_tax'] = $order_details->tax;
             $data['subtotal'] = $subtotal;
             $data['coupon_discount'] = $coupon_discount;
-            $data['refund_amount'] = $refund_amount;
+            $data['refund_amount'] = $refundInfo['total_refundable_amount'];
+            $data['referral_discount'] = $refundInfo['referral_discount'];
 
-            $refund_day_limit = getWebConfig(name: 'refund_day_limit');
-            $order_details_date = $order_details->created_at;
-            $current = Carbon::now();
-            $length = $order_details_date->diffInDays($current);
             $expired = false;
             $already_requested = false;
             if ($order_details->refund_request != 0) {
                 $already_requested = true;
             }
-            if ($length > $refund_day_limit) {
+            if (!is_null($order_details?->refund_started_at) && $order_details?->refund_started_at?->diffInDays(Carbon::now()) > getWebConfig(name: 'refund_day_limit')) {
                 $expired = true;
             }
             return response()->json(['already_requested' => $already_requested, 'expired' => $expired, 'refund' => $data], 200);
@@ -462,18 +404,14 @@ class OrderController extends Controller
 
     public function store_refund(Request $request): JsonResponse
     {
-        $orderDetails = OrderDetail::find($request->order_details_id);
+        $orderDetails = OrderDetail::find($request['order_details_id']);
         $user = $request->user();
         $loyalty_point_status = getWebConfig(name: 'loyalty_point_status');
-        if ($loyalty_point_status == 1) {
-            $loyalty_point = CustomerManager::count_loyalty_point_for_amount($request->order_details_id);
-            if ($user->loyalty_point < $loyalty_point) {
-                return response()->json(translate('you have not sufficient loyalty point to refund this order!!'), 200);
-            }
+        $orderDetailsReward = OrderDetailsRewards::where('order_details_id', $request['order_details_id'])->where('reward_type', '!=', 'loyalty_point')->first();
+        if($orderDetailsReward && $user->loyalty_point < $orderDetailsReward['reward_amount']) {
+            return response()->json(translate('you have not sufficient loyalty point to refund this order!!'), 200);
         }
-
         if ($orderDetails->refund_request == 0) {
-
             $validator = Validator::make($request->all(), [
                 'order_details_id' => 'required',
                 'amount' => 'required',
@@ -484,10 +422,10 @@ class OrderController extends Controller
                 return response()->json(['errors' => Helpers::validationErrorProcessor($validator)], 403);
             }
             $refund_request = new RefundRequest;
-            $refund_request->order_details_id = $request->order_details_id;
+            $refund_request->order_details_id = $request['order_details_id'];
             $refund_request->customer_id = $request->user()->id;
             $refund_request->status = 'pending';
-            $refund_request->amount = $request->amount;
+            $refund_request->amount = OrderManager::getRefundDetailsForSingleOrderDetails(orderDetailsId: $orderDetails['id'])['total_refundable_amount'];
             $refund_request->product_id = $orderDetails->product_id;
             $refund_request->order_id = $orderDetails->order_id;
             $refund_request->refund_reason = $request->refund_reason;
@@ -516,7 +454,7 @@ class OrderController extends Controller
         }
     }
 
-    public function refund_details(Request $request)
+    public function refund_details(Request $request): JsonResponse
     {
         $orderDetails = OrderDetail::find($request->id);
         $refund = RefundRequest::where('customer_id', $request->user()->id)
@@ -526,17 +464,13 @@ class OrderController extends Controller
         $order = Order::find($orderDetails->order_id);
 
         $total_product_price = 0;
-        $refund_amount = 0;
         $data = [];
         foreach ($order->details as $key => $or_d) {
             $total_product_price += ($or_d->qty * $or_d->price) + $or_d->tax - $or_d->discount;
         }
 
         $subtotal = ($orderDetails->price * $orderDetails->qty) - $orderDetails->discount + $orderDetails->tax;
-
         $coupon_discount = ($order->discount_amount * $subtotal) / $total_product_price;
-
-        $refund_amount = $subtotal - $coupon_discount;
 
         $data['product_price'] = $orderDetails->price;
         $data['quntity'] = $orderDetails->qty;
@@ -544,9 +478,10 @@ class OrderController extends Controller
         $data['product_total_tax'] = $orderDetails->tax;
         $data['subtotal'] = $subtotal;
         $data['coupon_discount'] = $coupon_discount;
-        $data['refund_amount'] = $refund_amount;
+        $data['refund_amount'] = OrderManager::getRefundDetailsForSingleOrderDetails(orderDetailsId: $orderDetails['id'])['total_refundable_amount'];
         $data['refund_request'] = $refund;
         $data['order_place_date'] = $order->created_at;
+        $data['referral_discount'] = $order?->refer_and_earn_discount ?? 0;
 
         return response()->json($data, 200);
     }
@@ -824,21 +759,18 @@ class OrderController extends Controller
         }
     }
 
-    public function order_again(Request $request)
+    public function order_again(Request $request): JsonResponse
     {
-        $data = OrderManager::order_again($request);
-        $order_product_count = $data['order_product_count'];
-        $add_to_cart_count = $data['add_to_cart_count'];
+        $orderData = OrderManager::generateOrderAgain($request);
+        $addToCartCount = $orderData['add_to_cart_count'];
 
-        if ($order_product_count == $add_to_cart_count) {
+        if ($orderData['order_product_count'] == $addToCartCount) {
             return response()->json(['message' => 'Added to cart successfully'], 200);
-        } elseif ($add_to_cart_count > 0) {
-            return response()->json(['message' => $add_to_cart_count . ' item added to cart successfully!'], 200);
+        } elseif ($addToCartCount > 0) {
+            return response()->json(['message' => $addToCartCount . ' item added to cart successfully!'], 200);
+        }
 
-        }
-        {
-            return response()->json(['message' => 'All items were not added to cart as they are currently unavailable for purchase'], 403);
-        }
+        return response()->json(['message' => 'All items were not added to cart as they are currently unavailable for purchase'], 403);
     }
 
     public function offline_payment_method_list(Request $request): JsonResponse
