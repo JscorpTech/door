@@ -1,6 +1,7 @@
 <?php
 
-namespace Modules\Blog\app\Http\Middleware;
+namespace Modules\Blog\App\Http\Middleware;
+
 
 use Brian2694\Toastr\Facades\Toastr;
 use Closure;

@@ -1,6 +1,7 @@
 <?php
 
-namespace Modules\Blog\app\Http\Middleware;
+namespace Modules\Blog\App\Http\Middleware;
+
 
 use Brian2694\Toastr\Facades\Toastr;
 use Closure;
@@ -10,7 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 class BlogActiveStatusMiddleware
 {
     /**
-     * Handle an incoming request.
      *
      * @param Request $request
      * @param Closure(Request): (Response) $next

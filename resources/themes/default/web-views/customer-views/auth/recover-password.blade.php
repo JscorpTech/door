@@ -13,15 +13,15 @@
                 <ol class="list-unstyled font-size-md p-0">
                     <li>
                         <span class="text-primary mr-2">{{ translate('1')}}.</span>
-                        {{ translate('use_your_registered_phone.')}}
+                        Используйте свой зарегистрированный телефон.
                     </li>
                     <li>
                         <span class="text-primary mr-2">{{ translate('2')}}.</span>
-                        {{ translate('we_will_send_you_a_temporary_OTP_in_your_phone') }}.
+                        Мы отправим вам временный OTP на ваш телефон.
                     </li>
                     <li>
                         <span class="text-primary mr-2">{{ translate('3')}}.</span>
-                        {{ translate('use_the_OTP_code_to_change_your_password_on_our_secure_website.')}}
+                        Используйте код OTP, чтобы изменить свой пароль на нашем безопасном сайте.
                     </li>
                 </ol>
 

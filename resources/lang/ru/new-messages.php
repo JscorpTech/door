@@ -900,4 +900,7 @@ return [
 	"track_Order_Result" => "Track Order Result",
 	"Яндекс Доставка (мгновенно) доступно в рабочее часы!" => "Яндекс Доставка (мгновенно) доступно в рабочее часы!",
 	"Order_not_found" => "Order not found",
+	"use_the_OTP_code_to_change_your_password_on_our_secure_website." => "Use the OTP code to change your password on our secure website.",
+	"use_your_registered_phone." => "Use your registered phone.",
+	"this_helps_to_keep_your_new_password_secure." => "This helps to keep your new password secure.",
 ];
