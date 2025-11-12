@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Blog\App\Http\Middleware;
+namespace Modules\Blog\app\Http\Middleware;
 
 
 use Brian2694\Toastr\Facades\Toastr;

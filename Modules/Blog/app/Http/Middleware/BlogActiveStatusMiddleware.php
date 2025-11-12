@@ -1,12 +1,14 @@
 <?php
 
-namespace Modules\Blog\App\Http\Middleware;
+namespace Modules\Blog\app\Http\Middleware;
 
 
 use Brian2694\Toastr\Facades\Toastr;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+
 
 class BlogActiveStatusMiddleware
 {
