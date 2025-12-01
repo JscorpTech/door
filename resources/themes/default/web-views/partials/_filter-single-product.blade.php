@@ -69,7 +69,8 @@
                 </a>
 
                 {{-- Quick View --}}
-                <div class="quick-view" style="position:absolute; top:8px; right:8px; z-index:10;">
+                <div class="quick-view" style="position:absolute; top:0px; right:0px; width:100%;
+        height:100%; z-index:10;">
                     <a class="btn-circle stopPropagation action-product-quick-view" href="{{route('product',$product->slug)}}">
                         <i class="czi-eye align-middle"></i>
                     </a>
