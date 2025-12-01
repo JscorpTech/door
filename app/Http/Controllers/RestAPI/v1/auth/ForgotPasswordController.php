@@ -69,7 +69,8 @@ class ForgotPasswordController extends Controller
                         $reset_data->save();
                     }
 
-                    $reset_url = url('/') . '/customer/auth/reset-password?token=' . $token;
+                    $reset_url = url('http://127.0.0.1:8004') . '/customer/auth/reset-password?token=' . $token;
+                    Log::info('Updated existing PasswordReset', ['reset_data' => $reset_url]);
 
                     $emailServices_smtp = getWebConfig(name: 'mail_config');
                     if ($emailServices_smtp['status'] == 0) {
@@ -92,12 +93,15 @@ class ForgotPasswordController extends Controller
                                 'message' => translate('email_is_not_configured'). translate('contact_with_the_administrator')
                             ], 403);
                         }
+                        Log::info('Updated existing PasswordReset', ['reset_data' => $reset_data]);
                     } else {
                         $response = translate('email_failed');
                     }
                     return response()->json(['message' => $response], 200);
                 }
             }
+            Log::info('Password verification data', ['data' => $password_verification_data]);
+            Log::info('Customer found by email', ['customer' => $customer]);
         } elseif ($verification_by == 'phone') {
             $customer = User::where('phone', 'like', "%{$request['identity']}%")->first();
             $otp_resend_time = getWebConfig(name: 'otp_resend_time') > 0 ? getWebConfig(name: 'otp_resend_time') : 0;
