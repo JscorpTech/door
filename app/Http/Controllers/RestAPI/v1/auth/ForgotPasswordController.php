@@ -69,8 +69,8 @@ class ForgotPasswordController extends Controller
                         $reset_data->save();
                     }
 
-                    $reset_url = url('http://127.0.0.1:8004') . '/customer/auth/reset-password?token=' . $token;
-                    Log::info('Updated existing PasswordReset', ['reset_data' => $reset_url]);
+                    $reset_url = url('/') . '/customer/auth/reset-password?token=' . $token;
+                    Log::info('Updated existing PasswordReset', ['reset_data' => $reset_data]);
 
                     $emailServices_smtp = getWebConfig(name: 'mail_config');
                     if ($emailServices_smtp['status'] == 0) {
