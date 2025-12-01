@@ -69,7 +69,9 @@
                 </a>
 
                 {{-- Quick View --}}
-                <div class="quick-view" style="position:absolute; top:0px; right:0px; width:100%;
+                <div class="quick-view" style="position:absolute; top:0;
+        left:0;
+        width:100%;
         height:100%; z-index:10;">
                     <a class="btn-circle stopPropagation action-product-quick-view" href="{{route('product',$product->slug)}}">
                         <i class="czi-eye align-middle"></i>
@@ -78,7 +80,10 @@
 
                 {{-- Out of Stock --}}
                 @if($product->product_type == 'physical' && $product->current_stock <= 0)
-                    <span class="out_fo_stock" style="position:absolute; top:8px; right:8px; z-index:9;">
+                    <span class="out_fo_stock" style="position:absolute; top:0;
+        left:0;
+        width:100%;
+        height:100%; z-index:9;">
                         {{translate('out_of_stock')}}
                     </span>
                 @endif
