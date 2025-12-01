@@ -12,7 +12,7 @@
             @endif
 
             {{-- Product Image --}}
-            <a href="{{ route('product', $product->slug) }}" style="display:block; position:relative; width:100%; max-width:220px; margin:0 auto;">
+            <a href="{{ route('product', $product->slug) }}" style="display:block; position:relative; width:100%; max-width:250px; margin:0 auto;">
                 <div style="
                     width:100%;
                     aspect-ratio: 3/4;
