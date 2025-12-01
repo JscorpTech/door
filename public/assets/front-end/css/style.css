@@ -70,10 +70,9 @@ a {
 
 
 .product-single-hover.style--card .inline_product .quick-view {
-    width: 102%;
+    width: 100%;
     height: 100%;
     left: -1px;
-    top: 10px;
 }
 
 
