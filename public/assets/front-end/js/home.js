@@ -109,6 +109,7 @@ $(document).ready(function () {
             autoplay: true,
             margin: 20,
             nav: true,
+            dots: false,
             rtl: directionFromSession === "rtl",
             responsive: {
                 0: { items: 1 },
