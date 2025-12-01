@@ -104,6 +104,10 @@ a {
     line-height: 1.5rem;
 }
 
+.quick-view:hover {
+    background-color: rgba(14, 66, 136, 0.3); /* rasmni to'liq qoplaydi */
+}
+
 .product-single-hover .inline_product {
     position: relative;
     /* overflow: hidden; */
@@ -156,9 +160,9 @@ a {
     border-radius: 8px;
 }
 
-/* .product-single-hover:hover .quick-view {
+.product-single-hover:hover .quick-view {
     background-color: rgba(14, 66, 136, 0.3019607843);
-} */
+}
 
 .product-single-hover .quick-view .btn-circle {
     transform: translateY(50%) scale(0.6);
