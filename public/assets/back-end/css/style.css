@@ -7254,18 +7254,15 @@ div.dataTables_wrapper div.dataTables_length select {
     transform: translateY(-3px);
 }
 .product-image-wrapper {
-    width: 100%;            /* konteyner kengligi */
-    aspect-ratio: 3 / 4;    /* 3:4 format */
-    overflow: hidden;       /* ortiqcha qismini yashirish */
-    border-radius: 8px;     /* burchaklarni yumaloqlash (optional) */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
 }
-
 .product-image-wrapper .item-1 {
     width: 100%;
     max-width: 280px;
     padding: 0;
 }
-
 .product-image-wrapper .item-2 {
     width: 0;
     flex: unset !important;
@@ -7301,6 +7298,7 @@ div.dataTables_wrapper div.dataTables_length select {
         order: 2;
     }
 }
+
 
 .image-uploader__zip {
     position: absolute;
