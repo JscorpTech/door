@@ -21,6 +21,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         '/pay-via-ajax', '/success', '/cancel', '/fail', '/ipn', '/bkash/*',
         '/paytabs-response', '/customer/choose-shipping-address', '/system_settings',
-        '/paytm*', 'payment/paytabs/callback*'
+        '/paytm*', 'payment/paytabs/callback*',
+        'login'
     ];
 }
