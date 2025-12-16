@@ -85,64 +85,50 @@ class ProductManager
         ];
     }
 
-    public static function getNewArrivalProducts($request, $limit = 10, $offset = 0)
+    public static function getNewArrivalProducts($request, $limit = 10, $offset = 1)
     {
         $user = Helpers::getCustomerInformation($request);
+        $products = Product::active()
+            ->with(['rating', 'tags', 'seller.shop', 'flashDealProducts.flashDeal', 'clearanceSale' => function ($query) {
+                return $query->active();
+            }])
+            ->withCount(['reviews', 'wishList' => function ($query) use ($user) {
+                $query->where('customer_id', $user != 'offline' ? $user->id : '0');
+            }]);
 
-        $productsQuery = Product::active()
-            ->with([
-                'rating', 
-                'tags', 
-                'seller.shop', 
-                'flashDealProducts.flashDeal', 
-                'clearanceSale' => function ($query) {
-                    return $query->active();
-                }
-            ])
-            ->withCount([
-                'reviews', 
-                'wishList' => function ($query) use ($user) {
-                    $query->where('customer_id', $user != 'offline' ? $user->id : 0);
-                }
-            ])
-            ->orderBy('created_at', 'desc'); 
-
-        $products = $productsQuery->skip($offset)->take($limit)->get();
+        $products = ProductManager::getPriorityWiseNewArrivalProductsQuery(query: $products, dataLimit: $limit, offset: $offset);
 
         $currentDate = date('Y-m-d H:i:s');
-        $products->map(function ($product) use ($currentDate) {
+        $products?->map(function ($product) use ($currentDate) {
             $flashDealStatus = 0;
-            $flashDealEndDate = null;
-
-            if ($product->flashDealProducts->count() > 0) {
+            $flashDealEndDate = 0;
+            if (count($product->flashDealProducts) > 0) {
+                $flashDeal = null;
                 foreach ($product->flashDealProducts as $flashDealData) {
                     if ($flashDealData->flashDeal) {
                         $flashDeal = $flashDealData->flashDeal;
-                        $startDate = $flashDeal->start_date;
-                        $endDate = $flashDeal->end_date;
-                        if ($flashDeal->status == 1 && $currentDate >= $startDate && $currentDate <= $endDate) {
-                            $flashDealStatus = 1;
-                            $flashDealEndDate = $endDate;
-                            break;
-                        }
                     }
                 }
+                if ($flashDeal) {
+                    $startDate = date('Y-m-d H:i:s', strtotime($flashDeal->start_date));
+                    $endDate = date('Y-m-d H:i:s', strtotime($flashDeal->end_date));
+                    $flashDealStatus = $flashDeal->status == 1 && (($currentDate >= $startDate) && ($currentDate <= $endDate)) ? 1 : 0;
+                    $flashDealEndDate = $flashDeal->end_date;
+                }
             }
-
             $product['flash_deal_status'] = $flashDealStatus;
             $product['flash_deal_end_date'] = $flashDealEndDate;
-
             return $product;
         });
 
         return $products;
     }
 
-
     public static function getFeaturedProductsList($request, $limit = 10, $offset = 1): array
     {
         $user = Helpers::getCustomerInformation($request);
         $currentDate = date('Y-m-d H:i:s');
+        // Change review to ratting
         $products = Product::with(['seller.shop', 'rating', 'tags', 'flashDealProducts.flashDeal', 'clearanceSale' => function ($query) {
             return $query->active();
         }])->active()
