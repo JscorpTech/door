@@ -161,7 +161,7 @@ Route::group(['namespace' => 'RestAPI\v1', 'prefix' => 'v1', 'middleware' => ['a
         });
     });
 
-    Route::group(['middleware' => 'apiGuestCheck'], function () {
+    Route::group([], function () {
         Route::group(['prefix' => 'products'], function () {
             Route::controller(ProductController::class)->group(function () {
                 Route::get('latest', 'get_latest_products');
