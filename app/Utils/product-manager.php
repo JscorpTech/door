@@ -94,7 +94,8 @@ class ProductManager
             }])
             ->withCount(['reviews', 'wishList' => function ($query) use ($user) {
                 $query->where('customer_id', $user != 'offline' ? $user->id : '0');
-            }]);
+            }])
+            ->orderBy('created_at', 'desc'); // <-- yangi qo'shilganlarni birinchi chiqarish
 
         $products = ProductManager::getPriorityWiseNewArrivalProductsQuery(query: $products, dataLimit: $limit, offset: $offset);
 
@@ -123,6 +124,7 @@ class ProductManager
 
         return $products;
     }
+
 
     public static function getFeaturedProductsList($request, $limit = 10, $offset = 1): array
     {
