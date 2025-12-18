@@ -38,6 +38,7 @@ class InhouseProductSaleController extends BaseController
         $products = $this->productRepo->getListWhere(
             filters: ['added_by'=>'in_house', 'category_id'=>$request['category_id']],
             relations: ['orderDetails'],
+            orderBy: ['created_at' => 'desc'], 
             dataLimit: getWebConfig(name: 'pagination_limit'),
         );
         return view(InhouseProductSale::VIEW[VIEW], compact('categories', 'products'));
