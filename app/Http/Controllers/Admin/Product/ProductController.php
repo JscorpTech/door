@@ -190,14 +190,26 @@ class ProductController extends BaseController
             'sub_sub_category_id' => $request['sub_sub_category_id'],
         ];
 
-        $products = $this->productRepo->getListWhere(orderBy: ['created_at' => 'desc'], searchValue: $request['searchValue'], filters: $filters, relations: ['clearanceSale' => function ($query) {
-            return $query->active();
-        }], dataLimit: getWebConfig(name: WebConfigKey::PAGINATION_LIMIT));
+        $products = $this->productRepo->getListWhere(
+            orderBy: ['created_at' => 'desc'],
+            searchValue: $request['searchValue'],
+            filters: $filters,
+            relations: ['clearanceSale' => function ($query) {
+                return $query->active();
+            }],
+            dataLimit: getWebConfig(name: WebConfigKey::PAGINATION_LIMIT)
+        );
+
+        foreach ($products as $product) {
+            \Log::info('Product: ' . ($product->name ?? 'No name') . ', Created At: ' . ($product->created_at ?? 'No created_at'));
+        }
+
         $sellers = $this->sellerRepo->getByStatusExcept(status: 'pending', relations: ['shop'], paginateBy: getWebConfig(name: WebConfigKey::PAGINATION_LIMIT));
         $brands = $this->brandRepo->getListWhere(filters: ['status' => 1], dataLimit: 'all');
         $categories = $this->categoryRepo->getListWhere(filters: ['position' => 0], dataLimit: 'all');
         $subCategory = $this->categoryRepo->getFirstWhere(params: ['id' => $request['sub_category_id']]);
         $subSubCategory = $this->categoryRepo->getFirstWhere(params: ['id' => $request['sub_sub_category_id']]);
+
         return view(Product::LIST[VIEW], compact(
             'products',
             'sellers',
