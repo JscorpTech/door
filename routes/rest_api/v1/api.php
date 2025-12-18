@@ -168,7 +168,7 @@ Route::group(['namespace' => 'RestAPI\v1', 'prefix' => 'v1', 'middleware' => ['a
                 Route::get('new-arrival', 'getNewArrivalProducts');
                 Route::get('featured', 'getFeaturedProductsList');
                 Route::get('top-rated', 'getTopRatedProducts');
-                Route::any('search', 'get_searched_products');
+                Route::get('search', 'get_searched_products');
                 Route::post('filter', 'getProductsFilter');
                 Route::any('suggestion-product', 'get_suggestion_product');
                 Route::get('details/{slug}', 'getProductDetails');
