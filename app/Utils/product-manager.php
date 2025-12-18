@@ -1223,7 +1223,7 @@ class ProductManager
             if ($newArrivalProductSortBy['sort_by'] == 'latest_created') {
                 $query = $query->orderBy('id', 'desc');
             } elseif ($newArrivalProductSortBy['sort_by'] == 'first_created') {
-                $query = $query->orderBy('id', 'asc');
+                $query = $query->orderBy('created_at', 'asc');
             } elseif ($newArrivalProductSortBy['sort_by'] == 'most_order') {
                 $query = $query->orderBy('order_details_count', 'desc');
             } elseif ($newArrivalProductSortBy['sort_by'] == 'reviews_count') {
