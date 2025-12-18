@@ -109,7 +109,7 @@ class ProductController extends BaseController
         ];
         $searchValue = $request['searchValue'];
         $products = $this->productRepo->getListWhere(
-            orderBy: ['id' => 'desc'],
+            orderBy: ['created_at' => 'desc'],
             searchValue: $searchValue,
             filters: $filters,
             relations: ['translations', 'seoInfo', 'clearanceSale' => function ($query) {
