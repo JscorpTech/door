@@ -190,7 +190,7 @@ class ProductController extends BaseController
             'sub_sub_category_id' => $request['sub_sub_category_id'],
         ];
 
-        $products = $this->productRepo->getListWhere(orderBy: ['id' => 'desc'], searchValue: $request['searchValue'], filters: $filters, relations: ['clearanceSale' => function ($query) {
+        $products = $this->productRepo->getListWhere(orderBy: ['created_at' => 'desc'], searchValue: $request['searchValue'], filters: $filters, relations: ['clearanceSale' => function ($query) {
             return $query->active();
         }], dataLimit: getWebConfig(name: WebConfigKey::PAGINATION_LIMIT));
         $sellers = $this->sellerRepo->getByStatusExcept(status: 'pending', relations: ['shop'], paginateBy: getWebConfig(name: WebConfigKey::PAGINATION_LIMIT));
