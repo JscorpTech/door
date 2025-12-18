@@ -200,8 +200,12 @@ class ProductController extends BaseController
             dataLimit: getWebConfig(name: WebConfigKey::PAGINATION_LIMIT)
         );
 
+        $counter = 0;
         foreach ($products as $product) {
+            if ($counter >= 10) break; 
+            
             \Log::info('Product: ' . ($product->name ?? 'No name') . ', Created At: ' . ($product->created_at ?? 'No created_at'));
+            $counter++;
         }
 
         $sellers = $this->sellerRepo->getByStatusExcept(status: 'pending', relations: ['shop'], paginateBy: getWebConfig(name: WebConfigKey::PAGINATION_LIMIT));
