@@ -204,7 +204,7 @@ class ProductController extends BaseController
         foreach ($products as $product) {
             if ($counter >= 10) break; 
             
-            \Log::info('Product: ' . ($product->name ?? 'No name') . ', Created At: ' . ($product->created_at ?? 'No created_at'));
+            \Log::info('Product: ' . ($product->name ?? 'No name') . ', Created At: ' . ($product->status ?? 'No created_at'));
             $counter++;
         }
 
