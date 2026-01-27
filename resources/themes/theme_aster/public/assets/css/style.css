@@ -3831,9 +3831,9 @@ input[type="checkbox"]:checked::after {
     z-index: 2;
     background-color: var(--bs-primary);
     font-weight: var(--extra-bold);
-    font-size: 0.75rem;
-    line-height: 1;
-    padding: 0.375rem 0.4375rem;
+    font-size: 1rem;
+    line-height: 1.2;
+    padding: 0.625rem 0.75rem;
     color: var(--absolute-white);
 }
 .product__discount-badge span {
@@ -3843,7 +3843,7 @@ input[type="checkbox"]:checked::after {
 
 .product__power-badge {
     inline-size: 12.5rem;
-    block-size: 2.125rem;
+    block-size: 2.5rem;
     background-color: var(--bs-primary);
     position: absolute;
     inset-block-start: -0.25rem;

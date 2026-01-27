@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Models\Author;
 use App\Models\BusinessSetting;
 use App\Models\PublishingHouse;
+use App\Models\Tag;
 use App\Utils\BrandManager;
 use App\Utils\CategoryManager;
 use App\Http\Controllers\Controller;
@@ -51,6 +52,7 @@ class ProductListController extends Controller
 
         $categories = CategoryManager::getCategoriesWithCountingAndPriorityWiseSorting();
         $activeBrands = BrandManager::getActiveBrandWithCountingAndPriorityWiseSorting();
+        $productTags = Tag::withCount('items')->orderBy('items_count', 'desc')->get();
 
         $data = self::getProductListRequestData(request: $request);
         if ($request['data_from'] == 'category' && $request['category_id']) {
@@ -80,6 +82,7 @@ class ProductListController extends Controller
             'data' => $data,
             'activeBrands' => $activeBrands,
             'categories' => $categories,
+            'productTags' => $productTags,
         ]);
     }
 
@@ -97,6 +100,7 @@ class ProductListController extends Controller
         }
         $categories = CategoryManager::getCategoriesWithCountingAndPriorityWiseSorting();
         $activeBrands = BrandManager::getActiveBrandWithCountingAndPriorityWiseSorting();
+        $productTags = Tag::withCount('items')->orderBy('items_count', 'desc')->get();
         $singlePageProductCount = 20;
 
         $data = self::getProductListRequestData(request: $request);
@@ -129,6 +133,11 @@ class ProductListController extends Controller
             $productAuthors = Author::whereIn('id', $request['author_ids'])->select('id', 'name')->get();
         }
 
+        $tags = [];
+        if ($request['tag_ids']) {
+            $tags = Tag::whereIn('id', $request['tag_ids'])->select('id', 'tag')->get();
+        }
+
         $selectedRatings = $request['rating'] ?? [];
         if ($request->ajax()) {
             return response()->json([
@@ -145,6 +154,7 @@ class ProductListController extends Controller
                     'selectedRatings' => $selectedRatings,
                     'publishingHouse' => $publishingHouse,
                     'productAuthors' => $productAuthors,
+                    'productTags' => $tags,
                     'sort_by' => $request['sort_by'],
                 ])->render(),
             ], 200);
@@ -159,12 +169,14 @@ class ProductListController extends Controller
             'product_ids' => $getProductIds,
             'activeBrands' => $activeBrands,
             'categories' => $categories,
+            'productTags' => $productTags,
             'singlePageProductCount' => $singlePageProductCount,
             'page' => $request['page'] ?? 1,
             'tags_category' => $category,
             'tags_brands' => $brands,
             'publishingHouse' => $publishingHouse,
             'productAuthors' => $productAuthors,
+            'tags' => $tags,
             'sort_by' => $request['sort_by'],
         ]);
     }

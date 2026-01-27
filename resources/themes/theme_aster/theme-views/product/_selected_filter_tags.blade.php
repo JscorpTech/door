@@ -4,7 +4,8 @@
     $selectedRatings != null ||
     (isset($sort_by) && $sort_by != null && $sort_by != 'latest') ||
     isset($publishingHouse) && count($publishingHouse) > 0 ||
-    isset($productAuthors) && count($productAuthors) > 0
+    isset($productAuthors) && count($productAuthors) > 0 ||
+    (isset($productTags) && count($productTags) > 0)
     )
 
 <span class="text-nowrap">{{ translate('Applied_Filters') }}:</span>
@@ -51,6 +52,15 @@
                 @foreach ($productAuthors as $item)
                     <li class="bg-white text--primary border-0 rounded-16px px-3 py-1 text-nowrap fw-semibold remove_tags_author_id" data-id="{{ $item->id }}">
                         <span class="fs-12">{{ Str::limit($item->name, 20, '...') }}</span>
+                        <button type="button" class="btn text--primary p-0 m-0 fs-18 border-0 d-inline"><i class="bi bi-x"></i></button>
+                    </li>
+                @endforeach
+            @endisset
+
+            @isset($productTags)
+                @foreach ($productTags as $item)
+                    <li class="bg-white text--primary border-0 rounded-16px px-3 py-1 text-nowrap fw-semibold remove_tags_tag_id" data-id="{{ $item->id }}">
+                        <span class="fs-12">{{ Str::limit($item->tag, 20, '...') }}</span>
                         <button type="button" class="btn text--primary p-0 m-0 fs-18 border-0 d-inline"><i class="bi bi-x"></i></button>
                     </li>
                 @endforeach

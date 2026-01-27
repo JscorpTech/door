@@ -59,6 +59,10 @@
                                 'dataFrom' => 'flash-deals',
                             ])
 
+                            @include('theme-views.product.partials._filter-product-tags', [
+                                'productTags' => $productTags ?? [],
+                            ])
+
                             @include('theme-views.product.partials._filter-product-reviews', [
                                 'productRatings' => $ratings,
                                 'selectedRatings' => $selectedRatings

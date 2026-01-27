@@ -2130,6 +2130,16 @@ class ProductManager
                 }
                 return $query->where(['product_type' => 'digital'])->whereIn('id', $authorProductIds);
             })
+            ->when($request->has('tag_ids') && !empty($request['tag_ids']) && is_array($request['tag_ids']), function ($query) use ($request) {
+                return $query->whereHas('tags', function ($q) use ($request) {
+                    $q->whereIn('tags.id', $request['tag_ids']);
+                });
+            })
+            ->when($request->has('tag_names') && !empty($request['tag_names']) && is_array($request['tag_names']), function ($query) use ($request) {
+                return $query->whereHas('tags', function ($q) use ($request) {
+                    $q->whereIn('tags.tag', $request['tag_names']);
+                });
+            })
             ->when($request['offer_type'] == 'discounted', function ($query) {
                 $stockClearanceProductIds = StockClearanceProduct::active()->pluck('product_id')->toArray();
                 return $query->where(function ($subQuery) use ($stockClearanceProductIds) {

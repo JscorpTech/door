@@ -116,6 +116,8 @@ class ProductController extends Controller
         $brand = json_decode($request->brand);
         $publishingHouses = $request->has('publishing_houses') ? json_decode($request['publishing_houses']) : [];
         $productAuthors = $request->has('product_authors') ? json_decode($request['product_authors']) : [];
+        $tags = $request->has('tags') ? json_decode($request['tags']) : [];
+        $tagNames = is_array($tags) ? $tags : [];
 
         $publishingHouseList = PublishingHouse::with(['publishingHouseProducts'])
             ->whereHas('publishingHouseProducts.product', function ($query) {
@@ -232,6 +234,11 @@ class ProductController extends Controller
                     $authorProductIds = array_merge($authorProductIds, $productIdsForUnknownAuthor);
                 }
                 return $query->where(['product_type' => 'digital'])->whereIn('id', $authorProductIds);
+            })
+            ->when($request->has('tags') && !empty($tagNames), function ($query) use ($tagNames) {
+                return $query->whereHas('tags', function ($q) use ($tagNames) {
+                    $q->whereIn('tags.tag', $tagNames);
+                });
             })
             ->when($request->has('sort_by') && !empty($request->sort_by), function ($query) use ($request) {
                 $query->when($request['sort_by'] == 'low-high', function ($query) {
