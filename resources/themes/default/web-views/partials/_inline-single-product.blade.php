@@ -42,8 +42,8 @@
                             position:absolute;
                             bottom:8px;
                             right:8px;
-                            width:70px;
-                            height:70px;
+                            width:75px;
+                            height:75px;
                             border-radius:50%;
                             overflow:hidden;
                             border:2px solid #fff;
