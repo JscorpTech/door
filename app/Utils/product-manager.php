@@ -177,13 +177,6 @@ class ProductManager
         $user = Helpers::getCustomerInformation($request);
         $currentDate = date('Y-m-d H:i:s');
 
-        $reviews = Review::select('product_id', DB::raw('AVG(rating) as count'))
-            ->groupBy('product_id')->get();
-        $getReviewProductIds = [];
-        foreach ($reviews as $review) {
-            $getReviewProductIds[] = $review['product_id'];
-        }
-
         $productListData = Product::active()->withSum('orderDetails', 'qty', function ($query) {
             $query->where('delivery_status', 'delivered');
         })
@@ -200,7 +193,7 @@ class ProductManager
                 $query->where('customer_id', $user != 'offline' ? $user->id : '0');
             }]);
 
-        $productListData = ProductManager::getPriorityWiseTopRatedProductsQuery(query: $productListData->whereIn('id', $getReviewProductIds), dataLimit: $limit, offset: $offset);
+        $productListData = ProductManager::getPriorityWiseTopRatedProductsQuery(query: $productListData->whereHas('reviews'), dataLimit: $limit, offset: $offset);
 
         $productListData?->map(function ($product) use ($currentDate) {
             $flashDealStatus = 0;
@@ -234,16 +227,6 @@ class ProductManager
         $user = Helpers::getCustomerInformation($request);
         $currentDate = date('Y-m-d H:i:s');
 
-        $orderDetails = OrderDetail::with('product')
-            ->select('product_id', DB::raw('COUNT(product_id) as count'))
-            ->groupBy('product_id')
-            ->get();
-
-        $getOrderedProductIds = [];
-        foreach ($orderDetails as $detail) {
-            $getOrderedProductIds[] = $detail['product_id'];
-        }
-
         $productListData = Product::active()->withSum('orderDetails', 'qty', function ($query) {
             $query->where('delivery_status', 'delivered');
         })
@@ -260,7 +243,7 @@ class ProductManager
                 $query->where('customer_id', $user != 'offline' ? $user->id : '0');
             }]);
 
-        $productListData = ProductManager::getPriorityWiseBestSellingProductsQuery(query: $productListData->whereIn('id', $getOrderedProductIds), dataLimit: $limit, offset: $offset);
+        $productListData = ProductManager::getPriorityWiseBestSellingProductsQuery(query: $productListData->whereHas('orderDetails'), dataLimit: $limit, offset: $offset);
 
         $productListData?->map(function ($product) use ($currentDate) {
             $flashDealStatus = 0;
@@ -1068,14 +1051,18 @@ class ProductManager
             } elseif ($topRatedProductSortBy['sort_by'] == 'reviews_count') {
                 $query = $query->orderBy('reviews_count', 'desc');
             } elseif ($topRatedProductSortBy['sort_by'] == 'rating') {
-                $query = $query->orderBy('reviews_avg_rating', 'desc')->orderBy('reviews_avg_rating', 'desc');
+                $query = $query->orderBy('reviews_avg_rating', 'desc');
             } elseif ($topRatedProductSortBy['sort_by'] == 'a_to_z') {
                 $query = $query->orderBy('name', 'asc');
             } elseif ($topRatedProductSortBy['sort_by'] == 'z_to_a') {
                 $query = $query->orderBy('name', 'desc');
             }
 
-            $query = $query->get();
+            if ($dataLimit != 'all') {
+                $query = $query->paginate($dataLimit, ['*'], 'page', $offset);
+            } else {
+                $query = $query->get();
+            }
 
             if ($topRatedProductSortBy['out_of_stock_product'] == 'desc') {
                 $query = self::mergeStockAndOutOfStockProduct(query: $query);
@@ -1152,14 +1139,18 @@ class ProductManager
             } elseif ($bestSellingProductSortBy['sort_by'] == 'reviews_count') {
                 $query = $query->orderBy('reviews_count', 'desc');
             } elseif ($bestSellingProductSortBy['sort_by'] == 'rating') {
-                $query = $query->orderBy('reviews_avg_rating', 'desc')->orderBy('reviews_avg_rating', 'desc');
+                $query = $query->orderBy('reviews_avg_rating', 'desc');
             } elseif ($bestSellingProductSortBy['sort_by'] == 'a_to_z') {
                 $query = $query->orderBy('name', 'asc');
             } elseif ($bestSellingProductSortBy['sort_by'] == 'z_to_a') {
                 $query = $query->orderBy('name', 'desc');
             }
 
-            $query = $query->get();
+            if ($dataLimit != 'all') {
+                $query = $query->paginate($dataLimit, ['*'], 'page', $offset);
+            } else {
+                $query = $query->get();
+            }
 
             if ($bestSellingProductSortBy['out_of_stock_product'] == 'desc') {
                 $query = self::mergeStockAndOutOfStockProduct(query: $query);
