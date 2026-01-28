@@ -54,7 +54,7 @@
             <span>({{ count($product->reviews) }})</span>
         </div>
 
-        <div class="text-muted fs-12">
+        <div class="text-muted fs-14 fw-medium">
             @if($product->added_by=='seller')
                 {{ isset($product->seller->shop->name) ? Str::limit($product->seller->shop->name, 20) : '' }}
             @elseif($product->added_by=='admin')

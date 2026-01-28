@@ -66,8 +66,8 @@
                                 position: absolute;
                                 bottom: 10px;
                                 right: 10px;
-                                width: 60px;
-                                height: 60px;
+                                width: 80px;
+                                height: 80px;
                                 border-radius: 50%; 
                                 overflow: hidden;
                                 border: 2px solid #fff;

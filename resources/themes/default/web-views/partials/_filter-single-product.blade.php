@@ -51,8 +51,8 @@
                                 position:absolute;
                                 bottom:8px;
                                 right:8px;
-                                width:60px;
-                                height:60px;
+                                width:80px;
+                                height:80px;
                                 border-radius:50%;
                                 overflow:hidden;
                                 box-shadow:0 2px 8px rgba(0,0,0,0.2);
