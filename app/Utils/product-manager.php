@@ -538,6 +538,7 @@ class ProductManager
 
     public static function getSearchProductsForWeb($name, $category = 'all', $limit = 10, $offset = 1): array
     {
+        $key = explode(' ', $name);
         $authorIds = Author::where('name', 'like', "%{$name}%")->pluck('id')->toArray();
         $authorProductIds = DigitalProductAuthor::whereIn('author_id', $authorIds)->pluck('product_id')->toArray();
 
@@ -547,15 +548,27 @@ class ProductManager
         // Get product IDs from translations (uz, ru, en, etc.)
         $translatedProductIds = Translation::where('translationable_type', 'App\Models\Product')
             ->where('key', 'name')
-            ->where('value', 'like', "%{$name}%")
+            ->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->orWhere('value', 'like', "%{$value}%");
+                }
+            })
             ->pluck('translationable_id')
             ->toArray();
 
-        $productListData = Product::active()->with(['rating', 'tags'])->where(function ($q) use ($name, $authorProductIds, $publishingHouseProductIds, $translatedProductIds) {
-            $q->where('name', 'like', "%{$name}%")
-                ->orWhereHas('tags', function ($query) use ($name) {
-                    $query->where('tag', 'like', "%{$name}%");
+        $productListData = Product::active()->with(['rating', 'tags'])->where(function ($q) use ($key, $authorProductIds, $publishingHouseProductIds, $translatedProductIds) {
+            $q->where(function ($nameQuery) use ($key) {
+                foreach ($key as $value) {
+                    $nameQuery->orWhere('name', 'like', "%{$value}%");
+                }
+            });
+            $q->orWhereHas('tags', function ($query) use ($key) {
+                $query->where(function ($tagQuery) use ($key) {
+                    foreach ($key as $value) {
+                        $tagQuery->orWhere('tag', 'like', "%{$value}%");
+                    }
                 });
+            });
             // Search in all translations (uz, ru, en)
             if (!empty($translatedProductIds)) {
                 $q->orWhereIn('id', $translatedProductIds);
@@ -588,9 +601,14 @@ class ProductManager
     public static function translated_product_search($name, $category = 'all', $limit = 10, $offset = 1): array
     {
         $name = base64_decode($name);
+        $key = explode(' ', $name);
         $product_ids = Translation::where('translationable_type', 'App\Models\Product')
             ->where('key', 'name')
-            ->where('value', 'like', "%{$name}%")
+            ->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->orWhere('value', 'like', "%{$value}%");
+                }
+            })
             ->pluck('translationable_id');
 
         $productListData = Product::with([
@@ -618,9 +636,14 @@ class ProductManager
 
     public static function getTranslatedProductSearchForWeb($name, $category = 'all', $limit = 10, $offset = 1): array
     {
+        $key = explode(' ', $name);
         $translationIds = Translation::where('translationable_type', 'App\Models\Product')
             ->where('key', 'name')
-            ->where('value', 'like', "%{$name}%")
+            ->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->orWhere('value', 'like', "%{$value}%");
+                }
+            })
             ->pluck('translationable_id');
 
         $productListData = Product::with(['tags', 'translations'])
@@ -2376,7 +2399,7 @@ class ProductManager
                 $searchKey = $request->search ? $request->search : ($request['product_name'] ?? $request['name']);
                 $productsIDArray = [];
                 $searchProducts = ProductManager::search_products($request, $searchKey);
-                if ($searchProducts['products'] == null || getDefaultLanguage() != 'en') {
+                if ($searchProducts['products'] == null) {
                     $searchProducts = ProductManager::translated_product_search(base64_encode($searchKey));
                 }
                 if ($searchProducts['products']) {

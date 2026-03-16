@@ -23,15 +23,14 @@ class ProductRepository implements ProductRepositoryInterface
     use ProductTrait, CacheManagerTrait;
 
     public function __construct(
-        private readonly Product          $product,
-        private readonly Translation      $translation,
-        private readonly Tag              $tag,
-        private readonly Cart             $cart,
-        private readonly Wishlist         $wishlist,
+        private readonly Product $product,
+        private readonly Translation $translation,
+        private readonly Tag $tag,
+        private readonly Cart $cart,
+        private readonly Wishlist $wishlist,
         private readonly FlashDealProduct $flashDealProduct,
-        private readonly DealOfTheDay     $dealOfTheDay,
-    )
-    {
+        private readonly DealOfTheDay $dealOfTheDay,
+    ) {
     }
 
     public function addRelatedTags(object $request, object $product): void
@@ -88,18 +87,22 @@ class ProductRepository implements ProductRepositoryInterface
                 return $query->with($relations['seller.shop']);
             })
             ->when(isset($relations['wishList']), function ($query) use ($relations, $params) {
-                return $query->with([$relations['wishList'] => function ($query) use ($params) {
-                    return $query->when(isset($params['customer_id']), function ($query) use ($params) {
-                        return $query->where('customer_id', $params['customer_id']);
-                    });
-                }]);
+                return $query->with([
+                    $relations['wishList'] => function ($query) use ($params) {
+                        return $query->when(isset($params['customer_id']), function ($query) use ($params) {
+                            return $query->where('customer_id', $params['customer_id']);
+                        });
+                    }
+                ]);
             })
             ->when(isset($relations['compareList']), function ($query) use ($relations, $params) {
-                return $query->with([$relations['compareList'] => function ($query) use ($params) {
-                    return $query->when(isset($params['customer_id']), function ($query) use ($params) {
-                        return $query->where('user_id', $params['customer_id']);
-                    });
-                }]);
+                return $query->with([
+                    $relations['compareList'] => function ($query) use ($params) {
+                        return $query->when(isset($params['customer_id']), function ($query) use ($params) {
+                            return $query->where('user_id', $params['customer_id']);
+                        });
+                    }
+                ]);
             })
             ->when(isset($relations['digitalProductAuthors']), function ($query) use ($relations) {
                 return $query->with($relations['digitalProductAuthors'], function ($query) {
@@ -112,9 +115,11 @@ class ProductRepository implements ProductRepositoryInterface
                 });
             })
             ->when(isset($relations['clearanceSale']), function ($query) use ($relations) {
-                return $query->with(['clearanceSale' => function($query) {
-                    return $query->active();
-                }]);
+                return $query->with([
+                    'clearanceSale' => function ($query) {
+                        return $query->active();
+                    }
+                ]);
             })
             ->when(isset($params['id']), function ($query) use ($params) {
                 return $query->where('id', $params['id']);
@@ -145,35 +150,53 @@ class ProductRepository implements ProductRepositoryInterface
                 ->when(isset($filters['request_status']) && $filters['request_status'] != 'all', function ($query) use ($filters) {
                     $query->where(['request_status' => $filters['request_status']]);
                 })
-                ->when(isset($filters['seller_id'])&& $filters['seller_id']!='all', function ($query) use ($filters) {
+                ->when(isset($filters['seller_id']) && $filters['seller_id'] != 'all', function ($query) use ($filters) {
                     return $query->where(['user_id' => $filters['seller_id']]);
                 });
         })->when($searchValue, function ($query) use ($filters, $searchValue) {
+            $key = explode(' ', $searchValue);
             $product_ids = $this->translation->where('translationable_type', 'App\Models\Product')
                 ->where('key', 'name')
-                ->where('value', 'like', "%{$searchValue}%")
-                ->pluck('translationable_id');
-
-            return $query->where('name', 'like', "%{$searchValue}%")
-                ->orWhere(function ($query) use ($filters) {
-                    if (isset($filters['code'])) {
-                        $query->where('code', 'like', "%{$filters['code']}%");
+                ->where(function ($q) use ($key) {
+                    foreach ($key as $value) {
+                        $q->orWhere('value', 'like', "%{$value}%");
                     }
                 })
-                ->when(isset($filters['added_by']) && !$this->isAddedByInHouse($filters['added_by']), function($query) use($filters, $product_ids) {
-                    $query->whereIn('id', $product_ids)
-                        ->where(['added_by' => 'seller'])
-                        ->when(isset($filters['seller_id']), function ($query) use ($filters) {
-                            return $query->where(['user_id' => $filters['seller_id']]);
-                        });
+                ->pluck('translationable_id');
+
+            return $query->where(function ($query) use ($filters, $searchValue, $key, $product_ids) {
+                return $query->where(function ($q) use ($key) {
+                    foreach ($key as $value) {
+                        $q->orWhere('name', 'like', "%{$value}%");
+                    }
                 })
-                ->when(isset($filters['added_by']) && $this->isAddedByInHouse($filters['added_by']), function($query) use($filters, $product_ids) {
-                    $query->orWhereIn('id', $product_ids)->where(['added_by' => 'admin']);
-                });
+                    ->orWhere(function ($query) use ($filters) {
+                        if (isset($filters['code'])) {
+                            $query->where('code', 'like', "%{$filters['code']}%");
+                        }
+                    })
+                    ->orWhereHas('tags', function ($tag_query) use ($key) {
+                        $tag_query->where(function ($tagPartsQuery) use ($key) {
+                            foreach ($key as $value) {
+                                $tagPartsQuery->orWhere('tag', 'like', "%{$value}%");
+                            }
+                        });
+                    })
+                    ->when(isset($filters['added_by']) && !$this->isAddedByInHouse($filters['added_by']), function ($query) use ($filters, $product_ids) {
+                        $query->orWhereIn('id', $product_ids)
+                            ->where(['added_by' => 'seller'])
+                            ->when(isset($filters['seller_id']), function ($query) use ($filters) {
+                                return $query->where(['user_id' => $filters['seller_id']]);
+                            });
+                    })
+                    ->when(isset($filters['added_by']) && $this->isAddedByInHouse($filters['added_by']), function ($query) use ($filters, $product_ids) {
+                        $query->orWhereIn('id', $product_ids)->where(['added_by' => 'admin']);
+                    });
+            });
         })->when(isset($filters['product_search_type']) && $filters['product_search_type'] == 'product_gallery', function ($query) use ($filters) {
             return $query->when(isset($filters['request_status']) && $filters['request_status'] != 'all', function ($query) use ($filters) {
-                    $query->where(['request_status' => $filters['request_status']]);
-                });
+                $query->where(['request_status' => $filters['request_status']]);
+            });
         })->when(isset($filters['brand_id']) && $filters['brand_id'] != 'all', function ($query) use ($filters) {
             return $query->where(['brand_id' => $filters['brand_id']]);
         })->when(isset($filters['category_id']) && !empty($filters['category_id']) && $filters['category_id'] != 'all', function ($query) use ($filters) {
@@ -189,7 +212,7 @@ class ProductRepository implements ProductRepositoryInterface
         })->when(isset($filters['code']), function ($query) use ($filters) {
             return $query->where(['code' => $filters['code']]);
         })->when(isset($filters['productIds']), function ($query) use ($filters) {
-            return $query->whereIn('id' , $filters['productIds']);
+            return $query->whereIn('id', $filters['productIds']);
         })->when(!empty($orderBy), function ($query) use ($orderBy) {
             $query->orderBy(array_key_first($orderBy), array_values($orderBy)[0]);
         });
@@ -208,23 +231,62 @@ class ProductRepository implements ProductRepositoryInterface
                 return $query->active();
             })
             ->when($searchValue, function ($query) use ($searchValue) {
+                $key = explode(' ', $searchValue);
                 $product_ids = $this->translation->where('translationable_type', 'App\Models\Product')
                     ->where('key', 'name')
-                    ->where('value', 'like', "%{$searchValue}%")
+                    ->where(function ($q) use ($key) {
+                        foreach ($key as $value) {
+                            $q->orWhere('value', 'like', "%{$value}%");
+                        }
+                    })
                     ->pluck('translationable_id');
 
-                return $query->where(function ($query) use ($searchValue, $product_ids) {
-                    return $query->where('name', 'like', "%{$searchValue}%")
+                return $query->where(function ($query) use ($searchValue, $key, $product_ids) {
+                    return $query->where(function ($q) use ($key) {
+                        foreach ($key as $value) {
+                            $q->orWhere('name', 'like', "%{$value}%");
+                        }
+                    })
+                        ->orWhereHas('tags', function ($tag_query) use ($key) {
+                            $tag_query->where(function ($tagPartsQuery) use ($key) {
+                                foreach ($key as $value) {
+                                    $tagPartsQuery->orWhere('tag', 'like', "%{$value}%");
+                                }
+                            });
+                        })
                         ->orWhereIn('id', $product_ids);
                 });
             })
             ->when(isset($filters['search_from']) && $filters['search_from'] == 'pos', function ($query) use ($filters) {
                 $searchKeyword = str_ireplace(['\'', '"', ',', ';', '<', '>', '?'], ' ', preg_replace('/\s\s+/', ' ', $filters['keywords']));
-                return $query->where(function ($query) use ($filters) {
+                $key = explode(' ', $searchKeyword);
+
+                $product_ids = $this->translation->where('translationable_type', 'App\Models\Product')
+                    ->where('key', 'name')
+                    ->where(function ($q) use ($key) {
+                        foreach ($key as $value) {
+                            $q->orWhere('value', 'like', "%{$value}%");
+                        }
+                    })
+                    ->pluck('translationable_id');
+
+                return $query->where(function ($query) use ($filters, $key, $product_ids) {
                     return $query->where('code', 'like', "%{$filters['keywords']}%")
-                        ->orWhere('name', 'like', "%{$filters['keywords']}%");
+                        ->orWhere(function ($q) use ($key) {
+                            foreach ($key as $value) {
+                                $q->orWhere('name', 'like', "%{$value}%");
+                            }
+                        })
+                        ->orWhereHas('tags', function ($tag_query) use ($key) {
+                            $tag_query->where(function ($tagPartsQuery) use ($key) {
+                                foreach ($key as $value) {
+                                    $tagPartsQuery->orWhere('tag', 'like', "%{$value}%");
+                                }
+                            });
+                        })
+                        ->orWhereIn('id', $product_ids);
                 })
-                ->orderByRaw("CASE WHEN name LIKE '%{$searchKeyword}%' THEN 1 ELSE 2 END, LOCATE('{$searchKeyword}', name), name");
+                    ->orderByRaw("CASE WHEN name LIKE '%{$searchKeyword}%' THEN 1 ELSE 2 END, LOCATE('{$searchKeyword}', name), name");
             })
             ->when(isset($filters['added_by']) && $this->isAddedByInHouse(addedBy: $filters['added_by']), function ($query) {
                 return $query->where(['added_by' => 'admin']);
@@ -277,7 +339,7 @@ class ProductRepository implements ProductRepositoryInterface
                 return $query->where(['added_by' => 'seller']);
             })
             ->when(isset($relations['reviews']), function ($query) use ($relations) {
-                return $query->with($relations['reviews'], function ($query) use($relations) {
+                return $query->with($relations['reviews'], function ($query) use ($relations) {
                     return $query->active();
                 });
             })
@@ -288,26 +350,32 @@ class ProductRepository implements ProductRepositoryInterface
                 return $query->with($relations['flashDealProducts.flashDeal']);
             })
             ->when(isset($relations['wishList']), function ($query) use ($relations, $filters) {
-                return $query->with([$relations['wishList'] => function ($query) use ($filters) {
-                    return $query->when(isset($filters['customer_id']), function ($query) use ($filters) {
-                        return $query->where('customer_id', $filters['customer_id']);
-                    });
-                }]);
+                return $query->with([
+                    $relations['wishList'] => function ($query) use ($filters) {
+                        return $query->when(isset($filters['customer_id']), function ($query) use ($filters) {
+                            return $query->where('customer_id', $filters['customer_id']);
+                        });
+                    }
+                ]);
             })
             ->when(isset($relations['compareList']), function ($query) use ($relations, $filters) {
-                return $query->with([$relations['compareList'] => function ($query) use ($filters) {
-                    return $query->when(isset($filters['customer_id']), function ($query) use ($filters) {
-                        return $query->where('user_id', $filters['customer_id']);
-                    });
-                }]);
+                return $query->with([
+                    $relations['compareList'] => function ($query) use ($filters) {
+                        return $query->when(isset($filters['customer_id']), function ($query) use ($filters) {
+                            return $query->where('user_id', $filters['customer_id']);
+                        });
+                    }
+                ]);
             })
             ->when(isset($whereHas['reviews']), function ($query) use ($whereHas) {
                 return $query;
             })
             ->when(isset($withCount['reviews']), function ($query) use ($withCount) {
-                return $query->withCount([$withCount['reviews'] => function ($query) {
-                    return $query->active();
-                }]);
+                return $query->withCount([
+                    $withCount['reviews'] => function ($query) {
+                        return $query->active();
+                    }
+                ]);
             })
             ->when($withSum, function ($query) use ($withSum) {
                 foreach ($withSum as $sum) {
@@ -321,11 +389,31 @@ class ProductRepository implements ProductRepositoryInterface
                 return $query->withSum($withSum['qty']);
             })
             ->when($searchValue, function ($query) use ($searchValue) {
+                $key = explode(' ', $searchValue);
                 $product_ids = $this->translation->where('translationable_type', 'App\Models\Product')
                     ->where('key', 'name')
-                    ->where('value', 'like', "%{$searchValue}%")
+                    ->where(function ($q) use ($key) {
+                        foreach ($key as $value) {
+                            $q->orWhere('value', 'like', "%{$value}%");
+                        }
+                    })
                     ->pluck('translationable_id');
-                return $query->where('name', 'like', "%{$searchValue}%")->orWhereIn('id', $product_ids);
+
+                return $query->where(function ($query) use ($searchValue, $key, $product_ids) {
+                    return $query->where(function ($q) use ($key) {
+                        foreach ($key as $value) {
+                            $q->orWhere('name', 'like', "%{$value}%");
+                        }
+                    })
+                        ->orWhereHas('tags', function ($tag_query) use ($key) {
+                            $tag_query->where(function ($tagPartsQuery) use ($key) {
+                                foreach ($key as $value) {
+                                    $tagPartsQuery->orWhere('tag', 'like', "%{$value}%");
+                                }
+                            });
+                        })
+                        ->orWhereIn('id', $product_ids);
+                });
             })->when(isset($filters['seller_id']), function ($query) use ($filters) {
                 return $query->where('user_id', $filters['seller_id']);
             })->when(isset($filters['brand_id']), function ($query) use ($filters) {
@@ -385,9 +473,11 @@ class ProductRepository implements ProductRepositoryInterface
                     $query->active();
                 });
             })
-            ->withCount(['reviews' => function ($query){
-                return $query->whereNull('delivery_man_id');
-            }])
+            ->withCount([
+                'reviews' => function ($query) {
+                    return $query->whereNull('delivery_man_id');
+                }
+            ])
             ->withAvg('rating as ratings_average', 'rating')
             ->orderByDesc('reviews_count')
             ->get();

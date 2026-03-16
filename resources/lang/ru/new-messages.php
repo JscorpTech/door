@@ -943,4 +943,6 @@ return [
 	"for_Ready_Product_deliveries,_customers_can_pay_&_instantly_download_pre-uploaded_digital_products" => "For Ready Product deliveries  customers can pay & instantly download pre-uploaded digital products",
 	"Check_Latest_Blogs" => "Check Latest Blogs",
 	"latest_psroducts" => "Latest psroducts",
+	"Быстрый заказ в WhatsApp" => "Быстрый заказ в WhatsApp",
+	"Гарантия возврата в случае брака" => "Гарантия возврата в случае брака",
 ];
