@@ -446,36 +446,36 @@ class ProductManager
             'clearanceSale' => function ($query) {
                 return $query->active();
             }
-        ])
-            ->where(function ($q) use ($key, $authorProductIds, $publishingHouseProductIds, $translatedProductIds) {
-                $q->where(function ($nameQuery) use ($key) {
-                    foreach ($key as $value) {
-                        $nameQuery->orWhere('name', 'like', "%{$value}%");
-                    }
-                });
-                $q->orWhereHas('tags', function ($query) use ($key) {
-                    $query->where(function ($tagQuery) use ($key) {
-                        foreach ($key as $value) {
-                            $tagQuery->orWhere('tag', 'like', "%{$value}%");
-                        }
+        ]);
+
+        foreach ($key as $value) {
+            if (empty($value))
+                continue;
+
+            $productListData->where(function ($q) use ($value, $name, $authorProductIds, $publishingHouseProductIds) {
+                $q->where('name', 'like', "%{$value}%")
+                    ->orWhereHas('tags', function ($query) use ($value) {
+                        $query->where('tag', 'like', "%{$value}%");
+                    })
+                    ->orWhereHas('translations', function ($query) use ($value) {
+                        $query->where('key', 'name')->where('value', 'like', "%{$value}%");
                     });
-                });
-                // Search in all translations (uz, ru, en)
-                if (!empty($translatedProductIds)) {
-                    $q->orWhereIn('id', $translatedProductIds);
-                }
+
+                // Include author and publishing house if applicable
                 if (!empty($authorProductIds)) {
                     $q->orWhereIn('id', $authorProductIds);
                 }
                 if (!empty($publishingHouseProductIds)) {
                     $q->orWhereIn('id', $publishingHouseProductIds);
                 }
-            })
-            ->withCount([
-                'wishList' => function ($query) use ($user) {
-                    $query->where('customer_id', $user != 'offline' ? $user->id : '0');
-                }
-            ]);
+            });
+        }
+
+        $productListData->withCount([
+            'wishList' => function ($query) use ($user) {
+                $query->where('customer_id', $user != 'offline' ? $user->id : '0');
+            }
+        ]);
 
         if (isset($category) && $category != 'all') {
             $categoryWiseProduct = $productListData->where(['category_id' => $category])
@@ -556,30 +556,29 @@ class ProductManager
             ->pluck('translationable_id')
             ->toArray();
 
-        $productListData = Product::active()->with(['rating', 'tags'])->where(function ($q) use ($key, $authorProductIds, $publishingHouseProductIds, $translatedProductIds) {
-            $q->where(function ($nameQuery) use ($key) {
-                foreach ($key as $value) {
-                    $nameQuery->orWhere('name', 'like', "%{$value}%");
+        $productListData = Product::active()->with(['rating', 'tags']);
+
+        foreach ($key as $value) {
+            if (empty($value))
+                continue;
+
+            $productListData->where(function ($q) use ($value, $authorProductIds, $publishingHouseProductIds) {
+                $q->where('name', 'like', "%{$value}%")
+                    ->orWhereHas('tags', function ($query) use ($value) {
+                        $query->where('tag', 'like', "%{$value}%");
+                    })
+                    ->orWhereHas('translations', function ($query) use ($value) {
+                        $query->where('key', 'name')->where('value', 'like', "%{$value}%");
+                    });
+
+                if (!empty($authorProductIds)) {
+                    $q->orWhereIn('id', $authorProductIds);
+                }
+                if (!empty($publishingHouseProductIds)) {
+                    $q->orWhereIn('id', $publishingHouseProductIds);
                 }
             });
-            $q->orWhereHas('tags', function ($query) use ($key) {
-                $query->where(function ($tagQuery) use ($key) {
-                    foreach ($key as $value) {
-                        $tagQuery->orWhere('tag', 'like', "%{$value}%");
-                    }
-                });
-            });
-            // Search in all translations (uz, ru, en)
-            if (!empty($translatedProductIds)) {
-                $q->orWhereIn('id', $translatedProductIds);
-            }
-            if (!empty($authorProductIds)) {
-                $q->orWhereIn('id', $authorProductIds);
-            }
-            if (!empty($publishingHouseProductIds)) {
-                $q->orWhereIn('id', $publishingHouseProductIds);
-            }
-        });
+        }
 
         if (isset($category) && $category != 'all') {
             $categoryWiseProduct = $productListData->where(['category_id' => $category])
